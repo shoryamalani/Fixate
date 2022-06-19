@@ -1,0 +1,81 @@
+{
+  "name": "forgepowertimetracking",
+  "productName": "forgepowertimetracking",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "Shorya Malani",
+    "email": "shoryamal@gmail.com"
+  },
+  "license": "MIT",
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "osxSign": {
+          "identity": "Developer ID Application: Shorya Malani (YD5J62KXTT)",
+          "hardened-runtime": true,
+          "entitlements": "parent.entitlements",
+          "entitlements-inherit": "parent.entitlements",
+          "signature-flags": "library"
+        }
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "forgepowertimetracking"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "@electron/osx-sign": "^1.0.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "node-fetch": "^2.6.7",
+    "python-shell": "^3.0.1"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "electron": "19.0.1"
+  },
+  "build": {
+    "extraResources": [
+      "py",
+      {
+        "from": "python",
+        "to": "python",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
+  }
+}

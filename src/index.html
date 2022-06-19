@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Calling Python from Electron!</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <h1 class="center">Logger Controls</h1>
+    <div class="float-parent-element center">
+        <input id="start_logger_button" type="button" class="float-child-element" value="Start Logger"></input>
+        <input id="stop_logger_button" type="button" class="float-child-element" value="Stop Logger"></input>
+        <input id="toggle_closing_apps" type="button" class="float-child-element" value="Toggle Closing Apps"></input>
+    </div>
+    <br>
+    <h2 class="center">Application Status</h2>
+    <br>
+    <div class="float-parent-element">
+        <input id="app_status_button" type="button" class="center"  value="Load and reload apps"></input><br>
+        <p id="app_status_instructions" hidden="true">Check the box for things you want blocked</p>
+        <table id="app_status_table" hidden="true">
+        </table>
+        <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status" hidden="true"></input>
+    </div>
+    <br>
+    <h2 class="center">Time Spent</h2>
+    <div id="logger_output" class="center">
+        <input id="get_all_time" type="button" class="float-child-element" value="All Time">
+        <input id="get_today_time" type="button" class="float-child-element" value="Today">
+        <input id="get_yesterday_time" type="button" class="float-child-element" value="Yesterday">
+        <input id="get_week_time" type="button" class="float-child-element" value="This Week">
+    </div>
+    <br>
+    <span id="result"></span>
+
+    <script src="./renderer.js"></script>
+
+</body>
+
+</html>
