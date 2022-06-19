@@ -10,8 +10,6 @@ let get_week_time_button = document.querySelector('#get_week_time')
 let app_status_button = document.querySelector('#app_status_button')
 let save_button_for_app_status = document.querySelector('#save_button_for_app_status')
 
-let logger_running = false
-
 
 get_all_time_button.addEventListener('click', function(){
   get_logging_data("all")
@@ -69,6 +67,26 @@ function save_app_status(){
     console.log(data)
   });
 }
+setInterval(function (){
+  fetch('http://localhost:5005/logger_status').then(response =>response.json()).then(data => {
+    if (data['logger_running_status'] == true){
+      document.getElementById("start_logger_button").hidden = true
+      document.getElementById("stop_logger_button").hidden = false
+      document.getElementById("is_logging").innerText = "Logger is running"
+    }
+    else{
+      document.getElementById("start_logger_button").hidden = false
+      document.getElementById("stop_logger_button").hidden = true
+      document.getElementById("is_logging").innerText = "Logger is not running"
+    }
+    if (data['closing_apps'] == true){
+      document.getElementById("closing_app_status").innerText = "Closing apps is enabled"
+    }
+    else{
+      document.getElementById("closing_app_status").innerText = "Closing apps is disabled"
+    }
+  })
+},2000)
 async function postData(url = '', data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -86,8 +104,8 @@ function get_logging_data(time){
     // result.innerHTML = data.data['all_time']
     result.innerHTML = ""
     console.log(data)
-    Object.entries(data['time']).forEach(([key, value]) => {
-        result.innerHTML += `${key}: ${value/60} minutes<br>`
+    data['time'].forEach((value) => {
+        result.innerHTML += `${value[0]}: ${(value[1]/60).toFixed(2)} minutes<br>`
    });
 })
 }

@@ -1,6 +1,7 @@
+from functools import total_ordering
 import database_worker
 import datetime
-
+import re
 from database_worker import get_all_time_logs, get_time_logs_from_today_and_yesterday
 full_time_format = "%Y-%m-%d %H:%M:%S"
 def parse_time(time):
@@ -62,14 +63,18 @@ def parse_data(data):
         
 
     return text_with_times
-
+def make_url_to_base(full_url):
+    return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
 def proper_time_parse(data):
     times = {}
     last_item = None
     last_time = None
     for log in data:
+        log = list(log)
         if log != None:
             if log[3] == 1:
+                if log[2] != None:
+                    log[1] = make_url_to_base(log[2])
                 if log[1] in times:
                     if last_time != None:
                         delta_seconds =  datetime.datetime.strptime(log[0],full_time_format) - datetime.datetime.strptime(last_time,full_time_format)
@@ -95,6 +100,18 @@ def get_all_time():
     data = database_worker.get_all_time_logs()
     times = proper_time_parse(data)
     return times
+
+def parse_for_display(times):
+    """
+    takes a dictionary of times and orders them by time spent
+    """
+    all_times_list = [[key,value] for key,value in times.items()]
+    total_time = 0
+    for time in all_times_list:
+        total_time += time[1]
+    all_times_list.append(['Total',total_time])
+    all_times_list.sort(key=lambda x: x[1], reverse=True)
+    return all_times_list
 def get_time(time_period):
     if time_period == "all":
         data = database_worker.get_all_time_logs()
@@ -112,7 +129,7 @@ def get_time(time_period):
     else:
         data = database_worker.get_all_time_logs()
     times = proper_time_parse(data)
-    return times
+    return parse_for_display(times)
     
 def main():
     # data = database_worker.get_all_time_logs()

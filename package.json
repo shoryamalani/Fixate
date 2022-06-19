@@ -1,13 +1,15 @@
 {
-  "name": "forgepowertimetracking",
-  "productName": "forgepowertimetracking",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "name": "PowerTimeTracking",
+  "productName": "PowerTimeTracking",
+  "version": "0.1.0",
+  "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
+    "package-arm": "electron-forge package --arch=arm64",
     "make": "electron-forge make",
+    "make-arm": "electron-forge make --arch=arm64",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },

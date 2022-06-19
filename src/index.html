@@ -3,23 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Calling Python from Electron!</title>
+    <title>Power Time Tracking</title>
     <link rel="stylesheet" href="index.css">
 </head>
 
 <body>
     <h1 class="center">Logger Controls</h1>
+    <p>Power Time tracking works with a backend logger so you can close the app and the logger will continue to log data. When you click Toggle Closing Apps the apps and websites checked below will be minimized while opened. Apps will not be closed if the logger is not running under any configuration. If stuff stops working try force quiting all python3.9 processes but this should not be needed.</p>
     <div class="float-parent-element center">
         <input id="start_logger_button" type="button" class="float-child-element" value="Start Logger"></input>
         <input id="stop_logger_button" type="button" class="float-child-element" value="Stop Logger"></input>
         <input id="toggle_closing_apps" type="button" class="float-child-element" value="Toggle Closing Apps"></input>
     </div>
+    <p id="is_logging" class="center"></p>
+    <p id="closing_app_status" class="center"></p>
     <br>
-    <h2 class="center">Application Status</h2>
+    <h2 class="center">Applications To close</h2>
     <br>
     <div class="float-parent-element">
         <input id="app_status_button" type="button" class="center"  value="Load and reload apps"></input><br>
-        <p id="app_status_instructions" hidden="true">Check the box for things you want blocked</p>
+        <p id="app_status_instructions" hidden="true">Check the box for things you want blocked. To make an app show up click on it while the logger is running. Apps and websites are ordered in alphabetical order. Don't forget to save after you are done with your selection.</p>
         <table id="app_status_table" hidden="true">
         </table>
         <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status" hidden="true"></input>
@@ -34,6 +37,8 @@
     </div>
     <br>
     <span id="result"></span>
+    <br>
+    <p>Shorya Malani</p>
 
     <script src="./renderer.js"></script>
 

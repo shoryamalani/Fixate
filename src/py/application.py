@@ -68,12 +68,10 @@ def check_if_must_be_closed(frontmost_app,tabname):
         closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
         will_close = closing_app["closing_apps"]
         apps_to_close = closing_app["apps_to_close"]
-        logger.debug(closing_app)
     except:
         will_close = False
 
     if will_close == True:
-        logger.debug(frontmost_app["NSApplicationName"])
         if frontmost_app["NSApplicationName"] in apps_to_close:
             close_app_with_bundle_id(frontmost_app["NSApplicationBundleIdentifier"])
         if tabname != None:
@@ -102,10 +100,9 @@ def search_close_and_log_apps():
                     future = browser_tab_name(current_app_name)
                     tabname = future.result()
                     # tabname = browser_tab_name(current_app_name)
-                    logger.debug(tabname)
                     short_tab = make_url_to_base(tabname)
                     if short_tab not in apps_in_name_form:
-                        logger.debug(database_worker.add_application_to_db(short_tab,"website",0,0))
+                        database_worker.add_application_to_db(short_tab,"website",0,0)
                         apps_in_name_form.append(short_tab)
                 except Exception as err:
                     logger.debug(err)
@@ -113,7 +110,7 @@ def search_close_and_log_apps():
                     logger.debug("not found")
             else:
                 if current_app_name not in apps_in_name_form:
-                    logger.debug(database_worker.add_application_to_db(current_app_name,"app",0,0))
+                    database_worker.add_application_to_db(current_app_name,"app",0,0)
                     apps_in_name_form.append(current_app_name)
 
             check_if_must_be_closed(front_app,tabname)
@@ -212,12 +209,13 @@ def boot_up_checker():
                 sys.exit()
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
-        mouse_movement = multiprocessing.Process(target=start_mouse_movement_checker).start()
-        # PROCESSES["mouse_movement"] = mouse_movement
-        # PROCESSES["mouse_movement"].start()
-        multiprocessing.Process(target=search_close_and_log_apps).start()
+        if len(multiprocessing.active_children()) == 0:
+            mouse_movement = multiprocessing.Process(target=start_mouse_movement_checker).start()
+            # PROCESSES["mouse_movement"] = mouse_movement
+            # PROCESSES["mouse_movement"].start()
+            multiprocessing.Process(target=search_close_and_log_apps).start()
         global CLOSING_APPS
-        CLOSING_APPS = True
+        CLOSING_APPS = False
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
         # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
         # multiprocessing.Process(target=web_app.start_app).start()
@@ -250,6 +248,11 @@ def save_app_status(applications):
     for key,value in applications.items():
         database_worker.save_app_status(key,value)
     return True
+
+def is_running_logger():
+    if multiprocessing.active_children():
+        return True
+    return False
 if __name__ == "__main__":
     boot_up_checker()
     

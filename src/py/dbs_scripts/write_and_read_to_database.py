@@ -3,7 +3,7 @@
 from __future__ import print_function
 # from _typeshed import NoneType
 
-import psycopg2
+
 
 def make_read_from_db(items,table):
     text_first_line = "SELECT"

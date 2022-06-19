@@ -5,7 +5,6 @@ from dbs_scripts.create_database import *
 import sqlite3
 import datetime
 import constants
-from loguru import logger
 full_time_format = '%m/%d/%y:%H:%M:%S'
 DATABASE_PATH = constants.DATABASE_LOCATION + "/" + constants.DATABASE_NAME
 DATABASE_VERSION = "1.0"
@@ -48,7 +47,7 @@ def create_time_database():
         write_database_version = make_write_to_db([([DATABASE_VERSION])],"database_and_application_version",["database_version"])
         conn.execute(time_moved_set)
         conn.execute(write_database_version)
-        logger.debug(conn.commit())
+        conn.commit()
         conn.close()
         return True
     else:
@@ -96,11 +95,9 @@ def get_logs_between_times(start_time,end_time):
     """
     conn = connect_to_db()
     c = conn.cursor()
-    print(f"SELECT * FROM log WHERE time >= '{start_time}' AND time < '{end_time}'")
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
     c.execute(f"SELECT * FROM log WHERE time >= '{start_time}' AND time < '{end_time}'")
     data = c.fetchall()
-    print(data)
     conn.close()
     return data
 def get_time_logs_from_yesterday():

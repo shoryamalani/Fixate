@@ -23,10 +23,13 @@ def toggle_closing_apps():
 @app.route("/check_closing_apps")
 def check_closing_apps():
     return jsonify({"closing_apps":closing_apps,"apps_to_close":logger_application.get_all_distracting_apps()})
+
+@app.route("/logger_status")
+def logger_status():
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger()})
 @app.route("/is_running")
 def is_running():
     return jsonify(success=True)
-
 
 @app.route("/get_all_time")
 def get_all_time():
@@ -34,7 +37,6 @@ def get_all_time():
 
 @app.route("/get_time",methods=["GET","POST"])
 def get_time():
-    
     return jsonify({"time":get_time_spent.get_time(request.json["time"])})
 @app.route("/get_app_status")
 def get_app_status():
