@@ -1,10 +1,10 @@
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif;
+  font-family: -apple-system,'Times New Roman', Times, serif;
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
   align-items: center;
+  
 }
 .float-parent-element { 
   position:relative;
@@ -33,6 +33,38 @@ body {
 [hidden] {
   display: none !important;
 }
-/* tbody:nth-child(even) {
+tbody:nth-child(even) {
   background-color: rgba(138, 128, 138, 0.133);
-} */
+}
+#app_status_search {
+  background-image: url('/css/searchicon.png'); /* Add a search icon to input */
+  background-position: 10px 12px; /* Position the search icon */
+  background-repeat: no-repeat; /* Do not repeat the icon image */
+  width: 50%; /* Full-width */
+  font-size: 16px; /* Increase font-size */
+  padding: 12px 20px 12px 40px; /* Add some padding */
+  border: 1px solid #ddd; /* Add a grey border */
+  margin-bottom: 12px; /* Add some space below the input */
+}
+
+#app_status_table {
+  border-collapse: collapse; /* Collapse borders */
+  width: 100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+  font-size: 18px; /* Increase font-size */
+}
+
+#app_status_table th, #app_status_table td {
+  text-align: left; /* Left-align text */
+  padding: 12px; /* Add padding */
+}
+
+#app_status_table tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd; 
+}
+
+#app_status_table tr.header, #app_status_table tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #f1f1f1;
+}

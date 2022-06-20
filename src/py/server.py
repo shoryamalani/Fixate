@@ -8,7 +8,7 @@ import signal
 import os
 app = Flask(__name__)
 closing_apps = False
-VERSION = "0.1.1"
+VERSION = "0.2.1"
 @app.route("/start_logger")
 def start_logger():
 	
@@ -26,7 +26,11 @@ def toggle_closing_apps():
     return jsonify(success=True)
 @app.route("/check_closing_apps")
 def check_closing_apps():
-    return jsonify({"closing_apps":closing_apps,"apps_to_close":logger_application.get_all_distracting_apps()})
+    if logger_application.is_running_logger() == True:
+        
+        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":logger_application.get_all_distracting_apps()})
+    else:
+        return jsonify({"closing_apps":False,"apps_to_close":[]})
 
 @app.route("/logger_status")
 def logger_status():
@@ -41,7 +45,8 @@ def get_all_time():
 
 @app.route("/get_time",methods=["GET","POST"])
 def get_time():
-    return jsonify({"time":get_time_spent.get_time(request.json["time"])})
+    times,distractions = get_time_spent.get_time(request.json["time"])
+    return jsonify({"time":times,"distractions":distractions})
 @app.route("/get_app_status")
 def get_app_status():
     return jsonify({"applications":logger_application.get_all_apps_statuses()})

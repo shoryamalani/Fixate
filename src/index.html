@@ -39,10 +39,14 @@
     <br>
     <h2 class="center">Applications to Close</h2>
     <input id="app_status_button" type="button" class="center" value="Load and reload apps"></input><br>
-    <div class="float-parent-element">
+    <div >
         <p id="app_status_instructions" hidden="true">Check the box for things you want blocked. To make an app show up
             click on it while the logger is running. Apps and websites are ordered in alphabetical order. Don't forget
             to save after you are done with your selection.</p>
+        <div class="float-parent-element center">
+            <input id="app_status_search" type="text" class="float-child-element" onkeyup="search_table_refresh()" placeholder="Search for apps" hidden="true"></input>
+            <label id="app_status_distracted_check_label" hidden>Distractions Only<input id="app_status_distracted_check" type="checkbox" class="float-child-element" value="Distractions:" onclick="search_table_refresh()" hidden="true"></label>
+    </div>
         <table id="app_status_table" hidden="true">
         </table>
         <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status"
@@ -56,8 +60,13 @@
         <input id="get_today_time" type="button" class="float-child-element" value="Today">
         <input id="get_yesterday_time" type="button" class="float-child-element" value="Yesterday">
         <input id="get_week_time" type="button" class="float-child-element" value="This Week">
+        <input id="get_last_5_hours" type="button" class="float-child-element" value="Last Five Hours">
     </div>
     <br>
+    <div id="distraction_data" class="center">
+        <p id="number_of_times_distracted"></p>
+        <p id="average_time_between_distractions"></p>
+    </div>
     <div id="time_result_chart"></div>
     <span id="result"></span>
     <br>

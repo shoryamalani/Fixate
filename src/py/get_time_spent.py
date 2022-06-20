@@ -65,10 +65,12 @@ def parse_data(data):
     return text_with_times
 def make_url_to_base(full_url):
     return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
-def proper_time_parse(data):
+def proper_time_parse(data,distractions=[]):
     times = {}
     last_item = None
     last_time = None
+    times_between_distractions = []
+    time_between_distractions_seconds = 0
     for log in data:
         log = list(log)
         if log != None:
@@ -81,20 +83,47 @@ def proper_time_parse(data):
                     if last_time == None:
                         last_time = log[0]
                         times[log[1]] += 1
-                    elif delta_seconds < datetime.timedelta(seconds=10) and last_item == log[1]:
-                        times[log[1]] += delta_seconds.seconds
-                        last_time = log[0]
+                        if log[1] in distractions:
+                            times_between_distractions.append(time_between_distractions_seconds)
+                            time_between_distractions_seconds = 0
+                        else:
+                            time_between_distractions_seconds += 1
+                    # elif delta_seconds < datetime.timedelta(seconds=10) and last_item == log[1]:
+                    #     times[log[1]] += delta_seconds.seconds
+                    #     last_time = log[0]
                     elif delta_seconds < datetime.timedelta(seconds=10):
                         times[log[1]] += delta_seconds.seconds
                         last_time = log[0]
                         last_item = log[1]
+                        if log[1] in distractions:
+                            times_between_distractions.append(time_between_distractions_seconds)
+                            time_between_distractions_seconds = 0
+                        else:
+                            time_between_distractions_seconds += delta_seconds.seconds
                     else:
                         times[log[1]] += 1
                         last_time = log[0]
                         last_item = log[1]
+                        if log[1] in distractions:
+                            times_between_distractions.append(time_between_distractions_seconds)
+                            time_between_distractions_seconds = 0
+                        else:
+                            time_between_distractions_seconds += 1
                 else:
                     times[log[1]] = 1
-    return times
+                    if log[1] in distractions:
+                        times_between_distractions.append(time_between_distractions_seconds)
+                        time_between_distractions_seconds = 0
+                    else:
+                        time_between_distractions_seconds += 1
+
+    distractions = {"distractions_number":len(times_between_distractions)}
+    final_distractions_num = len([x for x in times_between_distractions if x > 0])
+    if len(times_between_distractions) == 0:
+        distractions["distractions_time_min"] = 0
+    else:
+        distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
+    return times,distractions
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()
@@ -126,11 +155,25 @@ def get_time(time_period):
         start_of_week = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=7),full_time_format)
         
         data = database_worker.get_logs_between_times(start_of_week,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+    elif time_period == "last_five_hours":
+        start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now().replace(hour=datetime.datetime.now().hour-5,minute=0,second=0,microsecond=0),full_time_format)
+        data = database_worker.get_logs_between_times(start_of_last_five_hours,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
     else:
         data = database_worker.get_all_time_logs()
-    times = proper_time_parse(data)
-    return parse_for_display(times)
+    times,distractions = proper_time_parse(data,get_all_distracting_apps())
+    times = parse_for_display(times)
     
+    return times,distractions
+    
+def get_all_distracting_apps():
+    parsed_apps = []
+    all_apps = database_worker.get_all_apps_statuses()
+    for app in all_apps:
+        if app[4] == 1:
+            parsed_apps.append(app[1])
+    # logger.debug(parsed_apps)
+    return parsed_apps
+
 def main():
     # data = database_worker.get_all_time_logs()
     # # print('inactive time:')

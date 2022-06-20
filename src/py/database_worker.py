@@ -61,7 +61,7 @@ def update_to_database_version_1_1():
     """
     conn = connect_to_db()
     c = conn.cursor()
-    applications_table_string = create_table_command("focus_sessions",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["stated_duration","int"],["actual_duration","float"],["inactive_applications","text"]])
+    applications_table_string = create_table_command("focus_sessions",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["stated_duration","int"],["actual_duration","DATETIME"],["inactive_applications","text"]])
     c.execute(applications_table_string)
     c.execute("UPDATE database_and_application_version SET database_version = '1.1' WHERE id=1")
     conn.commit()
@@ -131,6 +131,17 @@ def get_time_logs_from_this_week():
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log WHERE time >= date('now', '-7 days') AND time <  date('now')")
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def get_time_logs_from_last_five_hours():
+    """
+    Returns the time logs from last five hours
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM log WHERE time >= date('now', '-5 hours') AND time <  date('now')")
     data = c.fetchall()
     conn.close()
     return data
@@ -211,8 +222,16 @@ def start_focus_mode(duration,inactive_apps:str):
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps])],"focus_sessions",["time","stated_duration","inactive_apps"]))
-    data = c.fetchone()
+    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps])],"focus_sessions",["time","stated_duration","inactive_applications"]))
     conn.commit()
     conn.close()
-    return data[0]
+    return c.lastrowid
+def stop_focus_mode(focus_session_id):
+    """
+    Stops the focus mode
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE focus_sessions SET actual_duration = ? WHERE id = ?",[get_time_in_format(),focus_session_id])
+    conn.commit()
+    conn.close()

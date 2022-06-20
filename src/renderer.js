@@ -11,9 +11,13 @@ let app_status_button = document.querySelector('#app_status_button')
 let save_button_for_app_status = document.querySelector('#save_button_for_app_status')
 let start_focus_button = document.querySelector('#start_focus_button')
 let stop_focus_button = document.querySelector('#stop_focus_button')
+let get_last_5_hours_button = document.querySelector('#get_last_5_hours')
 var current_timer;
 var focus_mode_id;
 
+get_last_5_hours_button.addEventListener('click', function() {
+  get_logging_data("last_five_hours")
+});
 stop_focus_button.addEventListener('click', function() {
   stop_focus_mode()
 });
@@ -32,6 +36,7 @@ get_yesterday_time_button.addEventListener('click', function () {
 get_week_time_button.addEventListener('click', function () {
   get_logging_data("week")
 });
+
 app_status_button.addEventListener('click', function () {
   get_app_status()
 });
@@ -55,7 +60,7 @@ function stop_focus_mode(){
   document.getElementById("set_up_focus_mode").hidden=false;
   document.getElementById("time_left_focus_mode").innerHTML = "";
   document.getElementById("logger_controls_div").hidden=false;
-  postData(`http://localhost:5005/stop_focus_mode`, {id: focus_mode_id}).then(data => {
+  postData(`http://localhost:5005/stop_focus_mode`, {"id": focus_mode_id}).then(data => {
     console.log(data)
   })
 
@@ -73,15 +78,17 @@ function start_focus_mode(){
   document.getElementById("logger_controls_div").hidden=true;
   start_count_down_timer(time_duration)
   fetch('http://localhost:5005/logger_status').then(response => response.json()).then(data => {
-    if(data.data['logger_running_status']!=true){
+    console.log(data)
+    if(data['logger_running_status']!=true){
       start_logger()
     }
-    if(data.data['closing_apps']!=true){
+    if(data['closing_apps']!=true){
       toggle_closing_apps()
     }
   })
   postData(`http://localhost:5005/start_focus_mode`, {"duration": time_duration}).then(data => {
     console.log(data)
+    focus_mode_id = data['id']
   })
 }
 
@@ -214,8 +221,45 @@ function get_logging_data(time) {
     // create the chart
 
     var chart = new ApexCharts(document.querySelector("#time_result_chart"), options);
+    document.getElementById("number_of_times_distracted").innerText = "During this time period you were distracted "+data['distractions']['distractions_number']+" times; "
+    document.getElementById("average_time_between_distractions").innerText = "During this time, on average, you were distracted every " +(data['distractions']['distractions_time_min']*60).toFixed(2) + " seconds based on apps that are currently deamed distracting."
     chart.render();
+    
   })
+}
+
+function set_clicked(id) {
+  var checkbox = document.getElementById(id)
+  checkbox.checked = !checkbox.checked
+}
+
+function search_table_refresh(){
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("app_status_search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("app_status_table");
+  tr = table.getElementsByTagName("tbody");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        if(document.getElementById("app_status_distracted_check").checked == true){
+          if( tr[i].getElementsByTagName("td")[1].firstChild.checked){
+            tr[i].style.display = "";
+          }else{
+            tr[i].style.display = "none";
+          }
+        }else{
+          tr[i].style.display = "";
+        }
+      } else {
+        tr[i].style.display = "none";
+      }
+    } 
+  }
 }
 
 function get_app_status() {
@@ -227,12 +271,15 @@ function get_app_status() {
     var table = document.getElementById("app_status_table")
     console.log(data)
     Object.entries(data['applications']).forEach(([key, value]) => {
-      table.innerHTML += `<tr><td>${value["name"]}</td><td><input type="checkbox" id='${key}' ${(Boolean(value["distracting"])) ? "checked":"unchecked"}></td></tr>`
+      table.innerHTML += `<tr><td onclick="set_clicked(${key})">${value["name"]}</td><td><input type="checkbox" id='${key}' ${(Boolean(value["distracting"])) ? "checked":"unchecked"}></td></tr>`
       console.log(Boolean(value["distracting"]))
 
     });
-    sortTable()
+    // sortTable()
     document.getElementById("app_status_table").hidden = false
+    document.getElementById("app_status_search").hidden = false
+    document.getElementById("app_status_distracted_check").hidden = false
+    document.getElementById("app_status_distracted_check_label").hidden = false
   })
 }
 // start_logger_button.dispatchEvent(new Event('click'))

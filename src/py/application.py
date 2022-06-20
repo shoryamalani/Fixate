@@ -273,8 +273,14 @@ def is_running_logger():
 def start_focus_mode(duration):
     global FOCUS_MODE
     FOCUS_MODE = True
+    logger.debug(json.dumps(get_all_distracting_apps()))
     data = database_worker.start_focus_mode(duration,json.dumps(get_all_distracting_apps()))
     return data
+def stop_focus_mode(id):
+    global FOCUS_MODE
+    FOCUS_MODE = False
+    database_worker.stop_focus_mode(id)
+    return True
 if __name__ == "__main__":
     boot_up_checker()
     
