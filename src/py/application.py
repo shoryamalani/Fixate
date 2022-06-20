@@ -1,9 +1,9 @@
-import turtle
+import json
 import constants
 import os
 from database_worker import check_if_database_created, create_time_database, set_new_time_in_mouse_moved
 import multiprocessing
-from time import sleep
+from time import sleep, time
 from AppKit import *
 from Cocoa import *
 from Foundation import *
@@ -32,6 +32,7 @@ INACTIVE_TIME = 300 # in seconds
 # NONFOCUS_APPS = ["Messages","Discord","Slack","Music"]
 # NONFOCUS_URLS = ["https://www.youtube.com/watch?v=","macrumors.","lichess.org","9to5mac.",".reddit."]
 PROCESSES = {}
+
 
 def get_all_apps():
     return NSWorkspace.sharedWorkspace().runningApplications() 
@@ -99,6 +100,8 @@ def search_close_and_log_apps():
                 try:
                     future = browser_tab_name(current_app_name)
                     tabname = future.result()
+                    logger.debug(type(tabname))
+                    logger.debug(tabname)
                     # tabname = browser_tab_name(current_app_name)
                     short_tab = make_url_to_base(tabname)
                     if short_tab not in apps_in_name_form:
@@ -123,6 +126,7 @@ def search_close_and_log_apps():
             # logger.debug(database_worker.get_time_of_last_mouse_movement())
 @concurrent.process(timeout=5)
 def browser_tab_name(browser_name):
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="300MB")
     data = None
     if browser_name == "Google Chrome":
         browser_tab_name = NSAppleScript.alloc().initWithSource_(
@@ -131,7 +135,7 @@ def browser_tab_name(browser_name):
             get URL of active tab of first window
         end tell
         """))
-        data = browser_tab_name.executeAndReturnError_(None)[0]
+        data = browser_tab_name.executeAndReturnError_(None)
     if browser_name == "Safari":
         browser_tab_name = NSAppleScript.alloc().initWithSource_(
         str(f"""
@@ -139,7 +143,7 @@ def browser_tab_name(browser_name):
             get URL of current tab of window 1
         end tell
         """))
-        data = browser_tab_name.executeAndReturnError_(None)[0]
+        data = browser_tab_name.executeAndReturnError_(None)
     if browser_name == "Firefox":
         browser_tab_name = NSAppleScript.alloc().initWithSource_(
         str(f"""
@@ -147,9 +151,14 @@ def browser_tab_name(browser_name):
 	        get the name of first window
         end tell
         """))
-        data = browser_tab_name.executeAndReturnError_(None)[0]
-    if data != None:
-        return str(data.stringValue())
+        data = browser_tab_name.executeAndReturnError_(None)
+    if not data[0]:
+        logger.debug(data[1]['NSAppleScriptErrorMessage'])
+        logger.debug(data[1])
+    logger.debug(data)
+    if data[0] != None:
+        # logger.debug(data)
+        return str(data[0].stringValue())
     else:
         return None
 def start_running_event_loop_in_ns_application():
@@ -201,12 +210,17 @@ def boot_up_checker():
             os.mkdir(constants.DATABASE_LOCATION)
         elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
             create_time_database()
-
-        if not check_if_database_created():
+        database_created = check_if_database_created()
+        if not database_created:
             time_table = create_time_database() 
+            
             if not time_table:
                 logger.debug("database failed")
                 sys.exit()
+        else:
+            logger.debug(database_created)
+            if database_created[1] == "1.0":
+                database_worker.update_to_database_version_1_1()
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
         if len(multiprocessing.active_children()) == 0:
@@ -216,6 +230,8 @@ def boot_up_checker():
             multiprocessing.Process(target=search_close_and_log_apps).start()
         global CLOSING_APPS
         CLOSING_APPS = False
+        global FOCUS_MODE
+        FOCUS_MODE = False
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
         # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
         # multiprocessing.Process(target=web_app.start_app).start()
@@ -253,6 +269,12 @@ def is_running_logger():
     if multiprocessing.active_children():
         return True
     return False
+
+def start_focus_mode(duration):
+    global FOCUS_MODE
+    FOCUS_MODE = True
+    data = database_worker.start_focus_mode(duration,json.dumps(get_all_distracting_apps()))
+    return data
 if __name__ == "__main__":
     boot_up_checker()
     

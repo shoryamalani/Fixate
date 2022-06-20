@@ -46,6 +46,7 @@
 // // In this file you can include the rest of your app's specific main process
 // // code. You can also put them in separate files and import them here.
 const {app, BrowserWindow} = require('electron');
+var VERSION = app.getVersion();
 const {PythonShell} = require('python-shell');
 const child_process = require('child_process');
 const util = require("util");
@@ -53,6 +54,9 @@ const execFile = util.promisify(child_process.execFile);
 const path = require('path');
 const fetch = require('node-fetch');
 const fs = require("fs");
+const { Server } = require('http');
+const { time } = require('console');
+const { start } = require('repl');
 class HTTPResponseError extends Error {
 	constructor(response, ...args) {
 		super(`HTTP Error Response: ${response.status} ${response.statusText}`, ...args);
@@ -65,22 +69,34 @@ async function startServer(){
     //     console.log('finished engine');
     // });
     try{
-        response = await fetch('http://127.0.0.1:5005/is_running')
+        response = await fetch('http://127.0.0.1:5005/get_version');
         if(response.ok){
+            const data = await response.json();
+            if(data.version != VERSION){
+                console.log("Updating server");
+                fetch('http://127.0.0.1:5005/kill_server')
+                setTimeout( function(){
+                  start_server();
+              },5000);
+                 
+            }
             console.log("server is running");
-        } else {
+          } else {
             throw new HTTPResponseError(response);
 
         }
     }
     catch(err){
       console.log(err);
-      await execFile(findPython(), [findServer()]).catch(err => {
-        throw err;
-      });
+      start_server();
     }
     
     // document.getElementById("result").innerHTML = "Server started";
+}
+async function start_server(){
+  await execFile(findPython(), [findServer()]).catch(err => {
+    throw err;
+  });
 }
 
 function findServer() {
@@ -145,7 +161,7 @@ function createWindow() {
     //     // });
             
     // }
-    // win.openDevTools();
+    win.openDevTools();
     startServer();
 
 

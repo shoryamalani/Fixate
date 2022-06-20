@@ -1,7 +1,7 @@
 {
   "name": "PowerTimeTracking",
   "productName": "PowerTimeTracking",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "scripts": {
@@ -21,15 +21,17 @@
   "license": "MIT",
   "config": {
     "forge": {
-      "electronPackagerConfig":{
-        "icon": "./src/assets/icon.icns"
-      },
       "packagerConfig": {
+        "icon": "./src/assets/icon.icns",
+        "extendInfo": {
+          "NSAppleScriptEnabled": true,
+          "NSAppleEventsUsageDescription": "Applescript is needed to get tab urls of websites."
+        },
         "osxSign": {
           "identity": "Developer ID Application: Shorya Malani (YD5J62KXTT)",
           "hardened-runtime": true,
-          "entitlements": "parent.entitlements",
-          "entitlements-inherit": "parent.entitlements",
+          "entitlements": "entitlements.plist",
+          "entitlements-inherit": "entitlements.plist",
           "signature-flags": "library"
         }
       },
@@ -59,6 +61,7 @@
   },
   "dependencies": {
     "@electron/osx-sign": "^1.0.1",
+    "apexcharts": "^3.35.3",
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.7",
     "python-shell": "^3.0.1"

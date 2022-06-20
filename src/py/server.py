@@ -3,8 +3,12 @@ from flask import Flask,jsonify,request
 from flask_cors import cross_origin
 import application as logger_application
 import get_time_spent
+import time
+import signal
+import os
 app = Flask(__name__)
 closing_apps = False
+VERSION = "0.1.1"
 @app.route("/start_logger")
 def start_logger():
 	
@@ -45,5 +49,22 @@ def get_app_status():
 @app.route("/save_app_status",methods=["GET","POST"])
 def save_app_status():
     return jsonify({"success":logger_application.save_app_status(request.json["applications"])})
+
+@app.route("/get_version")
+def get_version():
+    return jsonify({"version":VERSION})
+
+@app.route('/kill_server', methods=['GET'])
+def kill_server():
+    logger_application.stop_logger()
+    os.kill(os.getpid(), signal.SIGTERM)
+
+@app.route('/start_focus_mode', methods=['GET','POST'])
+def start_focus_mode():
+    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"])})
+
+@app.route("/stop_focus_mode",methods=["GET","POST"])
+def stop_focus_mode():
+    return jsonify({"success":logger_application.stop_focus_mode(request.json["id"])})
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5005)

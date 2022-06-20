@@ -30,6 +30,9 @@ body {
   align-self: center;
   border-collapse: collapse;
 }
+[hidden] {
+  display: none !important;
+}
 /* tbody:nth-child(even) {
   background-color: rgba(138, 128, 138, 0.133);
 } */

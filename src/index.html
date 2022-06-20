@@ -5,30 +5,52 @@
     <meta charset="UTF-8">
     <title>Power Time Tracking</title>
     <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
 <body>
-    <h1 class="center">Logger Controls</h1>
-    <p>Power Time tracking works with a backend logger so you can close the app and the logger will continue to log data. When you click Toggle Closing Apps the apps and websites checked below will be minimized while opened. Apps will not be closed if the logger is not running under any configuration. If stuff stops working try force quiting all python3.9 processes but this should not be needed.</p>
-    <div class="float-parent-element center">
-        <input id="start_logger_button" type="button" class="float-child-element" value="Start Logger"></input>
-        <input id="stop_logger_button" type="button" class="float-child-element" value="Stop Logger"></input>
-        <input id="toggle_closing_apps" type="button" class="float-child-element" value="Toggle Closing Apps"></input>
+    <div id="logger_controls_div">
+        <h1 class="center">Logger Controls</h1>
+        <p>Power Time tracking works with a backend logger so you can close the app and the logger will continue to log
+            data. When you click Toggle Closing Apps the apps and websites checked below will be minimized while opened.
+            Apps will not be closed if the logger is not running under any configuration. If stuff stops working try
+            force quiting all python3.9 processes but this should not be needed.</p>
+        <div class="float-parent-element center">
+            <input id="start_logger_button" type="button" class="float-child-element" value="Start Logger"></input>
+            <input id="stop_logger_button" type="button" class="float-child-element" value="Stop Logger"></input>
+            <input id="toggle_closing_apps" type="button" class="float-child-element"
+                value="Toggle Closing Apps"></input>
+        </div>
+        <p id="is_logging" class="center"></p>
+        <p id="closing_app_status" class="center"></p>
     </div>
-    <p id="is_logging" class="center"></p>
-    <p id="closing_app_status" class="center"></p>
+    
+    <h2 class="center">Focus Mode</h2>
+    
+    <div id="set_up_focus_mode" class="center">
+        <input id="length_of_focus_time" type="number" class="float-child-element" value="30" min="1" max="240"
+            placeholder="30"></input>
+        <input id="start_focus_button" class="float-child-element" type="button" value="Start Focus"></input>
+    </div>
+    <div id="container_for_focus_mode" class="center" hidden>
+        <p id="time_left_focus_mode" class="center"></p>
+        <input id="stop_focus_button" class="center" type="button" value="Stop Focus"></input>
+    </div>
     <br>
-    <h2 class="center">Applications To close</h2>
-    <br>
+    <h2 class="center">Applications to Close</h2>
+    <input id="app_status_button" type="button" class="center" value="Load and reload apps"></input><br>
     <div class="float-parent-element">
-        <input id="app_status_button" type="button" class="center"  value="Load and reload apps"></input><br>
-        <p id="app_status_instructions" hidden="true">Check the box for things you want blocked. To make an app show up click on it while the logger is running. Apps and websites are ordered in alphabetical order. Don't forget to save after you are done with your selection.</p>
+        <p id="app_status_instructions" hidden="true">Check the box for things you want blocked. To make an app show up
+            click on it while the logger is running. Apps and websites are ordered in alphabetical order. Don't forget
+            to save after you are done with your selection.</p>
         <table id="app_status_table" hidden="true">
         </table>
-        <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status" hidden="true"></input>
+        <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status"
+            hidden="true"></input>
     </div>
     <br>
     <h2 class="center">Time Spent</h2>
+    <p>Occasionaly the button has to be hit twice for the chart to refresh.</p>
     <div id="logger_output" class="center">
         <input id="get_all_time" type="button" class="float-child-element" value="All Time">
         <input id="get_today_time" type="button" class="float-child-element" value="Today">
@@ -36,6 +58,7 @@
         <input id="get_week_time" type="button" class="float-child-element" value="This Week">
     </div>
     <br>
+    <div id="time_result_chart"></div>
     <span id="result"></span>
     <br>
     <p>Shorya Malani</p>

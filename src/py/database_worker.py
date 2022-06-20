@@ -5,7 +5,6 @@ from dbs_scripts.create_database import *
 import sqlite3
 import datetime
 import constants
-full_time_format = '%m/%d/%y:%H:%M:%S'
 DATABASE_PATH = constants.DATABASE_LOCATION + "/" + constants.DATABASE_NAME
 DATABASE_VERSION = "1.0"
 def connect_to_db():
@@ -21,10 +20,12 @@ def check_if_database_created():
     try:
         conn = connect_to_db()
         c = conn.cursor()
-        c.execute('SELECT * FROM log')
+        c.execute("SELECT * FROM database_and_application_version WHERE id=1")
+        data = c.fetchone()
+        conn.close()
     except sqlite3.OperationalError:
         return False
-    return True
+    return data
 
 def create_time_database():
     """
@@ -49,9 +50,22 @@ def create_time_database():
         conn.execute(write_database_version)
         conn.commit()
         conn.close()
+        update_to_database_version_1_1()
         return True
     else:
         return False
+
+def update_to_database_version_1_1():
+    """
+    Updates the database to version 1.1
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    applications_table_string = create_table_command("focus_sessions",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["stated_duration","int"],["actual_duration","float"],["inactive_applications","text"]])
+    c.execute(applications_table_string)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.1' WHERE id=1")
+    conn.commit()
+    conn.close()
 
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
@@ -190,3 +204,15 @@ def save_app_status(application_id,distracting):
     c.execute("UPDATE applications SET distracting = ? WHERE id = ?",[distracting,application_id])
     conn.commit()
     conn.close()
+
+def start_focus_mode(duration,inactive_apps:str):
+    """
+    Starts the focus mode
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps])],"focus_sessions",["time","stated_duration","inactive_apps"]))
+    data = c.fetchone()
+    conn.commit()
+    conn.close()
+    return data[0]
