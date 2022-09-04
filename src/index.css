@@ -1,28 +1,20 @@
 body {
   font-family: -apple-system,'Times New Roman', Times, serif;
-  margin: auto;
-  max-width: 38rem;
-  padding: 2rem;
-  align-items: center;
-  
-}
-.float-parent-element { 
-  position:relative;
-  margin-right: auto;
-  margin-left: auto;
-  padding: 1rem;
-} 
-.float-child-element { 
-  float: left; 
-  padding: 1em;
 
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:2em;
+  margin:300px;
+  background-color: rgb(196, 255, 255);
+}
+.float-child-element { 
+  padding: 1em;
+  margin:.5em;
 } 
 .center {
   text-align: center;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 #app_status_table {
   border-style: solid;
@@ -67,4 +59,37 @@ tbody:nth-child(even) {
 #app_status_table tr.header, #app_status_table tr:hover {
   /* Add a grey background color to the table header and on hover */
   background-color: #f1f1f1;
+}
+#focus_name_input,#task_name_input{
+  width:40ch;
+}
+
+/* PURE CSS ADDITION */
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+    color: white;
+    border-radius: 4px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+    background: rgb(28, 184, 65) !important ;
+    /* this is a green */
+}
+
+.button-error {
+    background: rgb(211, 86, 86) !important ;
+    /* this is a maroon */
+}
+
+.button-warning {
+    background: rgb(223, 117, 20) !important ;
+    /* this is an orange */
+}
+
+.button-secondary {
+    background: rgb(66, 184, 221) !important ;
+    /* this is a light blue */
 }

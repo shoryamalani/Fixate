@@ -139,8 +139,8 @@ function createWindow() {
     //     console.log('finished engine');
     // });   
     let win = new BrowserWindow({
-        width: 1200,
-        height: 800,
+        width: 1600,
+        height: 1200,
     });
     // PythonShell.run('py/server.py',null,function(err){
     //     if (err) throw err;
@@ -160,7 +160,7 @@ function createWindow() {
     //     //     console.log('finished engine');
     //     // });
             
-    // }
+    // // }
     win.openDevTools();
     startServer();
 

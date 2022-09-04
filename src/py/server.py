@@ -66,10 +66,18 @@ def kill_server():
 
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
-    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"])})
+    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
 def stop_focus_mode():
     return jsonify({"success":logger_application.stop_focus_mode(request.json["id"])})
+
+@app.route("/add_daily_task",methods=["POST"])
+def add_daily_task():
+    return jsonify({"success":logger_application.add_daily_task(request.json["name"],request.json["task_estimate_time"],request.json["task_repeating"])})
+
+@app.route("/get_daily_tasks",methods=["GET"])
+def get_daily_tasks():
+    return jsonify({"tasks":logger_application.get_daily_tasks()})
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5005)

@@ -1,0 +1,19 @@
+focus modes
+Set weights for the applications recorded
+make things prettier
+Main tasks
+For the day
+Morning or evening reminders
+3 to 5 things to do today
+Or tomorrow
+Things that require focused attention
+Planning section
+Studying
+Start pomodoro based on task
+Email goes to software user
+Daily status report
+Pomodoro status reports
+Set things as distrating just from daily things
+Move phone reminder when pomodoro starts
+User day planner
+Day rating mechanism

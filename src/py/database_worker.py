@@ -5,13 +5,15 @@ from dbs_scripts.create_database import *
 import sqlite3
 import datetime
 import constants
+from loguru import logger
+import os
 DATABASE_PATH = constants.DATABASE_LOCATION + "/" + constants.DATABASE_NAME
 DATABASE_VERSION = "1.0"
 def connect_to_db():
     """
     Connects to the database
     """
-    conn = sqlite3.connect(DATABASE_PATH)
+    conn = sqlite3.connect(DATABASE_PATH, check_same_thread=False,timeout=10)
     return conn
 def check_if_database_created():
     """
@@ -67,6 +69,70 @@ def update_to_database_version_1_1():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_2():
+    """
+    Updates the database to version 1.2
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    # applications_table_string = create_table_command("focus_sessions",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["stated_duration","int"],["actual_duration","DATETIME"],["inactive_applications","text"]])
+    alter_log = "ALTER TABLE log ADD COLUMN window_title text"
+    c.execute(alter_log)
+    create_tasks_table = create_table_command("tasks",[["id","INTEGER PRIMARY KEY"],["task_name","text"],["info","text"]])
+    c.execute(create_tasks_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.2' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+# def update_to_database_version_1_2():
+#     """
+#     Updates the database to version 1.2
+#     """
+#     conn = connect_to_db()
+#     c = conn.cursor()
+
+#     c.execute(applications_table_string)
+#     c.execute("UPDATE database_and_application_version SET database_version = '1.2' WHERE id=1")
+#     conn.commit()
+#     conn.close()
+
+def update_to_database_version_1_3():
+    """
+    Updates the database to version 1.3
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    alter_log = "ALTER TABLE tasks ADD COLUMN day DATETIME"
+    c.execute(alter_log)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.3' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_4():
+    """
+    Updates the database to version 1.4
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    alter_log = "ALTER TABLE focus_sessions ADD COLUMN name text"
+    c.execute(alter_log)
+    alter_log = "ALTER TABLE focus_sessions ADD COLUMN info text"
+    c.execute(alter_log)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.4' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_5():
+    """
+    Updates the database to version 1.5
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    alter_log = "ALTER TABLE tasks ADD COLUMN active bool"
+    c.execute(alter_log)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.5' WHERE id=1")
+    conn.commit()
+    conn.close()
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
 
@@ -74,9 +140,12 @@ def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
 def get_all_time_logs():
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log")
+    logger.debug(type(c))
+    logger.debug(c)
     data = c.fetchall()
     c.close()
     return data
@@ -107,10 +176,13 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
     c.execute(f"SELECT * FROM log WHERE time >= '{start_time}' AND time < '{end_time}'")
+    logger.debug(c)
+    logger.debug(type(c))
     data = c.fetchall()
     conn.close()
     return data
@@ -149,36 +221,79 @@ def get_time_of_last_mouse_movement():
     """
     Returns the time of the last mouse movement
     """
-    conn = connect_to_db()
-    c = conn.cursor()
-    c.execute("SELECT time FROM mouse_moved WHERE UUID=0")
-    time_of_last_movement = c.fetchone()
-    conn.close()
-    return datetime.datetime.strptime(time_of_last_movement[0],get_time_format())
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT time FROM mouse_moved WHERE UUID=0")
+        time_of_last_movement = c.fetchone()
+        conn.close()
+        return datetime.datetime.strptime(time_of_last_movement[0],get_time_format())
+    except Exception as e:
+        logger.error(e)
+        return datetime.datetime.strptime(datetime.datetime.now()-datetime.timedelta(hours=5),get_time_format())
+
 
 def set_new_time_in_mouse_moved():
     """
     Sets the time of the last mouse move
     """
-    conn = connect_to_db()
-    c = conn.cursor()
-    c.execute("UPDATE mouse_moved SET time = ? WHERE UUID=0",[get_time_in_format()])
-    conn.commit()
-    conn.close()
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("UPDATE mouse_moved SET time = ? WHERE UUID=0",[get_time_in_format()])
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        logger.error(e)
+        return None
+def add_daily_task(name,info):
+    """
+    Adds a daily task
+    """
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        new_daily_task = make_write_to_db([([name,info,get_time_in_format(),True])],"tasks",["task_name","info","day","active"])
+        c.execute(new_daily_task)
+        id = c.lastrowid
+        conn.commit()
+        conn.close()
+        logger.debug(f"Added daily task with id {id}")
+        return id
+    except Exception as e:
+        logger.error(e)
+        return None
 
+def get_all_daily_tasks():
+    """
+    Returns all the daily tasks
+    """
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT * FROM tasks")
+        data = c.fetchall()
+        conn.close()
+        return data
+    except Exception as e:
+        logger.error(e)
+        return None
 
-
-def log_current_app(app_name,tabname,active):
+def log_current_app(app_name,tabname,active,title):
     """
     Logs the current app
     """
-    conn = connect_to_db()
-    c = conn.cursor()
-    new_app_log = make_write_to_db([([get_time_in_format(),str(app_name),tabname,active])], "log",["time","app","tabname","active"])
-    c.execute(new_app_log)
-    conn.commit()
-    conn.close()
-    return new_app_log
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        new_app_log = make_write_to_db([([get_time_in_format(),str(app_name),tabname,active,title])], "log",["time","app","tabname","active","window_title"])
+        c.execute(new_app_log)
+        conn.commit()
+        conn.close()
+        return new_app_log
+    except Exception as e:
+        logger.error(e)
+        return None
 
 def add_application_to_db(application_name,type,productivity,custom_time_out,distracting=False,):
     """
@@ -216,13 +331,13 @@ def save_app_status(application_id,distracting):
     conn.commit()
     conn.close()
 
-def start_focus_mode(duration,inactive_apps:str):
+def start_focus_mode(name,duration,inactive_apps:str):
     """
     Starts the focus mode
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps])],"focus_sessions",["time","stated_duration","inactive_applications"]))
+    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps,name])],"focus_sessions",["time","stated_duration","inactive_applications","name"]))
     conn.commit()
     conn.close()
     return c.lastrowid

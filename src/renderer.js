@@ -12,6 +12,7 @@ let save_button_for_app_status = document.querySelector('#save_button_for_app_st
 let start_focus_button = document.querySelector('#start_focus_button')
 let stop_focus_button = document.querySelector('#stop_focus_button')
 let get_last_5_hours_button = document.querySelector('#get_last_5_hours')
+let make_task_button = document.querySelector('#add_daily_focus')
 var current_timer;
 var focus_mode_id;
 
@@ -53,6 +54,68 @@ toggle_closing_app_button.addEventListener('click', () => {
 save_button_for_app_status.addEventListener('click', function () {
   save_app_status()
 });
+make_task_button.addEventListener('click', function () {
+  make_task()
+});
+
+// this is an init function to get all the daily tasks
+function get_daily_tasks() {
+  fetch(`http://localhost:5005/get_daily_tasks`).then(response => response.json()).then(data => {
+    console.log(data)  
+    data["tasks"].forEach(task_data => {
+      var tr = make_task_tr(task_data)
+      document.querySelector("#daily_tasks_table").appendChild(tr)
+    });
+  }).catch(err => {console.log(err)});
+}
+
+function make_task_tr(task_data) {
+  console.log(task_data)
+  var tr = document.createElement("tr");
+  var td_name = document.createElement("td");
+  td_name.innerHTML = task_data["name"]
+  var td_date_created = document.createElement("td");
+  td_date_created.innerHTML = task_data["date_created"]
+  var td_completion = document.createElement("td");
+  console.log(task_data["time_completed"]/task_data["estimated_time"])
+
+  td_completion.innerHTML = (task_data["time_completed"]/task_data["estimated_time"])*100 + "%" + " (" +(task_data["estimated_time"]- task_data["time_completed"]) + " minutes left)"
+  var td_complete = document.createElement("td");
+  var complete_button = document.createElement("button");
+  complete_button.innerHTML = "Complete"
+  complete_button.className = "pure-button button-success"
+  complete_button.addEventListener('click', function(){
+    complete_task(task_data["id"])
+  })
+  td_complete.appendChild(complete_button)
+  var td_abandon = document.createElement("td");
+  var abandon_button = document.createElement("button");
+  abandon_button.innerHTML = "Abandon"
+  abandon_button.className = "pure-button button-error"
+  abandon_button.addEventListener('click', function(){
+    abandon_task(task_data["id"])
+  })
+  td_abandon.appendChild(abandon_button)
+  var td_go_through_focus_modes = document.createElement("td");
+  var go_through_focus_modes_button = document.createElement("button");
+  go_through_focus_modes_button.innerHTML = "Go through focus modes"
+  go_through_focus_modes_button.className = "pure-button button-secondary"
+  go_through_focus_modes_button.addEventListener('click', function(){
+    go_to_focus_modes_of_task(task_data["id"])
+  })
+  td_go_through_focus_modes.appendChild(go_through_focus_modes_button)
+  tr.appendChild(td_name)
+  tr.appendChild(td_date_created)
+  tr.appendChild(td_completion)
+  tr.appendChild(td_complete)
+  tr.appendChild(td_abandon)
+  tr.appendChild(td_go_through_focus_modes)
+  return tr
+
+
+}
+
+get_daily_tasks()
 
 function stop_focus_mode(){
   clearInterval(current_timer)
@@ -73,6 +136,16 @@ function start_focus_mode(){
   }else{
     time_duration = document.getElementById("length_of_focus_time").value
   }
+  task_name = document.getElementById("focus_name_input").value
+  task_name.value = ""
+  if (Notification.permission !== "granted")
+    Notification.requestPermission();
+  else {
+    var notification = new Notification(task_name ? task_name != "": "Focus Mode Started", { 
+      title: task_name ? task_name != "": "Focus Mode Started",
+      body: time_duration + " minutes"
+    });
+  }
   document.getElementById("set_up_focus_mode").hidden=true;
   document.getElementById("container_for_focus_mode").hidden=false;
   document.getElementById("logger_controls_div").hidden=true;
@@ -86,7 +159,7 @@ function start_focus_mode(){
       toggle_closing_apps()
     }
   })
-  postData(`http://localhost:5005/start_focus_mode`, {"duration": time_duration}).then(data => {
+  postData(`http://localhost:5005/start_focus_mode`, {"duration": time_duration, "name": task_name}).then(data => {
     console.log(data)
     focus_mode_id = data['id']
   })
@@ -116,10 +189,18 @@ current_timer = setInterval(function() {
 
   // If the count down is finished, write some text
   if (distance < 0) {
-    clearInterval(x);
     document.getElementById("time_left_focus_mode").innerHTML = "COMPLETE";
+    send_finshed_focus_mode_notification()
+    stop_focus_mode()
   }
 }, 1000);
+}
+
+function send_finshed_focus_mode_notification() {
+  var notification = new Notification('Focus mode finished', {
+    title: 'Congratulations',
+    body: 'Focus mode finished'
+  })
 }
 
 function start_logger() {
@@ -136,6 +217,18 @@ function stop_logger() {
 function toggle_closing_apps() {
   console.log("Toggling closing apps")
   fetch(`http://127.0.0.1:5005/toggle_closing_apps`)
+}
+
+function make_task(){
+  console.log("Making task")
+  task_name = document.getElementById("task_name_input").value
+  task_name.value = ""
+  task_estimate_time = document.getElementById("guessed_time_duration").value
+  task_estimate_time.value = 30
+  task_repeating = document.getElementById("repeating_daily_focus_input").checked
+  postData(`http://localhost:5005/add_daily_task`, {"name": task_name,"task_estimate_time":task_estimate_time,"task_repeating":task_repeating}).then(data => {
+    console.log(data)
+  })
 }
 
 function save_app_status() {

@@ -23,7 +23,7 @@ from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
 import re
-
+import macos_get_window_and_tab_name
 
 
 # import web_app_stuff.app as web_app
@@ -83,50 +83,61 @@ def check_if_must_be_closed(frontmost_app,tabname):
         
 
 def search_close_and_log_apps():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="300MB")
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_in_name_form = [app[1] for app in apps]
     while True:
-        front_app = get_frontmost_app()
-        # logger.debug(front_app)
-        if front_app != None:
+        # front_app = get_frontmost_app()
+        # # logger.debug(front_app)
+        # if front_app != None:
             
-            current_app_name = front_app["NSApplicationName"]
-            tabname = None
+            # current_app_name = front_app["NSApplicationName"]
+            #Getting replaced by JXA
+        try:
+            app = macos_get_window_and_tab_name.getInfo()
+            logger.debug(app)
+            current_app_name = app['app']
+            tabname = app['url'] if 'url' in app else None
+            title = app['title'] if 'title' in app else "Unknown"
             active = True
-            if current_app_name in BROWSERS:
+            #Being replaced by JXA
+            # if current_app_name in BROWSERS:
                 
-                try:
-                    future = browser_tab_name(current_app_name)
-                    tabname = future.result()
-                    logger.debug(type(tabname))
-                    logger.debug(tabname)
-                    # tabname = browser_tab_name(current_app_name)
-                    short_tab = make_url_to_base(tabname)
-                    if short_tab not in apps_in_name_form:
-                        database_worker.add_application_to_db(short_tab,"website",0,0)
-                        apps_in_name_form.append(short_tab)
-                except Exception as err:
-                    logger.debug(err)
-                    tabname = None
-                    logger.debug("not found")
-            else:
-                if current_app_name not in apps_in_name_form:
-                    database_worker.add_application_to_db(current_app_name,"app",0,0)
-                    apps_in_name_form.append(current_app_name)
-
-            check_if_must_be_closed(front_app,tabname)
+            #     try:
+            #         future = browser_tab_name(current_app_name)
+            #         tabname = future.result()
+            #         logger.debug(type(tabname))
+            #         logger.debug(tabname)
+            #         # tabname = browser_tab_name(current_app_name)
+            if tabname:
+                short_tab = make_url_to_base(tabname)
+                if short_tab not in apps_in_name_form:
+                    database_worker.add_application_to_db(short_tab,"website",0,0)
+                    apps_in_name_form.append(short_tab)
+            #     except Exception as err:
+            #         logger.debug(err)
+            #         tabname = None
+            #         logger.debug("not found")
+            # else:
+            if current_app_name not in apps_in_name_form:
+                database_worker.add_application_to_db(current_app_name,"app",0,0)
+                apps_in_name_form.append(current_app_name)
+            check_if_must_be_closed(current_app_name,tabname)
             last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
             if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
                 active = False
-            database_worker.log_current_app(current_app_name,tabname,active)
+            database_worker.log_current_app(current_app_name,tabname,active,title)
             # logger.debug(current_app_name)
             sleep(1)
             # logger.debug(database_worker.get_time_of_last_mouse_movement())
+        except Exception as err:
+            logger.error(err)
+
+        
 @concurrent.process(timeout=5)
 def browser_tab_name(browser_name):
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="300MB")
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     data = None
     if browser_name == "Google Chrome":
         browser_tab_name = NSAppleScript.alloc().initWithSource_(
@@ -203,42 +214,39 @@ def start_mouse_movement_checker():
         NSApp().setDelegate_(delegate)
         AppHelper.runEventLoop()
 
-def boot_up_checker():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="300MB")
-    try:
-        if not os.path.exists(constants.DATABASE_LOCATION):
-            os.mkdir(constants.DATABASE_LOCATION)
-        elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
-            create_time_database()
-        database_created = check_if_database_created()
-        if not database_created:
-            time_table = create_time_database() 
-            
-            if not time_table:
-                logger.debug("database failed")
-                sys.exit()
-        else:
-            logger.debug(database_created)
-            if database_created[1] == "1.0":
-                database_worker.update_to_database_version_1_1()
-        # start_running_event_loop_in_ns_application()
-        # start_mouse_movement_checker()
-        if len(multiprocessing.active_children()) == 0:
-            mouse_movement = multiprocessing.Process(target=start_mouse_movement_checker).start()
-            # PROCESSES["mouse_movement"] = mouse_movement
-            # PROCESSES["mouse_movement"].start()
-            multiprocessing.Process(target=search_close_and_log_apps).start()
-        global CLOSING_APPS
-        CLOSING_APPS = False
-        global FOCUS_MODE
-        FOCUS_MODE = False
-        # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
-        # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
-        # multiprocessing.Process(target=web_app.start_app).start()
+## MACOS PERMISSIONS
+def start_process_to_deal_with_permissions():
+    get_permission = multiprocessing.Process(target=get_permission_to_accessibility)
+    get_permission.start()
+    return 
+
+def get_permission_to_accessibility():
+    ## THIS IS USING THE SAME PERMISSION GRABBER AS ACTIVITY WATCH
+    # no point recreating it
+    #https://github.com/ActivityWatch/aw-watcher-window/tree/235ebea7d9e6cd9ec96e943b0d2cdb17e7c2e398
+    from ApplicationServices import AXIsProcessTrusted
+    from AppKit import NSAlert, NSAlertFirstButtonReturn, NSWorkspace, NSURL
+
+    accessibility_permissions = AXIsProcessTrusted()
+    if not accessibility_permissions:
+        title = "Missing accessibility permissions"
+        info = "For Power Time Tracking to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Power Time Tracking in System Preferences"
+
+        alert = NSAlert.new()
+        alert.setMessageText_(title)
+        alert.setInformativeText_(info)
+
+        ok_button = alert.addButtonWithTitle_("Open accessibility settings")
+
+        alert.addButtonWithTitle_("Close")
+        choice = alert.runModal()
+        if choice == NSAlertFirstButtonReturn:
+            NSWorkspace.sharedWorkspace().openURL_(
+                NSURL.URLWithString_(
+                    "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+                )
+            )
         
-    except Exception as e:
-        return e
-    return True
 def stop_logger():
     for process in multiprocessing.active_children():
         process.terminate()
@@ -257,10 +265,10 @@ def get_all_distracting_apps():
     for app in all_apps:
         if app[4] == 1:
             parsed_apps.append(app[1])
-    logger.debug(parsed_apps)
+    # logger.debug(parsed_apps)
     return parsed_apps
 def save_app_status(applications):
-    logger.debug(applications)
+    # logger.debug(applications)
     for key,value in applications.items():
         database_worker.save_app_status(key,value)
     return True
@@ -270,16 +278,92 @@ def is_running_logger():
         return True
     return False
 
-def start_focus_mode(duration):
+def add_daily_task(task_name,task_estimate_duration,task_repeating):
+    info = {
+        "estimate_duration":task_estimate_duration,
+        "repeating":task_repeating,
+        "ids_of_focus_modes":[],
+        "time_completed":0,
+    }
+    info = json.dumps(info)
+    id = database_worker.add_daily_task(task_name,info)
+    return id
+def get_daily_tasks():
+    tasks = database_worker.get_all_daily_tasks()
+    final_tasks = []
+    for task in tasks:
+        info = json.loads(task[2])
+        final_tasks.append({
+            "id":task[0],
+            "name":task[1],
+            "estimated_time":int(info['estimate_duration']),
+            "ids_of_focus_modes":info['ids_of_focus_modes'],
+            "time_completed":int(info['time_completed']),
+            "date_created":task[3],
+        })
+    return final_tasks
+
+def start_focus_mode(duration,name):
     global FOCUS_MODE
     FOCUS_MODE = True
-    logger.debug(json.dumps(get_all_distracting_apps()))
-    data = database_worker.start_focus_mode(duration,json.dumps(get_all_distracting_apps()))
+    # logger.debug(json.dumps(get_all_distracting_apps()))
+    data = database_worker.start_focus_mode(name,duration,json.dumps(get_all_distracting_apps()))
     return data
+
 def stop_focus_mode(id):
     global FOCUS_MODE
     FOCUS_MODE = False
     database_worker.stop_focus_mode(id)
+    return True
+
+
+def boot_up_checker():
+    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    try:
+        if not os.path.exists(constants.DATABASE_LOCATION):
+            os.mkdir(constants.DATABASE_LOCATION)
+        elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
+            create_time_database()
+        database_created = check_if_database_created()
+        if not database_created:
+            time_table = create_time_database() 
+            
+            if not time_table:
+                logger.debug("database failed")
+                sys.exit()
+        else:
+            logger.debug(database_created)
+            if database_created[1] == "1.0":
+                database_worker.update_to_database_version_1_1()
+            if database_created[1] == "1.1":
+                database_worker.update_to_database_version_1_2()
+            if database_created[1] == "1.2":
+                database_worker.update_to_database_version_1_3()
+            if database_created[1] == "1.3":
+                database_worker.update_to_database_version_1_4()
+            if database_created[1] == "1.4":
+                database_worker.update_to_database_version_1_5()
+        if sys.platform == "darwin":
+            start_process_to_deal_with_permissions()
+        # start_running_event_loop_in_ns_application()
+        # start_mouse_movement_checker()
+        logger.debug(multiprocessing.active_children())
+        if len(multiprocessing.active_children()) < 2:
+            mouse_movement = multiprocessing.Process(target=start_mouse_movement_checker).start()
+            # PROCESSES["mouse_movement"] = mouse_movement
+            # PROCESSES["mouse_movement"].start()
+            multiprocessing.Process(target=search_close_and_log_apps).start()
+        global CLOSING_APPS
+        CLOSING_APPS = False
+        global FOCUS_MODE
+        FOCUS_MODE = False
+        # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
+        # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
+        # multiprocessing.Process(target=web_app.start_app).start()
+        
+    except Exception as e:
+        logger.debug(e)
+        return e
     return True
 if __name__ == "__main__":
     boot_up_checker()

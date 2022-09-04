@@ -156,7 +156,7 @@ def get_time(time_period):
         
         data = database_worker.get_logs_between_times(start_of_week,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
     elif time_period == "last_five_hours":
-        start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now().replace(hour=datetime.datetime.now().hour-5,minute=0,second=0,microsecond=0),full_time_format)
+        start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=5),full_time_format)
         data = database_worker.get_logs_between_times(start_of_last_five_hours,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
     else:
         data = database_worker.get_all_time_logs()

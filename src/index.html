@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Power Time Tracking</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="../node_modules/purecss/build/pure.css">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 
@@ -28,26 +29,49 @@
     <h2 class="center">Focus Mode</h2>
     
     <div id="set_up_focus_mode" class="center">
-        <input id="length_of_focus_time" type="number" class="float-child-element" value="30" min="1" max="240"
-            placeholder="30"></input>
+        <label for="focus_name_input">Name:</label>
+        <input id="focus_name_input" type="text" class="float-child-element" placeholder="Hamilton History Homework"></input>
+        <br></br>
+        <input id="length_of_focus_time" type="number" class="float-child-element" value="30" min="1" max="240"placeholder="30"></input>
+
         <input id="start_focus_button" class="float-child-element" type="button" value="Start Focus"></input>
     </div>
     <div id="container_for_focus_mode" class="center" hidden>
         <p id="time_left_focus_mode" class="center"></p>
         <input id="stop_focus_button" class="center" type="button" value="Stop Focus"></input>
     </div>
+    <div>
+        <h2 class="center">Daily Tasks</h2>
+        <div id="daily_tasks_input" class="center">
+            <label for="task_name_input">Name:</label>
+            <input id="task_name_input" type="text" class="float-child-element" placeholder="Finish Writing Meeting Notes"></input>
+            <br></br>
+            <label for="guessed_time_duration">Guessed Time Duration: </label><input id="guessed_time_duration" type="number" class="float-child-element" value="30" min="1" max="600"
+                placeholder="30"></input>
+            <label for="repeating_daily_focus_input">Repeating:</label><input id="repeating_daily_focus_input" class="float-child-element" type="checkbox" value=""></input>
+            <input id="add_daily_focus" class="float-child-element" type="button" value="add daily focus"></input>
+        </div>
+        <div id="daily_tasks_list" class="center">
+            <h3 class="center">Daily Tasks List</h3>
+            <div id="daily_tasks_list_div" class="center">
+                <p id="no_daily_tasks" class="center">No Daily Tasks</p>
+                <table id="daily_tasks_table" class="pure-table pure-table-horizontal"></table>
+            </div>
+    </div>
     <br>
     <h2 class="center">Applications to Close</h2>
-    <input id="app_status_button" type="button" class="center" value="Load and reload apps"></input><br>
+    <div class="center">
+        <input id="app_status_button" type="button" class="float-child-element center pure-button pure-button-primary" value="Load and reload apps"></input><br>
+    </div>
     <div >
         <p id="app_status_instructions" hidden="true">Check the box for things you want blocked. To make an app show up
             click on it while the logger is running. Apps and websites are ordered in alphabetical order. Don't forget
             to save after you are done with your selection.</p>
         <div class="float-parent-element center">
-            <input id="app_status_search" type="text" class="float-child-element" onkeyup="search_table_refresh()" placeholder="Search for apps" hidden="true"></input>
+            <input id="app_status_search" type="text" class="float-child-element" onkeyup="search_table_refresh()" placeholder="Search for apps" hidden="true" width="40ch"></input>
             <label id="app_status_distracted_check_label" hidden>Distractions Only<input id="app_status_distracted_check" type="checkbox" class="float-child-element" value="Distractions:" onclick="search_table_refresh()" hidden="true"></label>
     </div>
-        <table id="app_status_table" hidden="true">
+        <table id="app_status_table" class="pure-table" hidden="true">
         </table>
         <input id="save_button_for_app_status" type="button" class="float-child-element" value="Save App Status"
             hidden="true"></input>
@@ -56,16 +80,16 @@
     <h2 class="center">Time Spent</h2>
     <p>Occasionaly the button has to be hit twice for the chart to refresh.</p>
     <div id="logger_output" class="center">
-        <input id="get_all_time" type="button" class="float-child-element" value="All Time">
-        <input id="get_today_time" type="button" class="float-child-element" value="Today">
-        <input id="get_yesterday_time" type="button" class="float-child-element" value="Yesterday">
-        <input id="get_week_time" type="button" class="float-child-element" value="This Week">
-        <input id="get_last_5_hours" type="button" class="float-child-element" value="Last Five Hours">
+        <input id="get_all_time" type="button" class="float-child-element pure-button" value="All Time">
+        <input id="get_today_time" type="button" class="float-child-element pure-button" value="Today">
+        <input id="get_yesterday_time" type="button" class="float-child-element pure-button" value="Yesterday">
+        <input id="get_week_time" type="button" class="float-child-element pure-button" value="This Week">
+        <input id="get_last_5_hours" type="button" class="float-child-element pure-button" value="Last Five Hours">
     </div>
     <br>
-    <div id="distraction_data" class="center">
-        <p id="number_of_times_distracted"></p>
-        <p id="average_time_between_distractions"></p>
+    <div id="distraction_data">
+        <p id="number_of_times_distracted" class="center"></p>
+        <p id="average_time_between_distractions" class="center"></p>
     </div>
     <div id="time_result_chart"></div>
     <span id="result"></span>
