@@ -3,7 +3,7 @@ import os
 import json
 import logging
 from typing import Dict
-
+from AppKit import NSApplication, NSApp, NSWorkspace
 logger = logging.getLogger(__name__)
 script = None
 
@@ -61,7 +61,9 @@ def getInfo() -> Dict[str, str]:
         #     OSAScriptErrorNumberKey = "-1728";
         #     OSAScriptErrorRangeKey = "NSRange: {0, 0}";
         # }
+        front_app = get_frontmost_app()
+        return {'app':front_app["NSApplicationName"]}, front_app
 
-        raise Exception(f"jxa error: {err['NSLocalizedDescription']}")
-
-    return json.loads(result.stringValue())
+    return json.loads(result.stringValue()),get_frontmost_app()
+def get_frontmost_app():
+    return NSWorkspace.sharedWorkspace().activeApplication()

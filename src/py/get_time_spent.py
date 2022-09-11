@@ -141,30 +141,49 @@ def parse_for_display(times):
     all_times_list.append(['Total',total_time])
     all_times_list.sort(key=lambda x: x[1], reverse=True)
     return all_times_list
+
+def get_time_from_focus_session_id(id):
+    data = database_worker.get_focus_session_by_id(id)
+    start_time = database_worker.get_time_from_format(data[1])
+    end_time = database_worker.get_time_from_format(data[3]) if data[3] else database_worker.get_time_from_format(data[1]) + datetime.timedelta(minutes=data[2])
+    logs = database_worker.get_logs_between_times(start_time,end_time)
+    times,distractions= proper_time_parse(logs,data[4])
+    
+    return parse_for_display(times),data[4], data[5] if data[5] else f"Focus Session {id}",distractions
+
 def get_time(time_period):
     if time_period == "all":
         data = database_worker.get_all_time_logs()
+        name = "All Time"
     elif time_period == "today":
         morning = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0),full_time_format)
         data = database_worker.get_logs_between_times(morning,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "Today"
     elif time_period == "yesterday":
         end_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=23,minute=59,second=59)-datetime.timedelta(days=1),full_time_format)
         start_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=1),full_time_format)
         data = database_worker.get_logs_between_times(start_of_yesterday,end_of_yesterday)
+        name = "Yesterday"
     elif time_period == "week":
         start_of_week = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=7),full_time_format)
-        
         data = database_worker.get_logs_between_times(start_of_week,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "This Week"
     elif time_period == "last_five_hours":
         start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=5),full_time_format)
         data = database_worker.get_logs_between_times(start_of_last_five_hours,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "Last 5 Hours"
     else:
         data = database_worker.get_all_time_logs()
+        name = "All Time"
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
+    return times,distractions,name
     
+def get_time_from_focus_session(focus_session_id):
+    data = database_worker.get_logs_from_focus_session(focus_session_id)
+    times,distractions = proper_time_parse(data,get_all_distracting_apps())
+    times = parse_for_display(times)
     return times,distractions
-    
 def get_all_distracting_apps():
     parsed_apps = []
     all_apps = database_worker.get_all_apps_statuses()

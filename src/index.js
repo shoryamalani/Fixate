@@ -161,7 +161,9 @@ function createWindow() {
     //     // });
             
     // // }
-    win.openDevTools();
+    if(!!process.env.DEBUGMENU){
+      win.openDevTools();
+    }
     startServer();
 
 

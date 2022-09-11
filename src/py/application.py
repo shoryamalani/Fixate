@@ -36,8 +36,6 @@ PROCESSES = {}
 
 def get_all_apps():
     return NSWorkspace.sharedWorkspace().runningApplications() 
-def get_frontmost_app():
-    return NSWorkspace.sharedWorkspace().activeApplication()
 
 def get_app_in_one_second():
     sleep(1)
@@ -88,14 +86,14 @@ def search_close_and_log_apps():
     apps = database_worker.get_all_applications()
     apps_in_name_form = [app[1] for app in apps]
     while True:
-        # front_app = get_frontmost_app()
+        
         # # logger.debug(front_app)
         # if front_app != None:
             
-            # current_app_name = front_app["NSApplicationName"]
             #Getting replaced by JXA
         try:
-            app = macos_get_window_and_tab_name.getInfo()
+            app,app_info = macos_get_window_and_tab_name.getInfo()
+
             logger.debug(app)
             current_app_name = app['app']
             tabname = app['url'] if 'url' in app else None
@@ -120,10 +118,10 @@ def search_close_and_log_apps():
             #         tabname = None
             #         logger.debug("not found")
             # else:
-            if current_app_name not in apps_in_name_form:
-                database_worker.add_application_to_db(current_app_name,"app",0,0)
-                apps_in_name_form.append(current_app_name)
-            check_if_must_be_closed(current_app_name,tabname)
+            if app_info["NSApplicationName"] not in apps_in_name_form:
+                database_worker.add_application_to_db(app_info["NSApplicationName"],"app",0,0)
+                apps_in_name_form.append(app_info["NSApplicationName"])
+            check_if_must_be_closed(app_info,tabname)
             last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
             if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
                 active = False
@@ -283,13 +281,15 @@ def add_daily_task(task_name,task_estimate_duration,task_repeating):
         "estimate_duration":task_estimate_duration,
         "repeating":task_repeating,
         "ids_of_focus_modes":[],
+        "complete":False,
         "time_completed":0,
     }
     info = json.dumps(info)
     id = database_worker.add_daily_task(task_name,info)
     return id
+
 def get_daily_tasks():
-    tasks = database_worker.get_all_daily_tasks()
+    tasks = database_worker.get_all_active_daily_tasks()
     final_tasks = []
     for task in tasks:
         info = json.loads(task[2])
@@ -298,22 +298,61 @@ def get_daily_tasks():
             "name":task[1],
             "estimated_time":int(info['estimate_duration']),
             "ids_of_focus_modes":info['ids_of_focus_modes'],
-            "time_completed":int(info['time_completed']),
+            "time_completed":round(info['time_completed'],2),
+            "complete":info['complete'],
             "date_created":task[3],
         })
     return final_tasks
 
+def stop_showing_task(task_id):
+    database_worker.set_task_to_inactive(task_id)
+    return True
+
+def complete_task(task_id):
+    data = database_worker.get_task_by_id(task_id)
+    info = json.loads(data[2])
+    info['complete'] = True
+    database_worker.update_daily_task_info(task_id,json.dumps(info))
+    return True
+
+def get_all_focus_sessions():
+    focus_sessions = database_worker.get_all_focus_sessions()
+    final_focus_sessions = []
+    for focus_session in focus_sessions:
+        final_focus_sessions.append({
+            "id":focus_session[0],
+            "name":focus_session[5],
+            "stated_duration":focus_session[2],
+            "start_time":focus_session[1],
+            "time_completed":(database_worker.get_time_from_format(focus_session[3])- database_worker.get_time_from_format(focus_session[1])).total_seconds()/60 if focus_session[3] else None, # this takes the start and end times and finds out how many seconds are between them and then divides that by 60 to get minutes
+        })
+    return final_focus_sessions
+
 def start_focus_mode(duration,name):
     global FOCUS_MODE
     FOCUS_MODE = True
-    # logger.debug(json.dumps(get_all_distracting_apps()))
     data = database_worker.start_focus_mode(name,duration,json.dumps(get_all_distracting_apps()))
+    return data
+def start_focus_mode_with_task(duration,name,task_id):
+    global FOCUS_MODE
+    FOCUS_MODE = True
+    data = database_worker.start_focus_mode(name,duration,json.dumps(get_all_distracting_apps()),json.dumps({"task_id":task_id}))
+    task_data = database_worker.get_task_by_id(task_id)
+    task_info = json.loads(task_data[2])
+    task_info['ids_of_focus_modes'].append(data)
+    database_worker.update_daily_task_info(task_data[0],json.dumps(task_info))
     return data
 
 def stop_focus_mode(id):
     global FOCUS_MODE
     FOCUS_MODE = False
     database_worker.stop_focus_mode(id)
+    data = database_worker.get_focus_session_by_id(id)
+    if data[6]:
+        task_data = database_worker.get_task_by_id(json.loads(data[6])["task_id"])
+        task_info = json.loads(task_data[2])
+        task_info['time_completed'] += (database_worker.get_time_from_format(data[3])- database_worker.get_time_from_format(data[1])).total_seconds()/60
+        database_worker.update_daily_task_info(task_data[0],json.dumps(task_info))
     return True
 
 

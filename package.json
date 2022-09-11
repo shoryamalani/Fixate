@@ -1,16 +1,15 @@
 {
-  "name": "PowerTimeTracking",
+  "name": "Power Time Tracking",
   "productName": "PowerTimeTracking",
-  "version": "0.2.1",
+  "version": "0.7.0",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "DEBUGMENU=1 electron-forge start",
     "package": "electron-forge package",
     "package-arm": "electron-forge package --arch=arm64",
     "make": "electron-forge make",
     "make-arm": "electron-forge make --arch=arm64",
-    "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
   "keywords": [],
@@ -28,18 +27,21 @@
           "NSAppleEventsUsageDescription": "Applescript is needed to get tab urls of websites."
         },
         "osxSign": {
-          "identity": "Developer ID Application: Shorya Malani (YD5J62KXTT)",
+          "identity": "Developer ID Application: Clearpoint Management LLC (6KK9M46VM2)",
           "hardened-runtime": true,
+          "gatekeeperAssess" : false,
           "entitlements": "entitlements.plist",
           "entitlements-inherit": "entitlements.plist",
           "signature-flags": "library"
         }
+        
       },
+      "afterSign": "src/notarize.js",
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "forgepowertimetracking"
+            "name": "PowerTimeTracking"
           }
         },
         {
@@ -73,7 +75,8 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "electron": "^20.1.0"
+    "electron": "^20.1.0",
+    "electron-notarize": "^1.2.1"
   },
   "build": {
     "extraResources": [

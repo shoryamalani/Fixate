@@ -6,9 +6,10 @@ import get_time_spent
 import time
 import signal
 import os
+import json
 app = Flask(__name__)
 closing_apps = False
-VERSION = "0.2.1"
+VERSION = "0.7.0"
 @app.route("/start_logger")
 def start_logger():
 	
@@ -43,10 +44,15 @@ def is_running():
 def get_all_time():
     return jsonify({"all_time":get_time_spent.get_all_time()})
 
-@app.route("/get_time",methods=["GET","POST"])
+@app.route("/get_time_log",methods=["GET","POST"])
 def get_time():
-    times,distractions = get_time_spent.get_time(request.json["time"])
-    return jsonify({"time":times,"distractions":distractions})
+    if request.json["time"]:
+        times,distractions,name = get_time_spent.get_time(request.json["time"])
+        return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":get_time_spent.get_all_distracting_apps()})
+    else:
+        times,distractions,name,distractions_status = get_time_spent.get_time_from_focus_session_id(request.json["id"])
+        return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions)})
+
 @app.route("/get_app_status")
 def get_app_status():
     return jsonify({"applications":logger_application.get_all_apps_statuses()})
@@ -64,8 +70,17 @@ def kill_server():
     logger_application.stop_logger()
     os.kill(os.getpid(), signal.SIGTERM)
 
+@app.route('/stop_showing_task', methods=['POST'])
+def stop_showing_task():
+    return jsonify({"success":logger_application.stop_showing_task(request.json["id"])})
+@app.route('/complete_task', methods=['POST'])
+def complete_task():
+    return jsonify({"success":logger_application.complete_task(request.json["id"])})
+    
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
+    if "task_id" in request.json:
+        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json["task_id"])}),200
     return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
@@ -79,5 +94,9 @@ def add_daily_task():
 @app.route("/get_daily_tasks",methods=["GET"])
 def get_daily_tasks():
     return jsonify({"tasks":logger_application.get_daily_tasks()})
+
+@app.route("/get_all_focus_sessions",methods=["GET"])
+def get_all_focus_modes():
+    return jsonify({"focus_sessions":logger_application.get_all_focus_sessions()})
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5005)

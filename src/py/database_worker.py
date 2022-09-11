@@ -1,6 +1,6 @@
 
 from typing import Type
-from dbs_scripts.write_and_read_to_database import make_write_to_db
+from dbs_scripts.write_and_read_to_database import make_write_to_db,make_read_from_db
 from dbs_scripts.create_database import *
 import sqlite3
 import datetime
@@ -136,6 +136,8 @@ def update_to_database_version_1_5():
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
 
+def get_time_from_format(time):
+    return datetime.datetime.strptime(time,get_time_format())
 def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
@@ -279,6 +281,51 @@ def get_all_daily_tasks():
         logger.error(e)
         return None
 
+def get_all_active_daily_tasks():
+    """
+    Returns all the active daily tasks
+    """
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT * FROM tasks WHERE active = 1")
+        data = c.fetchall()
+        conn.close()
+        return data
+    except Exception as e:
+        logger.error(e)
+        return None
+
+def get_all_focus_sessions():
+    """
+    Returns all the focus sessions
+    """
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT * FROM focus_sessions")
+        data = c.fetchall()
+        conn.close()
+        return data
+    except Exception as e:
+        logger.error(e)
+        return None
+
+def get_focus_session_by_id(id):
+    """
+    Returns a focus session by id
+    """
+    try:
+        conn = connect_to_db()
+        c = conn.cursor()
+        c.execute("SELECT * FROM focus_sessions WHERE id=?", [id])
+        data = c.fetchone()
+        conn.close()
+        return data
+    except Exception as e:
+        logger.error(e)
+        return None
+
 def log_current_app(app_name,tabname,active,title):
     """
     Logs the current app
@@ -331,16 +378,50 @@ def save_app_status(application_id,distracting):
     conn.commit()
     conn.close()
 
-def start_focus_mode(name,duration,inactive_apps:str):
+def start_focus_mode(name,duration,inactive_apps:str,info=""):
     """
     Starts the focus mode
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps,name])],"focus_sessions",["time","stated_duration","inactive_applications","name"]))
+    c.execute(make_write_to_db([([get_time_in_format(),duration,inactive_apps,name,info])],"focus_sessions",["time","stated_duration","inactive_applications","name","info"]))
     conn.commit()
     conn.close()
     return c.lastrowid
+
+def set_task_to_inactive(id):
+    """
+    Sets a task to inactive
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE tasks SET active = ? WHERE id = ?",[0,id])
+    conn.commit()
+    conn.close()
+
+def get_task_by_id(task_id):
+    """
+    Get a task by id
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM tasks WHERE id=?", [task_id])
+    data = c.fetchone()
+    if data is None:
+        return False
+    else:
+        conn.commit()
+        conn.close()
+        return data
+def update_daily_task_info(task_id,info):
+    """
+    Updates the daily task data
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE tasks SET info = ? WHERE id = ?",[info,task_id])
+    conn.commit()
+    conn.close()
 def stop_focus_mode(focus_session_id):
     """
     Stops the focus mode

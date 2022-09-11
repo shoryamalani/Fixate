@@ -7,7 +7,8 @@ body {
   align-items:center;
   padding:2em;
   margin:300px;
-  background-color: rgb(196, 255, 255);
+  background-color: #FAFAFA;
+  color: rgb(0, 0, 0);
 }
 .float-child-element { 
   padding: 1em;
@@ -16,11 +17,21 @@ body {
 .center {
   text-align: center;
 }
-#app_status_table {
+#app_status_table_div {
   border-style: solid;
   width: 100%;
+  max-height:35em;
+  overflow-y:scroll;
   align-self: center;
   border-collapse: collapse;
+}
+#daily_tasks_list_div{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-around;
+}
+.completed_task{
+  background-color: #00ff00ed;
 }
 [hidden] {
   display: none !important;
@@ -44,6 +55,8 @@ tbody:nth-child(even) {
   width: 100%; /* Full-width */
   border: 1px solid #ddd; /* Add a grey border */
   font-size: 18px; /* Increase font-size */
+  overflow-y: scroll; 
+  height:35em;
 }
 
 #app_status_table th, #app_status_table td {
@@ -59,18 +72,24 @@ tbody:nth-child(even) {
 #app_status_table tr.header, #app_status_table tr:hover {
   /* Add a grey background color to the table header and on hover */
   background-color: #f1f1f1;
+  
 }
 #focus_name_input,#task_name_input{
   width:40ch;
 }
-
+#previous_focus_modes_div{
+  overflow-y: scroll; 
+  height:35em;
+  display:flex;
+  justify-content:space-around;
+}
 /* PURE CSS ADDITION */
 .button-success,
 .button-error,
 .button-warning,
 .button-secondary {
     color: white;
-    border-radius: 4px;
+    border-radius: 1px;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
@@ -80,7 +99,7 @@ tbody:nth-child(even) {
 }
 
 .button-error {
-    background: rgb(211, 86, 86) !important ;
+    background: rgb(221, 53, 53) !important ;
     /* this is a maroon */
 }
 
