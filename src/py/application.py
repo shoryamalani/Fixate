@@ -372,16 +372,22 @@ def boot_up_checker():
                 sys.exit()
         else:
             logger.debug(database_created)
+            database_created = list(database_created)
             if database_created[1] == "1.0":
                 database_worker.update_to_database_version_1_1()
+                database_created[1] = "1.1"
             if database_created[1] == "1.1":
                 database_worker.update_to_database_version_1_2()
+                database_created[1] = "1.2"
             if database_created[1] == "1.2":
                 database_worker.update_to_database_version_1_3()
+                database_created[1] = "1.3"
             if database_created[1] == "1.3":
                 database_worker.update_to_database_version_1_4()
+                database_created[1] = "1.4"
             if database_created[1] == "1.4":
                 database_worker.update_to_database_version_1_5()
+                database_created[1] = "1.5"
         if sys.platform == "darwin":
             start_process_to_deal_with_permissions()
         # start_running_event_loop_in_ns_application()
