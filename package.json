@@ -19,51 +19,12 @@
   },
   "license": "MIT",
   "config": {
-    "forge": {
-      "packagerConfig": {
-        "icon": "./src/assets/icon.icns",
-        "extendInfo": {
-          "NSAppleScriptEnabled": true,
-          "NSAppleEventsUsageDescription": "Applescript is needed to get tab urls of websites."
-        },
-        "osxSign": {
-          "identity": "Developer ID Application: Clearpoint Management LLC (6KK9M46VM2)",
-          "hardened-runtime": true,
-          "gatekeeperAssess" : false,
-          "entitlements": "entitlements.plist",
-          "entitlements-inherit": "entitlements.plist",
-          "signature-flags": "library"
-        }
-        
-      },
-      "afterSign": "src/notarize.js",
-      "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "PowerTimeTracking"
-          }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
-        },
-        {
-          "name": "@electron-forge/maker-deb",
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
-          "config": {}
-        }
-      ]
-    }
+    "forge": "./forge.config.js"
   },
   "dependencies": {
     "@electron/osx-sign": "^1.0.1",
     "apexcharts": "^3.35.3",
+    "dotenv": "^16.0.2",
     "electron-squirrel-startup": "^1.0.0",
     "node-fetch": "^2.6.7",
     "purecss": "^2.1.0",

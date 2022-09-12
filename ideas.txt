@@ -17,3 +17,13 @@ Set things as distrating just from daily things
 Move phone reminder when pomodoro starts
 User day planner
 Day rating mechanism
+
+// COMMAND TO NOTARIZE
+xcrun notarytool submit PowerTimeTracking-darwin-x64-0.7.0.zip --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+xattr -cr PowerTimeTracking.app/
+xcrun stapler staple PowerTimeTracking.app/ 
+electron-osx-sign PowerTimeTracking.app/ --identity="Developer ID Application: Clearpoint Management LLC (READD)"
+electron-osx-sign PowerTimeTracking.app/ --identity="Developer ID Application: Clearpoint Management LLC (6KK9M46VM2)" --entitlements=../../../../../entitlements.plist 
+electron-osx-sign PowerTimeTracking.app/ --identity="Developer ID Application: Clearpoint Management LLC (6KK9M46VM2)" --entitlements=../../../../../entitlements.plist --entitlementsInherit=../../../../../entitlements.plist --embedded-binary= "PowertimeTracking.app/Contents/Resources/app/src/python/bin/python3.9" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/xxlimited.cpython-39-darwin.so" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
+electron-osx-flat PowerTimeTracking.app/ --identity="Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" --entitlements=../../../../../entitlements.plist --entitlementsInherit=../../../../../entitlements.plist --embedded-binary= "PowertimeTracking.app/Contents/Resources/app/src/python/bin/python3.9" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/xxlimited.cpython-39-darwin.so" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
+https://github.com/electron/electron-notarize#method-notarizeopts-promisevoid

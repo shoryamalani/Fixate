@@ -79,7 +79,7 @@ def complete_task():
     
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
-    if "task_id" in request.json:
+    if request.json["task_id"]!=None:
         return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json["task_id"])}),200
     return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
 

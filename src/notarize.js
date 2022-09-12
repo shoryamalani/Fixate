@@ -9,10 +9,11 @@ exports.default = async function notarizing(context) {
   }
 
   const appName = context.packager.appInfo.productFilename;
+  const archName = context.packager.appInfo.electronPlatformName;
 
   return await notarize({
     appBundleId: "com.powerTimeTracking.ShoryaMalani.app",
-    appPath: `${appOutDir}/${appName}.app`,
+    appPath: `out/PowerTimeTracking-darwin-x64/${appName}.zip`,
     appleId: process.env.APPLEID,
     appleIdPassword: process.env.APPLEIDPASS,
   });

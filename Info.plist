@@ -3,13 +3,14 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>PowerTimeTracking</string>
+	<string>Power Time Tracking</string>
 	<key>CFBundleExecutable</key>
 	<string>PowerTimeTracking</string>
 	<key>CFBundleIconFile</key>
 	<string>electron.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.electron.powertimetracking</string>
+	
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -17,9 +18,9 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.0</string>
+	<string>0.7.0</string>
 	<key>CFBundleVersion</key>
-	<string>0.1.0</string>
+	<string>0.7.0</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTSDKBuild</key>

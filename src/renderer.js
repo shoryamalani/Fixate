@@ -373,8 +373,9 @@ function make_task(){
   task_repeating = document.getElementById("repeating_daily_focus_input").checked
   postData(`http://localhost:5005/add_daily_task`, {"name": task_name,"task_estimate_time":task_estimate_time,"task_repeating":task_repeating}).then(data => {
     console.log(data)
+    setTimeout(get_daily_tasks(),1000)
   })
-  get_daily_tasks()
+  
 }
 
 function save_app_status() {
