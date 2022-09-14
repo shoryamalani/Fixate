@@ -4,17 +4,8 @@ import os
 from database_worker import check_if_database_created, create_time_database, set_new_time_in_mouse_moved
 import multiprocessing
 from time import sleep, time
-from AppKit import *
-from Cocoa import *
-from Foundation import *
-from PyObjCTools import AppHelper
 import string
 import sys
-from Foundation import NSObject, NSLog
-from AppKit import NSApplication, NSApp, NSWorkspace
-from Cocoa import *
-from Quartz import CGWindowListCopyWindowInfo, kCGWindowListOptionOnScreenOnly, kCGNullWindowID
-from PyObjCTools import AppHelper
 import database_worker
 import datetime
 import subprocess
@@ -23,7 +14,8 @@ from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
 import re
-import macos_get_window_and_tab_name
+if sys.platform == "darwin":
+    import macos_get_window_and_tab_name
 
 
 # import web_app_stuff.app as web_app
