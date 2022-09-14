@@ -102,9 +102,9 @@ async function start_server(){
 function findServer() {
   const possibilities = [
     // In packaged app
-    path.join(process.resourcesPath,"app", "py/server.py"),
+    path.join(process.resourcesPath,"app", "py","server.py"),
     // In development
-    path.join(__dirname, "py/server.py"),
+    path.join(__dirname, "py","server.py"),
   ];
   for (const path of possibilities) {
     if (fs.existsSync(path)) {
@@ -121,6 +121,8 @@ function findPython() {
     path.join(process.resourcesPath,"app", "python", "bin", "python3.9"),
     // In development
     path.join(__dirname, "python", "bin", "python3.9"),
+    //Windows in dev
+    path.join(__dirname, "python", "python.exe")
   ];
   for (const path of possibilities) {
     if (fs.existsSync(path)) {
