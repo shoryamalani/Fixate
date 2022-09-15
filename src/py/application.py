@@ -15,46 +15,32 @@ from loguru import logger
 import requests
 import re
 if sys.platform == "darwin":
-    import macos_get_window_and_tab_name
+    from macos_data_grabber import macosOperatingSystemDataGrabber
+    systemDataHandler = macosOperatingSystemDataGrabber()
+    
+
+# READ THIS LATER 
+#https://www.autoitscript.com/forum/topic/115293-how-to-get-firefox-current-page-address/
+#https://stackoverflow.com/questions/7814027/how-can-i-get-urls-of-open-pages-from-chrome-and-firefox
+# windows mouse movement: https://stackoverflow.com/questions/49847756/detecting-physical-mouse-movement-with-python-and-windows-10-without-cursor-move
+
+
+
+
+
 
 
 # import web_app_stuff.app as web_app
-BROWSERS = ["Safari","Google Chrome","Firefox"]
+# BROWSERS = ["Safari","Google Chrome","Firefox"]
 INACTIVE_TIME = 300 # in seconds
 # NONFOCUS_APPS = ["Messages","Discord","Slack","Music"]
 # NONFOCUS_URLS = ["https://www.youtube.com/watch?v=","macrumors.","lichess.org","9to5mac.",".reddit."]
 PROCESSES = {}
 
 
-def get_all_apps():
-    return NSWorkspace.sharedWorkspace().runningApplications() 
 
-def get_app_in_one_second():
-    sleep(1)
-    return get_frontmost_app()
 
-def close_app_with_bundle_id(bundle_id):
-    ws = NSWorkspace.sharedWorkspace()
-    runningApps = ws.runningApplications()    
-    for i in runningApps:
-        if i.bundleIdentifier() == bundle_id:
-            logger.debug("Closing app")
-            logger.debug(i)
-            i.hide()
-
-def getKMVar(k):
-    return subprocess.check_output(
-        "osascript -l JavaScript -e '{0}'".format(
-            """Application("Keyboard Maestro Engine")
-               .getvariable("{0}")""".format(
-                k
-            )
-        ),
-        shell=True,
-    ).decode("utf-8")
-def make_url_to_base(full_url):
-    return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
-def check_if_must_be_closed(frontmost_app,tabname):
+def check_if_must_be_closed(app,tabname):
     try:
         closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
         will_close = closing_app["closing_apps"]
@@ -63,17 +49,19 @@ def check_if_must_be_closed(frontmost_app,tabname):
         will_close = False
 
     if will_close == True:
-        if frontmost_app["NSApplicationName"] in apps_to_close:
-            close_app_with_bundle_id(frontmost_app["NSApplicationBundleIdentifier"])
-        if tabname != None:
+        if tabname:
             for url in apps_to_close:
                 if url in tabname:
-                    close_app_with_bundle_id(frontmost_app["NSApplicationBundleIdentifier"])
+                    systemDataHandler.hide_current_frontmost_app()
+                    return True
+        if app['app_name'] in apps_to_close:
+            systemDataHandler.hide_current_frontmost_app()
+            return True
         
         
 
 def search_close_and_log_apps():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    # logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_in_name_form = [app[1] for app in apps]
@@ -82,161 +70,51 @@ def search_close_and_log_apps():
         # # logger.debug(front_app)
         # if front_app != None:
             
-            #Getting replaced by JXA
-        try:
-            app,app_info = macos_get_window_and_tab_name.getInfo()
-
-            logger.debug(app)
-            current_app_name = app['app']
-            tabname = app['url'] if 'url' in app else None
-            title = app['title'] if 'title' in app else "Unknown"
-            active = True
-            #Being replaced by JXA
-            # if current_app_name in BROWSERS:
-                
-            #     try:
-            #         future = browser_tab_name(current_app_name)
-            #         tabname = future.result()
-            #         logger.debug(type(tabname))
-            #         logger.debug(tabname)
-            #         # tabname = browser_tab_name(current_app_name)
-            if tabname:
-                short_tab = make_url_to_base(tabname)
-                if short_tab not in apps_in_name_form:
-                    database_worker.add_application_to_db(short_tab,"website",0,0)
-                    apps_in_name_form.append(short_tab)
-            #     except Exception as err:
-            #         logger.debug(err)
-            #         tabname = None
-            #         logger.debug("not found")
-            # else:
-            if app_info["NSApplicationName"] not in apps_in_name_form:
-                database_worker.add_application_to_db(app_info["NSApplicationName"],"app",0,0)
-                apps_in_name_form.append(app_info["NSApplicationName"])
-            check_if_must_be_closed(app_info,tabname)
-            last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
-            if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
-                active = False
-            database_worker.log_current_app(current_app_name,tabname,active,title)
-            # logger.debug(current_app_name)
-            sleep(1)
-            # logger.debug(database_worker.get_time_of_last_mouse_movement())
-        except Exception as err:
-            logger.error(err)
-
+            #Getting data replaced by JXA and applescript for macos
+        # try:
+        app = systemDataHandler.get_current_frontmost_app()
         
-@concurrent.process(timeout=5)
-def browser_tab_name(browser_name):
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
-    data = None
-    if browser_name == "Google Chrome":
-        browser_tab_name = NSAppleScript.alloc().initWithSource_(
-        str(f"""
-        tell application "{browser_name}"
-            get URL of active tab of first window
-        end tell
-        """))
-        data = browser_tab_name.executeAndReturnError_(None)
-    if browser_name == "Safari":
-        browser_tab_name = NSAppleScript.alloc().initWithSource_(
-        str(f"""
-        tell application "{browser_name}"
-            get URL of current tab of window 1
-        end tell
-        """))
-        data = browser_tab_name.executeAndReturnError_(None)
-    if browser_name == "Firefox":
-        browser_tab_name = NSAppleScript.alloc().initWithSource_(
-        str(f"""
-        tell application "{browser_name}"
-	        get the name of first window
-        end tell
-        """))
-        data = browser_tab_name.executeAndReturnError_(None)
-    if not data[0]:
-        logger.debug(data[1]['NSAppleScriptErrorMessage'])
-        logger.debug(data[1])
-    logger.debug(data)
-    if data[0] != None:
-        # logger.debug(data)
-        return str(data[0].stringValue())
-    else:
-        return None
-def start_running_event_loop_in_ns_application():
-    # if NSWorkspace.sharedWorkspace().isRunning():
-    #     return
-    # else:
-    #    return 
-    # NSWorkspace.sharedWorkspace().run()
-    pass
-
-last_mouse_move_set = datetime.datetime.now()
-
-class AppDelegate(NSObject):
-
-    def applicationDidFinishLaunching_(self, aNotification):
-        NSEvent.addGlobalMonitorForEventsMatchingMask_handler_(NSKeyDown, AppDelegate.handler)
-        NSEvent.addGlobalMonitorForEventsMatchingMask_handler_(NSMouseMovedMask, AppDelegate.handler)
-        NSEvent.addGlobalMonitorForEventsMatchingMask_handler_(NSKeyUp, AppDelegate.handler)
-        NSEvent.addLocalMonitorForEventsMatchingMask_handler_(NSKeyDown, AppDelegate.handler)
-
-        logger.debug("HERE")
-    def cancel(self):
-        AppHelper.stopEventLoop()
-    
-    def handler(event):
-        try:
-            global last_mouse_move_set
-            # logger.debug(event.type())
-            # logger.debug("last_mouse_move:",last_mouse_move_set.strftime("%D:%H:%M:%S"))
+        current_app_name = app['app_name']
+        tabname = app['url'] if 'url' in app else None
+        title = app['title'] if 'title' in app else "Unknown"
+        active = True
+        #Being replaced by JXA
+        # if current_app_name in BROWSERS:
             
-            if event.type() == 1 or event.type() == 3 or event.type() == 5:
-                if datetime.datetime.now() - last_mouse_move_set > datetime.timedelta(seconds=30):
-                    database_worker.set_new_time_in_mouse_moved()
-                    last_mouse_move_set = datetime.datetime.now()
-        except ( KeyboardInterrupt ) as e:
-            print ('handler', e)
-            AppHelper.stopEventLoop()
-def start_mouse_movement_checker():
-    
-        app = NSApplication.sharedApplication()
-        delegate = AppDelegate.alloc().init()
-        NSApp().setDelegate_(delegate)
-        AppHelper.runEventLoop()
+        #     try:
+        #         future = browser_tab_name(current_app_name)
+        #         tabname = future.result()
+        #         logger.debug(type(tabname))
+        #         logger.debug(tabname)
+        #         # tabname = browser_tab_name(current_app_name)
+        if tabname:
+            short_tab = make_url_to_base(tabname)
+            if short_tab not in apps_in_name_form:
+                database_worker.add_application_to_db(short_tab,"website",0,0)
+                apps_in_name_form.append(short_tab)
+        #     except Exception as err:
+        #         logger.debug(err)
+        #         tabname = None
+        #         logger.debug("not found")
+        # else:
+        if app["app_name"] not in apps_in_name_form:
+            database_worker.add_application_to_db(app["app_name"],"app",0,0)
+            apps_in_name_form.append(app["app_name"])
+        check_if_must_be_closed(app,tabname)
+        last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
+        if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
+            active = False
+        database_worker.log_current_app(current_app_name,tabname,active,title)
+        # logger.debug(current_app_name)
+        sleep(1)
+        # logger.debug(database_worker.get_time_of_last_mouse_movement())
+        # except Exception as err:
+        #     logger.error(err)
 
-## MACOS PERMISSIONS
-def start_process_to_deal_with_permissions():
-    get_permission = multiprocessing.Process(target=get_permission_to_accessibility)
-    get_permission.start()
-    return 
 
-def get_permission_to_accessibility():
-    ## THIS IS USING THE SAME PERMISSION GRABBER AS ACTIVITY WATCH
-    # no point recreating it
-    #https://github.com/ActivityWatch/aw-watcher-window/tree/235ebea7d9e6cd9ec96e943b0d2cdb17e7c2e398
-    from ApplicationServices import AXIsProcessTrusted
-    from AppKit import NSAlert, NSAlertFirstButtonReturn, NSWorkspace, NSURL
+def make_url_to_base(full_url):
+    return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
 
-    accessibility_permissions = AXIsProcessTrusted()
-    if not accessibility_permissions:
-        title = "Missing accessibility permissions"
-        info = "For Power Time Tracking to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Power Time Tracking in System Preferences"
-
-        alert = NSAlert.new()
-        alert.setMessageText_(title)
-        alert.setInformativeText_(info)
-
-        ok_button = alert.addButtonWithTitle_("Open accessibility settings")
-
-        alert.addButtonWithTitle_("Close")
-        choice = alert.runModal()
-        if choice == NSAlertFirstButtonReturn:
-            NSWorkspace.sharedWorkspace().openURL_(
-                NSURL.URLWithString_(
-                    "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
-                )
-            )
-        
 def stop_logger():
     for process in multiprocessing.active_children():
         process.terminate()
@@ -380,13 +258,11 @@ def boot_up_checker():
             if database_created[1] == "1.4":
                 database_worker.update_to_database_version_1_5()
                 database_created[1] = "1.5"
-        if sys.platform == "darwin":
-            start_process_to_deal_with_permissions()
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
         logger.debug(multiprocessing.active_children())
         if len(multiprocessing.active_children()) < 2:
-            mouse_movement = multiprocessing.Process(target=start_mouse_movement_checker).start()
+            systemDataHandler.check_interaction_periodic()
             # PROCESSES["mouse_movement"] = mouse_movement
             # PROCESSES["mouse_movement"].start()
             multiprocessing.Process(target=search_close_and_log_apps).start()
