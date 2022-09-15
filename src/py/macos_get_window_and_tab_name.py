@@ -61,9 +61,10 @@ def getInfo() -> Dict[str, str]:
         #     OSAScriptErrorNumberKey = "-1728";
         #     OSAScriptErrorRangeKey = "NSRange: {0, 0}";
         # }
-        front_app = get_frontmost_app()
-        return {'app':front_app["NSApplicationName"]}, front_app
+        # front_app = get_frontmost_app()
+        return False
+        # return {'app':front_app["NSApplicationName"]}, front_app
 
-    return json.loads(result.stringValue()),get_frontmost_app()
-def get_frontmost_app():
-    return NSWorkspace.sharedWorkspace().activeApplication()
+    return json.loads(result.stringValue())
+# def get_frontmost_app():
+#     return NSWorkspace.sharedWorkspace().activeApplication()
