@@ -17,8 +17,9 @@ import re
 if sys.platform == "darwin":
     from macos_data_grabber import macosOperatingSystemDataGrabber
     systemDataHandler = macosOperatingSystemDataGrabber()
-    
-
+elif sys.platform == "win32":
+    from windows_data_grabber import windowsOperatingSystemDataGrabber
+    systemDataHandler = windowsOperatingSystemDataGrabber()
 # READ THIS LATER 
 #https://www.autoitscript.com/forum/topic/115293-how-to-get-firefox-current-page-address/
 #https://stackoverflow.com/questions/7814027/how-can-i-get-urls-of-open-pages-from-chrome-and-firefox
