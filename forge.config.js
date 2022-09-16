@@ -4,7 +4,7 @@ var archName = process.env.ARCH;
 console.log(archName);
 module.exports = {
   packagerConfig: {
-    icon: "./src/assets/icon.icns",
+    icon: "./src/assets/icon.ico",
     
     overwrite: true,
     extendInfo: {
