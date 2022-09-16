@@ -1,3 +1,15 @@
+ //handle setupevents as quickly as possible
+ const setupEvents = require('./installers/setupEvents')
+ if (setupEvents.handleSquirrelEvent()) {
+    // squirrel event handled and app will exit in 1000ms, so don't do anything else
+    return;
+ }
+
+const electron = require('electron')
+// Module to control application life.
+const app = electron.app
+const {ipcMain} = require('electron')
+var path = require('path')
 // const { app, BrowserWindow } = require('electron');
 // const path = require('path');
 
