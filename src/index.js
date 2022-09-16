@@ -1,5 +1,5 @@
  //handle setupevents as quickly as possible
- const setupEvents = require('./installers/setupEvents')
+ const setupEvents = require('../installers/setupEvents')
  if (setupEvents.handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     return;
@@ -57,13 +57,12 @@ var path = require('path')
 
 // // In this file you can include the rest of your app's specific main process
 // // code. You can also put them in separate files and import them here.
-const {app, BrowserWindow} = require('electron');
+const {BrowserWindow} = require('electron');
 var VERSION = app.getVersion();
 const {PythonShell} = require('python-shell');
 const child_process = require('child_process');
 const util = require("util");
 const execFile = util.promisify(child_process.execFile);
-const path = require('path');
 const fetch = require('node-fetch');
 const fs = require("fs");
 const { Server } = require('http');
