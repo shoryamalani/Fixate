@@ -1,5 +1,5 @@
 {
-  "name": "Power Time Tracking",
+  "name": "PowerTimeTracking",
   "productName": "PowerTimeTracking",
   "version": "0.7.0",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
@@ -8,7 +8,7 @@
     "start": "electron-forge start DEBUGMENU=1",
     "package": "electron-forge package",
     "package-arm": "electron-forge package --arch=arm64",
-    "package-win": "electron-forge package --platform=win32 --overwrite=true --asar=false --icon=src/assets/icon.ico",
+    "package-win": "electron-forge package --platform=win32",
     "create-installer-win": "node ./installers/windows/createinstaller.js",
     "make": "electron-forge make",
     "make-arm": "electron-forge make --arch=arm64",
