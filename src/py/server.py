@@ -9,7 +9,7 @@ import os
 import json
 app = Flask(__name__)
 closing_apps = False
-VERSION = "0.7.0"
+VERSION = "0.7.1"
 @app.route("/start_logger")
 def start_logger():
 	

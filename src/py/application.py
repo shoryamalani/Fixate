@@ -37,7 +37,7 @@ INACTIVE_TIME = 300 # in seconds
 # NONFOCUS_APPS = ["Messages","Discord","Slack","Music"]
 # NONFOCUS_URLS = ["https://www.youtube.com/watch?v=","macrumors.","lichess.org","9to5mac.",".reddit."]
 PROCESSES = {}
-
+UNRECORDED_APPS = ["loginwindow"]
 
 
 
@@ -99,8 +99,9 @@ def search_close_and_log_apps():
         #         logger.debug("not found")
         # else:
         if app["app_name"] not in apps_in_name_form:
-            database_worker.add_application_to_db(app["app_name"],"app",0,0)
-            apps_in_name_form.append(app["app_name"])
+            if app["app_name"] not in UNRECORDED_APPS:
+                database_worker.add_application_to_db(app["app_name"],"app",0,0)
+                apps_in_name_form.append(app["app_name"])
         check_if_must_be_closed(app,tabname)
         last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
         if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
