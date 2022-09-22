@@ -60,8 +60,8 @@ class macosOperatingSystemDataGrabber:
         more_data = macos_get_window_and_tab_name.getInfo()
         if more_data:
             if 'url' in more_data:
-                return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if more_data else "Unknown","url":more_data['url']}
-            return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if more_data else "Unknown"}
+                return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
+            return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}
         return {"app_name":self.current_app["NSApplicationName"],"app_title":"Unknown"}
     
     def hide_current_frontmost_app(self):
@@ -115,23 +115,26 @@ def get_permission_to_accessibility():
     sleep(5)
     accessibility_permissions = AXIsProcessTrusted()
     if not accessibility_permissions:
-        title = "Missing accessibility permissions"
-        info = "For Power Time Tracking to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Power Time Tracking in System Preferences"
+        sleep(5)
+        accessibility_permissions = AXIsProcessTrusted()
+        if not accessibility_permissions:
+            title = "Missing accessibility permissions"
+            info = "For Power Time Tracking to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Power Time Tracking in System Preferences"
 
-        alert = NSAlert.new()
-        alert.setMessageText_(title)
-        alert.setInformativeText_(info)
+            alert = NSAlert.new()
+            alert.setMessageText_(title)
+            alert.setInformativeText_(info)
 
-        ok_button = alert.addButtonWithTitle_("Open accessibility settings")
+            ok_button = alert.addButtonWithTitle_("Open accessibility settings")
 
-        alert.addButtonWithTitle_("Close")
-        choice = alert.runModal()
-        if choice == NSAlertFirstButtonReturn:
-            NSWorkspace.sharedWorkspace().openURL_(
-                NSURL.URLWithString_(
-                    "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+            alert.addButtonWithTitle_("Close")
+            choice = alert.runModal()
+            if choice == NSAlertFirstButtonReturn:
+                NSWorkspace.sharedWorkspace().openURL_(
+                    NSURL.URLWithString_(
+                        "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
+                    )
                 )
-            )
         
 
 # old code to grab tabs that is no longer used

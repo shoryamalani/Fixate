@@ -17,7 +17,7 @@ var current_timer;
 var focus_mode_id;
 var focus_mode_running_val = false
 var all_tasks = []
-
+var chart;
 get_last_5_hours_button.addEventListener('click', function() {
   get_logging_data("last_five_hours")
 });
@@ -66,6 +66,7 @@ function get_daily_tasks() {
     console.log(data)  
     all_tasks = data["tasks"]
     document.querySelector("#daily_tasks_table").innerHTML = ""
+    
     data["tasks"].reverse().forEach(task_data => {
       var tr = make_task_tr(task_data)
       document.querySelector("#daily_tasks_table").appendChild(tr)
@@ -243,7 +244,7 @@ function start_focus_mode(){
   }
   task_name = document.getElementById("focus_name_input").value
   task_name.value = ""
-  
+  document.querySelector("#focus_name_input").value = ""
   send_notif_and_set_up_focus_mode(task_name, time_duration)
   send_start_focus_mode(time_duration, task_name)
 
@@ -371,6 +372,7 @@ function make_task(){
   task_estimate_time = document.getElementById("guessed_time_duration").value
   task_estimate_time.value = 30
   task_repeating = document.getElementById("repeating_daily_focus_input").checked
+  document.querySelector("#task_name_input").value = ""
   postData(`http://localhost:5005/add_daily_task`, {"name": task_name,"task_estimate_time":task_estimate_time,"task_repeating":task_repeating}).then(data => {
     console.log(data)
     setTimeout(get_daily_tasks(),1000)
@@ -473,9 +475,11 @@ function get_logging_data(time=null,id=null) {
       }]
     }
     // create the chart
-
-    var chart = new ApexCharts(document.querySelector("#time_result_chart"), options);
-    chart.render();
+    if (chart != null) {
+      chart.destroy()
+    }
+    chart = new ApexCharts(document.querySelector("#time_result_chart"), options);
+    chart.render()
     document.querySelector("#time_result_name").innerHTML = "In the time segment of " + data['name'] + ", " + (data['time'][0][1]/60).toFixed(2) + " minutes have been logged."
     document.querySelector("#distractions_list_for_review").innerHTML ="Your Applications and Websites listed as distractions included <br>" + data['relevant_distractions'].join(", ")
     document.getElementById("number_of_times_distracted").innerText = "During this time period you were distracted "+data['distractions']['distractions_number']+" times; "
