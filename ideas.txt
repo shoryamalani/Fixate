@@ -27,3 +27,15 @@ electron-osx-sign PowerTimeTracking.app/ --identity="Developer ID Application: C
 electron-osx-sign PowerTimeTracking.app/ --identity="Developer ID Application: Clearpoint Management LLC (6KK9M46VM2)" --entitlements=../../../../../entitlements.plist --entitlementsInherit=../../../../../entitlements.plist --embedded-binary= "PowertimeTracking.app/Contents/Resources/app/src/python/bin/python3.9" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/xxlimited.cpython-39-darwin.so" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
 electron-osx-flat PowerTimeTracking.app/ --identity="Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" --entitlements=../../../../../entitlements.plist --entitlementsInherit=../../../../../entitlements.plist --embedded-binary= "PowertimeTracking.app/Contents/Resources/app/src/python/bin/python3.9" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/xxlimited.cpython-39-darwin.so" "PowertimeTracking.app/Contents/Resources/app/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
 https://github.com/electron/electron-notarize#method-notarizeopts-promisevoid
+
+make a update distracting things time in database
+make python run through gunicorn or something so it keeps running
+make a way to lockdown forcing restart if you want to get out of it.
+
+
+post install scripts
+https://matthew-brett.github.io/docosx/flat_packages.html
+https://cpb-us-e1.wpmucdn.com/sites.psu.edu/dist/4/24696/files/2019/07/psumac2019-345-Installer-Package-Scripting-Making-your-deployments-easier-one-at-a-time.pdf
+AHHHHHHHHHHHHH 15 hours later the best solution is to not use product build and isntead use pkgbuild
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" PowerTimeTrackingPKGbuild.pkg
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" PowerTimeTrackingPKGbuild.pkg

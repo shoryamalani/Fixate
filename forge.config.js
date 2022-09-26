@@ -25,14 +25,15 @@ module.exports = {
         "./Resources/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
       ]
     },
-    osxNotarize: {
-      "appleId": process.env.APPLEID,
-      "appleIdPassword": process.env.APPLEIDPASS,
-      "tool":"notarytool",
-      "appPath": `out/PowerTimeTracking-darwin-${archName}/PowerTimeTracking.app`,
-      "appBundleId": "com.electron.powertimetracking",
-      "teamId": "6KK9M46VM2",
-    }
+    // osxNotarize: {
+    //   "appleId": process.env.APPLEID,
+    //   "appleIdPassword": process.env.APPLEIDPASS,
+    //   "tool":"notarytool",
+    //   // "appPath": `out/PowerTimeTracking-darwin-${archName}/PowerTimeTracking.app`,
+    //   "appPath":"/Applications/PowerTimeTracking.app",
+    //   "appBundleId": "com.electron.powertimetracking",
+    //   "teamId": "6KK9M46VM2",
+    // }
 
   },
   makers: [{
@@ -41,11 +42,22 @@ module.exports = {
         name: "PowerTimeTracking"
       }
     },
+    // {
+    //   name: "@electron-forge/maker-zip",
+    //   // platforms: [
+    //   //   "darwin","posix"
+    //   // ]
+    // },
     {
-      name: "@electron-forge/maker-zip",
-      platforms: [
-        "darwin","posix"
-      ]
+      name: "@electron-forge/maker-pkg",
+      config: {
+        "identity": "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)",
+        "identity-validation": true,
+        "install-location": "/Applications",
+        "scripts": "src/scripts",
+        "identifier": "com.electron.powertimetracking",
+        "isRelocatable": false,
+      }
     },
     {
       name: "@electron-forge/maker-deb",

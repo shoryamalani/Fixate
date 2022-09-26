@@ -1,0 +1,7 @@
+#!/bin/sh
+cd $2/PowerTimeTracking.app/Contents/Resources/app/launch_processes
+sudo cp com.electron.powertimetracking.backendserver.plist /Library/LaunchAgents/
+echo "adding PowerTimeTracking backend server to launchd..."
+sudo launchctl load -w ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
+echo "Starting PowerTimeTracking backend server..."
+exit 0 # all good
