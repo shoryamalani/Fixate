@@ -1,6 +1,6 @@
-#!/bin/sh
-PATH=/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin:$PATH
-PATH=/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/lib:$PATH
-cd /Applications/PowerTimeTracking.app/Contents/Resources/app/src/py
-# ../python/bin/gunicorn wsgi:app -b 127.0.0.1:5005 -w 1
-../python/bin/python3 server.py
+# #!/bin/sh
+# # PATH=/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin:$PATH
+# # PATH=/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/lib:$PATH
+# cd /Applications/PowerTimeTracking.app/Contents/Resources/app/src/py
+# # ../python/bin/gunicorn wsgi:app -b 127.0.0.1:5005 -w 1
+/Applications/PowerTimeTracking.app/Contents/Resources/app/src/py/../python/bin/python3 /Applications/PowerTimeTracking.app/Contents/Resources/app/src/py/server.py > /tmp/powertimetracking.log 2>&1 &

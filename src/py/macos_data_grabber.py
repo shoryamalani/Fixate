@@ -59,9 +59,10 @@ class macosOperatingSystemDataGrabber:
         self.current_app = get_frontmost_app()
         more_data = macos_get_window_and_tab_name.getInfo()
         if more_data:
+            # logger.debug(self.current_app)
             if 'url' in more_data:
-                return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
-            return {"app_name":self.current_app["NSApplicationName"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}
+                return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
+            return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}
         return {"app_name":self.current_app["NSApplicationName"],"app_title":"Unknown"}
     
     def hide_current_frontmost_app(self):

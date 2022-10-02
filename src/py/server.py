@@ -1,3 +1,4 @@
+#!/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin/python3
 import sys
 from flask import Flask,jsonify,request
 from flask_cors import cross_origin
@@ -7,9 +8,11 @@ import time
 import signal
 import os
 import json
+from loguru import logger
 app = Flask(__name__)
 closing_apps = False
 VERSION = "0.7.1"
+logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
 	
@@ -99,4 +102,5 @@ def get_daily_tasks():
 def get_all_focus_modes():
     return jsonify({"focus_sessions":logger_application.get_all_focus_sessions()})
 if __name__ == "__main__":
+    logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)

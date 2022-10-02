@@ -25,15 +25,15 @@ module.exports = {
         "./Resources/src/python/lib/python3.9/lib-dynload/_testcapi.cpython-39-darwin.so"
       ]
     },
-    // osxNotarize: {
-    //   "appleId": process.env.APPLEID,
-    //   "appleIdPassword": process.env.APPLEIDPASS,
-    //   "tool":"notarytool",
-    //   // "appPath": `out/PowerTimeTracking-darwin-${archName}/PowerTimeTracking.app`,
-    //   "appPath":"/Applications/PowerTimeTracking.app",
-    //   "appBundleId": "com.electron.powertimetracking",
-    //   "teamId": "6KK9M46VM2",
-    // }
+    osxNotarize: {
+      "appleId": process.env.APPLEID,
+      "appleIdPassword": process.env.APPLEIDPASS,
+      "tool":"notarytool",
+      // "appPath": `out/PowerTimeTracking-darwin-${archName}/PowerTimeTracking.app`,
+      "appPath":"/Applications/PowerTimeTracking.app",
+      "appBundleId": "com.electron.powertimetracking",
+      "teamId": "6KK9M46VM2",
+    }
 
   },
   makers: [{
