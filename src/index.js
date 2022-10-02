@@ -59,10 +59,10 @@ var path = require('path')
 // // code. You can also put them in separate files and import them here.
 const {BrowserWindow} = require('electron');
 var VERSION = app.getVersion();
-const {PythonShell} = require('python-shell');
-const child_process = require('child_process');
+// const {PythonShell} = require('python-shell');
+// const child_process = require('child_process');
 const util = require("util");
-const execFile = util.promisify(child_process.execFile);
+// const execFile = util.promisify(child_process.execFile);
 const fetch = require('node-fetch');
 const fs = require("fs");
 const { Server } = require('http');
@@ -86,9 +86,9 @@ async function startServer(){
             if(data.version != VERSION){
                 console.log("Updating server");
                 fetch('http://127.0.0.1:5005/kill_server')
-                setTimeout( function(){
-                  start_server();
-              },5000);
+              //   setTimeout( function(){
+              //     start_server();
+              // },5000);
                  
             }
             console.log("server is running");
@@ -99,7 +99,7 @@ async function startServer(){
     }
     catch(err){
       console.log(err);
-      start_server();
+      // start_server();
     }
     
     // document.getElementById("result").innerHTML = "Server started";
@@ -110,39 +110,39 @@ async function start_server(){
   });
 }
 
-function findServer() {
-  const possibilities = [
-    // In packaged app
-    path.join(process.resourcesPath,"app", "py","server.py"),
-    // In development
-    path.join(__dirname, "py","server.py"),
-  ];
-  for (const path of possibilities) {
-    if (fs.existsSync(path)) {
-      return path;
-    }
-  }
-  console.log("Could not find server, checked", possibilities);
-  app.quit();
-}
+// function findServer() {
+//   const possibilities = [
+//     // In packaged app
+//     path.join(process.resourcesPath,"app", "py","server.py"),
+//     // In development
+//     path.join(__dirname, "py","server.py"),
+//   ];
+//   for (const path of possibilities) {
+//     if (fs.existsSync(path)) {
+//       return path;
+//     }
+//   }
+//   console.log("Could not find server, checked", possibilities);
+//   app.quit();
+// }
 
-function findPython() {
-  const possibilities = [
-    // In packaged app
-    path.join(process.resourcesPath,"app", "python", "bin", "python3.9"),
-    // In development
-    path.join(__dirname, "python", "bin", "python3.9"),
-    //Windows in dev
-    path.join(__dirname, "python", "python.exe")
-  ];
-  for (const path of possibilities) {
-    if (fs.existsSync(path)) {
-      return path;
-    }
-  }
-  console.log("Could not find python3, checked", possibilities);
-  app.quit();
-}
+// function findPython() {
+//   const possibilities = [
+//     // In packaged app
+//     path.join(process.resourcesPath,"app", "python", "bin", "python3.9"),
+//     // In development
+//     path.join(__dirname, "python", "bin", "python3.9"),
+//     //Windows in dev
+//     path.join(__dirname, "python", "python.exe")
+//   ];
+//   for (const path of possibilities) {
+//     if (fs.existsSync(path)) {
+//       return path;
+//     }
+//   }
+//   console.log("Could not find python3, checked", possibilities);
+//   app.quit();
+// }
 
 
 function createWindow() {
@@ -177,7 +177,7 @@ function createWindow() {
     if(!!process.env.DEBUGMENU){
       win.openDevTools();
     }
-    startServer();
+    // startServer();
 
 
     // and load the index.html of the app.

@@ -1,0 +1,20 @@
+npm run package
+spctl -a -vv out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/
+xcrun stapler validate out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/
+sleep 2
+pwd
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-intel-0.7.1.pkg
+pwd
+sleep 2
+xcrun notarytool submit out/PowerTimeTracking-intel-0.7.1.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+sleep 2
+xcrun stapler staple out/PowerTimeTracking-intel-0.7.1.pkg 
+npm run package-arm
+sleep 2
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-arm-0.7.1.pkg
+spctl -a -vv out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/
+xcrun stapler validate out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/
+sleep 2
+xcrun notarytool submit out/PowerTimeTracking-arm-0.7.1.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+sleep 2
+xcrun stapler staple out/PowerTimeTracking-arm-0.7.1.pkg 

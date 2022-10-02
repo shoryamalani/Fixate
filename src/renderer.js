@@ -13,6 +13,7 @@ let start_focus_button = document.querySelector('#start_focus_button')
 let stop_focus_button = document.querySelector('#stop_focus_button')
 let get_last_5_hours_button = document.querySelector('#get_last_5_hours')
 let make_task_button = document.querySelector('#add_daily_focus')
+let restart_server_button = document.querySelector("#close_logger_button")
 var current_timer;
 var focus_mode_id;
 var focus_mode_running_val = false
@@ -59,7 +60,9 @@ save_button_for_app_status.addEventListener('click', function () {
 make_task_button.addEventListener('click', function () {
   make_task()
 });
-
+restart_server_button.addEventListener('click',function(){
+  restart_server()
+})
 // this is an init function to get all the daily tasks
 function get_daily_tasks() {
   fetch(`http://localhost:5005/get_daily_tasks`).then(response => response.json()).then(data => {
@@ -352,16 +355,22 @@ function toggle_closing_apps() {
 }
 function stop_showing_task(task_id){
   console.log("Stop Showing Task")
-  postData(`http:///127.0.0.1:5005/stop_showing_task`, {"id": task_id}).then(data => {
+  postData(`http://127.0.0.1:5005/stop_showing_task`, {"id": task_id}).then(data => {
     console.log(data)
     setTimeout(get_daily_tasks, 1000)
   })
 }
 function complete_task(task_id){
   console.log("Completing task")
-  postData(`http:///127.0.0.1:5005/complete_task`, {"id": task_id}).then(data => {
+  postData(`http://127.0.0.1:5005/complete_task`, {"id": task_id}).then(data => {
     console.log(data)
     setTimeout(get_daily_tasks, 1000)
+  })
+}
+function restart_server(){
+  console.log("restarting server")
+  fetch(`http://127.0.0.1:5005/kill_server`).catch(error => {
+    console.log("probably worked")
   })
 }
 
