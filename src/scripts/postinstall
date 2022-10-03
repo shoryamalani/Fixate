@@ -1,8 +1,10 @@
 #!/bin/sh
+# echo $USER > /tmp/env.txt
 cd $2/PowerTimeTracking.app/Contents/Resources/app/launch_processes
 cp com.electron.powertimetracking.backendserver.plist ~/Library/LaunchAgents/
 echo "adding PowerTimeTracking backend server to launchd..."
-launchctl load ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
+sleep 1
+sudo -u $USER launchctl load -w ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
 echo "Starting PowerTimeTracking backend server..."
-osascript -e 'tell app "System Events" to restart'
+# osascript -e 'tell app "System Events" to restart'
 exit 0 # all good

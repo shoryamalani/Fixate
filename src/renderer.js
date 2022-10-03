@@ -121,6 +121,7 @@ function make_task_tr(task_data) {
   go_through_focus_modes_button.className = "float-child-element button-secondary"
   go_through_focus_modes_button.addEventListener('click', function(){
     go_to_focus_modes_of_task(task_data["id"])
+    document.getElementById("previous_focus_modes_div").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   })
   var td_start_focus_mode = document.createElement("td");
   var start_focus_mode_button = document.createElement("button");
@@ -232,6 +233,11 @@ function go_to_focus_modes_of_task(id){
       tasks[i].hidden = false
     }
   }
+  if(focus_modes.length == 0){
+    document.getElementById("no_previous_focus_modes").hidden = false
+  }else{
+    document.getElementById("no_previous_focus_modes").hidden = true
+  }
 }
 
 function start_focus_mode(){
@@ -248,9 +254,9 @@ function start_focus_mode(){
   task_name = document.getElementById("focus_name_input").value
   task_name.value = ""
   document.querySelector("#focus_name_input").value = ""
+  
   send_notif_and_set_up_focus_mode(task_name, time_duration)
   send_start_focus_mode(time_duration, task_name)
-
 }
 function send_notif_and_set_up_focus_mode(task_name, time_duration){
   focus_mode_running_val = true
@@ -289,6 +295,7 @@ function send_start_focus_mode(time_duration, task_name, task_id=null){
     console.log(data)
     focus_mode_id = data['id']
   })
+  document.getElementById("container_for_focus_mode").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
 }
 function start_focus_mode_of_task(task_id){
   if(focus_mode_running()){
@@ -493,7 +500,7 @@ function get_logging_data(time=null,id=null) {
     document.querySelector("#distractions_list_for_review").innerHTML ="Your Applications and Websites listed as distractions included <br>" + data['relevant_distractions'].join(", ")
     document.getElementById("number_of_times_distracted").innerText = "During this time period you were distracted "+data['distractions']['distractions_number']+" times; "
     document.getElementById("average_time_between_distractions").innerText = "During this time, on average, you were distracted every " +(data['distractions']['distractions_time_min']*60).toFixed(2) + " seconds based on apps that are currently deemed distracting."
-    
+    document.getElementById("distraction_data").scrollIntoView({behavior:'smooth'})
   })
 }
 
