@@ -263,14 +263,15 @@ function send_notif_and_set_up_focus_mode(task_name, time_duration){
   if (Notification.permission !== "granted")
     Notification.requestPermission();
   else {
-    var notification = new Notification(task_name ? task_name != "": "Focus Mode Started", { 
-      title: task_name ? task_name != "": "Focus Mode Started",
+    var notification = new Notification(task_name != "" ? task_name : "Focus Mode Started", { 
+      title: task_name != "" ? task_name : "Focus Mode Started",
       body: time_duration + " minutes"
     });
   }
   document.getElementById("set_up_focus_mode").hidden=true;
   document.getElementById("container_for_focus_mode").hidden=false;
   document.getElementById("logger_controls_div").hidden=true;
+  document.getElementById("container_for_focus_mode").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
   start_count_down_timer(time_duration)
 }
 function focus_mode_running(){
@@ -295,7 +296,7 @@ function send_start_focus_mode(time_duration, task_name, task_id=null){
     console.log(data)
     focus_mode_id = data['id']
   })
-  document.getElementById("container_for_focus_mode").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+  
 }
 function start_focus_mode_of_task(task_id){
   if(focus_mode_running()){
