@@ -11,7 +11,8 @@ import json
 from loguru import logger
 app = Flask(__name__)
 closing_apps = False
-VERSION = "0.7.1"
+current_notifications = []
+VERSION = "0.7.2"
 logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
@@ -41,8 +42,22 @@ def logger_status():
     return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger()})
 @app.route("/is_running")
 def is_running():
+    return jsonify({"success":True})
+
+@app.route("/add_current_notification",methods=["POST"])
+def add_current_notification():
+    notification = request.json["notification"]
+    current_notifications.append(notification)
     return jsonify(success=True)
 
+@app.route("/remove_current_notification",methods=["POST"])
+def remove_current_notification():
+    notification = request.json["notification"]
+    current_notifications.pop(0)
+    return jsonify(success=True)
+@app.route("/notification_check")
+def notification_check():
+    return jsonify({"notifications":current_notifications})
 @app.route("/get_all_time")
 def get_all_time():
     return jsonify({"all_time":get_time_spent.get_all_time()})

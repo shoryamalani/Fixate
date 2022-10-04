@@ -14,6 +14,7 @@ from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
 import re
+import math
 if sys.platform == "darwin":
     from macos_data_grabber import macosOperatingSystemDataGrabber
     systemDataHandler = macosOperatingSystemDataGrabber()
@@ -30,7 +31,6 @@ elif sys.platform == "win32":
 
 
 
-
 # import web_app_stuff.app as web_app
 # BROWSERS = ["Safari","Google Chrome","Firefox"]
 INACTIVE_TIME = 300 # in seconds
@@ -39,11 +39,12 @@ INACTIVE_TIME = 300 # in seconds
 PROCESSES = {}
 UNRECORDED_APPS = ["loginwindow"]
 
-
-
-def check_if_must_be_closed(app,tabname):
+def get_distracting_apps():
+    data = requests.get("http://localhost:5005/check_closing_apps").json()
+    return data
+def check_if_must_be_closed(app,tabname,closing_app):
     try:
-        closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
+        # closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
         will_close = closing_app["closing_apps"]
         apps_to_close = closing_app["apps_to_close"]
     except:
@@ -66,6 +67,8 @@ def search_close_and_log_apps():
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_in_name_form = [app[1] for app in apps]
+    last_thirty_mins_distracting = 0
+    whole_time = 0
     while True:
         
         # # logger.debug(front_app)
@@ -74,7 +77,7 @@ def search_close_and_log_apps():
             #Getting data replaced by JXA and applescript for macos
         # try:
         app = systemDataHandler.get_current_frontmost_app()
-        
+        distracting_apps = get_distracting_apps()
         current_app_name = app['app_name']
         tabname = app['url'] if 'url' in app else None
         title = app['title'] if 'title' in app else "Unknown"
@@ -93,6 +96,8 @@ def search_close_and_log_apps():
             if short_tab not in apps_in_name_form:
                 database_worker.add_application_to_db(short_tab,"website",0,0)
                 apps_in_name_form.append(short_tab)
+            if short_tab in distracting_apps['apps_to_close']:
+                last_thirty_mins_distracting += 1
         #     except Exception as err:
         #         logger.debug(err)
         #         tabname = None
@@ -102,11 +107,21 @@ def search_close_and_log_apps():
             if app["app_name"] not in UNRECORDED_APPS:
                 database_worker.add_application_to_db(app["app_name"],"app",0,0)
                 apps_in_name_form.append(app["app_name"])
-        check_if_must_be_closed(app,tabname)
+            if app["app_name"] in distracting_apps['apps_to_close']:
+                    last_thirty_mins_distracting += 1
+        whole_time +=1
+        if whole_time == 60*30: # 30 mins
+            whole_time = 0
+            if last_thirty_mins_distracting > 60*20:
+                requests.post("http://127.0.0.1:5005/add_current_notification",json={"notification":{"title":"Just know...","body":f"You have been distracted for more than {math.floor(last_thirty_mins_distracting/60)} minutes in the last 30 minutes. Its ok to be distracted but important to be aware of it."}})
+            last_thirty_mins_distracting = 0
+        check_if_must_be_closed(app,tabname,distracting_apps)
+        
         last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
         if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
             active = False
         database_worker.log_current_app(current_app_name,tabname,active,title)
+        
         # logger.debug(current_app_name)
         sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
@@ -272,6 +287,8 @@ def boot_up_checker():
         CLOSING_APPS = False
         global FOCUS_MODE
         FOCUS_MODE = False
+        global CURRENT_APP
+        CURRENT_APP="default value"
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
         # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
         # multiprocessing.Process(target=web_app.start_app).start()

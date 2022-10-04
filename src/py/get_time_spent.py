@@ -66,64 +66,113 @@ def parse_data(data):
 def make_url_to_base(full_url):
     return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
 def proper_time_parse(data,distractions=[]):
-    times = {}
-    last_item = None
-    last_time = None
-    times_between_distractions = []
-    time_between_distractions_seconds = 0
-    for log in data:
-        log = list(log)
-        if log != None:
-            if log[3] == 1:
-                if log[2] != None:
-                    log[1] = make_url_to_base(log[2])
-                if log[1] in times:
-                    if last_time != None:
-                        delta_seconds =  datetime.datetime.strptime(log[0],full_time_format) - datetime.datetime.strptime(last_time,full_time_format)
-                    if last_time == None:
-                        last_time = log[0]
-                        times[log[1]] += 1
-                        if log[1] in distractions:
-                            times_between_distractions.append(time_between_distractions_seconds)
-                            time_between_distractions_seconds = 0
-                        else:
-                            time_between_distractions_seconds += 1
-                    # elif delta_seconds < datetime.timedelta(seconds=10) and last_item == log[1]:
-                    #     times[log[1]] += delta_seconds.seconds
-                    #     last_time = log[0]
-                    elif delta_seconds < datetime.timedelta(seconds=10):
-                        times[log[1]] += delta_seconds.seconds
-                        last_time = log[0]
-                        last_item = log[1]
-                        if log[1] in distractions:
-                            times_between_distractions.append(time_between_distractions_seconds)
-                            time_between_distractions_seconds = 0
-                        else:
-                            time_between_distractions_seconds += delta_seconds.seconds
-                    else:
-                        times[log[1]] += 1
-                        last_time = log[0]
-                        last_item = log[1]
-                        if log[1] in distractions:
-                            times_between_distractions.append(time_between_distractions_seconds)
-                            time_between_distractions_seconds = 0
-                        else:
-                            time_between_distractions_seconds += 1
-                else:
-                    times[log[1]] = 1
-                    if log[1] in distractions:
-                        times_between_distractions.append(time_between_distractions_seconds)
-                        time_between_distractions_seconds = 0
-                    else:
-                        time_between_distractions_seconds += 1
-
-    distractions = {"distractions_number":len(times_between_distractions)}
-    final_distractions_num = len([x for x in times_between_distractions if x > 0])
-    if len(times_between_distractions) == 0:
-        distractions["distractions_time_min"] = 0
-    else:
-        distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
-    return times,distractions
+    # times = {} THIS IS OLD CODE
+    # last_item = None
+    # last_time = None
+    # times_between_distractions = []
+    # time_between_distractions_seconds = 0
+    # for log in data:
+    #     log = list(log)
+    #     if log != None:
+    #         if log[3] == 1:
+    #             if log[2] != None:
+    #                 log[1] = make_url_to_base(log[2])
+    #             if log[1] in times:
+    #                 if last_time != None:
+    #                     delta_seconds =  datetime.datetime.strptime(log[0],full_time_format) - datetime.datetime.strptime(last_time,full_time_format)
+    #                 if last_time == None:
+    #                     last_time = log[0]
+    #                     times[log[1]] += 1
+    #                     if log[1] in distractions:
+    #                         times_between_distractions.append(time_between_distractions_seconds)
+    #                         time_between_distractions_seconds = 0
+    #                     else:
+    #                         time_between_distractions_seconds += 1
+    #                 # elif delta_seconds < datetime.timedelta(seconds=10) and last_item == log[1]:
+    #                 #     times[log[1]] += delta_seconds.seconds
+    #                 #     last_time = log[0]
+    #                 elif delta_seconds < datetime.timedelta(seconds=10):
+    #                     times[log[1]] += delta_seconds.seconds
+    #                     last_time = log[0]
+    #                     last_item = log[1]
+    #                     if log[1] in distractions:
+    #                         times_between_distractions.append(time_between_distractions_seconds)
+    #                         time_between_distractions_seconds = 0
+    #                     else:
+    #                         time_between_distractions_seconds += delta_seconds.seconds
+    #                 else:
+    #                     times[log[1]] += 1
+    #                     last_time = log[0]
+    #                     last_item = log[1]
+    #                     if log[1] in distractions:
+    #                         times_between_distractions.append(time_between_distractions_seconds)
+    #                         time_between_distractions_seconds = 0
+    #                     else:
+    #                         time_between_distractions_seconds += 1
+    #             else:
+    #                 times[log[1]] = 1
+    #                 if log[1] in distractions:
+    #                     times_between_distractions.append(time_between_distractions_seconds)
+    #                     time_between_distractions_seconds = 0
+    #                 else:
+    #                     time_between_distractions_seconds += 1
+    # data = database_worker.get_all_time_logs()
+    # print(len(data))
+    i = 0
+    final_data = []
+    while i < len(data):
+        if data[i][3] != 0:
+            final_data.append(data[i])
+        i += 1
+    # print(len(final_data))
+    previous_time = datetime.datetime.strptime(final_data[0][0],full_time_format)
+    time = 0
+    all_times = {}
+    for data in final_data:
+        if datetime.datetime.strptime(data[0],full_time_format) - previous_time > datetime.timedelta(seconds=180):
+            time += 1
+            url_or_app = make_url_to_base(data[2]) if data[2] else data[1]
+            if url_or_app in all_times:
+                all_times[url_or_app] += 1
+            else:
+                all_times[url_or_app] = 1
+        else:
+            current_time = (datetime.datetime.strptime(data[0],full_time_format) - previous_time).seconds
+            time += current_time
+            url_or_app = make_url_to_base(data[2]) if data[2] else data[1]
+            if url_or_app in all_times:
+                all_times[url_or_app] += current_time
+            else:
+                all_times[url_or_app] = current_time
+        previous_time = datetime.datetime.strptime(data[0],full_time_format)
+    # distractions = get_all_distracting_apps()
+    distractions_total = 0
+    previous = final_data[0][2]
+    for data in final_data:
+        if data[2]:
+            url = make_url_to_base(data[2])
+            if url in distractions and url != previous:
+                distractions_total +=1
+            previous = url
+        else:
+            if data[1] in distractions and data[1] != previous:
+                distractions_total +=1
+            previous = data[1]
+    # print(distractions_total)
+    # previous = data
+    # print(time)
+    # final_times = [[a,b] for a,b in all_times.items()]
+    # final_times.append(["Total Time",time])
+    # final_times.sort(key=lambda x: x[1],reverse=True)
+    # for key in final_times:
+    #     print(key)
+    # distractions = {"distractions_number":len(times_between_distractions)}
+    # final_distractions_num = len([x for x in times_between_distractions if x > 0])
+    # if len(times_between_distractions) == 0:
+    #     distractions["distractions_time_min"] = 0
+    # else:
+    #     distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
+    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total)/60}
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()
@@ -172,6 +221,14 @@ def get_time(time_period):
         start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=5),full_time_format)
         data = database_worker.get_logs_between_times(start_of_last_five_hours,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "Last 5 Hours"
+    elif time_period == "last_hour":
+        start_of_last_hour = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=1),full_time_format)
+        data = database_worker.get_logs_between_times(start_of_last_hour,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "Last Hour"
+    elif time_period == "last_30_minutes":
+        start_of_last_30_minutes = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(minutes=30),full_time_format)
+        data = database_worker.get_logs_between_times(start_of_last_30_minutes,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "Last 30 Minutes"
     else:
         data = database_worker.get_all_time_logs()
         name = "All Time"
@@ -200,6 +257,7 @@ def main():
     # #     if log[3] == 0:
     # #         print(log)
     # return parse_data(data)
-    print(get_time("today"))
+    print(get_time("week"))
+
 if __name__ == "__main__":
     print(main())

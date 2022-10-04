@@ -12,6 +12,8 @@ let save_button_for_app_status = document.querySelector('#save_button_for_app_st
 let start_focus_button = document.querySelector('#start_focus_button')
 let stop_focus_button = document.querySelector('#stop_focus_button')
 let get_last_5_hours_button = document.querySelector('#get_last_5_hours')
+let get_last_hour_button = document.querySelector('#get_last_hour')
+let get_last_30_minutes_button = document.querySelector('#get_last_30_minutes')
 let make_task_button = document.querySelector('#add_daily_focus')
 let restart_server_button = document.querySelector("#close_logger_button")
 var current_timer;
@@ -39,6 +41,12 @@ get_yesterday_time_button.addEventListener('click', function () {
 });
 get_week_time_button.addEventListener('click', function () {
   get_logging_data("week")
+});
+get_last_hour_button.addEventListener('click', function () {
+  get_logging_data("last_hour")
+});
+get_last_30_minutes_button.addEventListener('click', function () {
+  get_logging_data("last_30_minutes")
 });
 
 app_status_button.addEventListener('click', function () {
@@ -594,11 +602,26 @@ function sortTable() {
     }
   }
 }
+function notification_check(){
+  fetch('http://localhost:5005/notification_check').then(response => response.json()).then(data => {
+        if(data['notifications'].length >0){
+          var notification = new Notification(data["notifications"][0]["title"], { 
+            title: data["notifications"][0]["title"],
+            body: data["notifications"][0]["body"]
+          });
+          postData('http://localhost:5005/remove_current_notification', {'notification': data["notifications"][0]})
+        }
 
+
+      }).catch(error => {
+        console.log("FAIL")
+      })
+}
 function start_running(){
       fetch('http://localhost:5005/is_running').then(response => response.json()).then(data => {
         get_daily_tasks()
         get_all_focus_sessions()
+        setInterval(notification_check,2000)
       }).catch(error => {
         console.log("trying to start")
         setTimeout(start_running, 1000);

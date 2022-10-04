@@ -177,7 +177,7 @@ function createWindow() {
     if(!!process.env.DEBUGMENU){
       win.openDevTools();
     }
-    // startServer();
+    startServer();
 
 
     // and load the index.html of the app.
