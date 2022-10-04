@@ -432,7 +432,7 @@ setInterval(function () {
       document.getElementById("stop_logger_button").hidden = true
       document.getElementById("is_logging").innerText = "Logger is not running"
     }
-    if (data['closing_apps'] == true) {
+    if (data['closing_apps'] == true && data['logger_running_status'] == true) {
       document.getElementById("closing_app_status").innerText = "Closing apps is enabled"
       document.getElementById("toggle_closing_apps").classList = ["float-child-element button-error"]
       document.getElementById("toggle_closing_apps").value = "Disable Closing Apps"
