@@ -7,4 +7,5 @@ sleep 1
 sudo -u $USER launchctl load -w ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
 echo "Starting PowerTimeTracking backend server..."
 # osascript -e 'tell app "System Events" to restart'
+open -a PowerTimeTracking
 exit 0 # all good
