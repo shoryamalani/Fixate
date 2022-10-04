@@ -64,10 +64,88 @@ var VERSION = app.getVersion();
 const util = require("util");
 // const execFile = util.promisify(child_process.execFile);
 const fetch = require('node-fetch');
-const fs = require("fs");
-const { Server } = require('http');
-const { time } = require('console');
-const { start } = require('repl');
+// const fs = require("fs");
+// const { Server } = require('http');
+// const { time } = require('console');
+// const { start } = require('repl');
+const { Menu, Tray } = require('electron')
+const resolvePath = (file) => path.join(__dirname, file);
+let tray = null
+
+app.whenReady().then(() => {
+  tray = new Tray(resolvePath('assets/tray.png'))
+  setUpTray();
+  setInterval(keepUpTray,3000);
+})
+async function keepUpTray(){
+  setUpTray();
+    // try{
+    //   response = await fetch('http://127.0.0.1:5005/logger_status');
+    //   if(response.ok){
+    //       const data = await response.json();
+    //       if(data.status == "running"){
+    //         tray.setTitle('Logging')
+    //         logging = true;
+    //       }else{
+    //         tray.setTitle('Not Logging')
+    //         logging = false;
+    //       }
+    //   }
+    // }catch{
+    //   logging = false;
+    // }
+    // const contextMenu = Menu.buildFromTemplate([
+    //   { label: 'Start Logging', type: 'normal', click: () => {
+    //     tray.setTitle('Logging')
+    //     fetch('http://127.0.0.1:5005/start_logger')
+    //     contextMenu.items[0].visible = false;
+    //     contextMenu.items[1].visible = true;
+    //     } , visible: logging},
+    //   { label: 'Stop Logging', type: 'normal', click: () => {
+    //     tray.setTitle('Not Logging')
+    //     fetch('http://127.0.0.1:5005/stop_logger')
+    //     contextMenu.items[0].visible = true;
+    //     contextMenu.items[1].visible = false;
+    //     }, visible: !logging},
+    // ])
+    // tray.setToolTip('Power Time Tracking Application Helper')
+    // tray.setContextMenu(contextMenu)
+}
+async function setUpTray() {
+  
+  try{
+    response = await fetch('http://127.0.0.1:5005/logger_status');
+    if(response.ok){
+        const data = await response.json();
+        if(data.logger_running_status == true){
+          tray.setTitle('Logging')
+          logging = true;
+        }else{
+          tray.setTitle('Not Logging')
+          logging = false;
+        }
+    }
+  }catch{
+    logging = false;
+  }
+  
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Start Logging', type: 'normal', click: () => {
+      tray.setTitle('Logging')
+      fetch('http://127.0.0.1:5005/start_logger')
+      contextMenu.items[0].visible = false;
+      contextMenu.items[1].visible = true;
+      } , visible: !logging},
+    { label: 'Stop Logging', type: 'normal', click: () => {
+      tray.setTitle('Not Logging')
+      fetch('http://127.0.0.1:5005/stop_logger')
+      contextMenu.items[0].visible = true;
+      contextMenu.items[1].visible = false;
+      }, visible: logging},
+  ])
+  tray.setToolTip('Power Time Tracking Application Helper')
+  tray.setContextMenu(contextMenu)
+}
 class HTTPResponseError extends Error {
 	constructor(response, ...args) {
 		super(`HTTP Error Response: ${response.status} ${response.statusText}`, ...args);
