@@ -172,7 +172,7 @@ def proper_time_parse(data,distractions=[]):
     #     distractions["distractions_time_min"] = 0
     # else:
     #     distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
-    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total)/60}
+    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total if distractions_total > 0 else 0)/60}
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()
