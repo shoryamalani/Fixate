@@ -10,14 +10,15 @@ getInstallerConfig()
 
 function getInstallerConfig () {
   console.log('creating windows installer')
-  const rootPath = path.join('./')
-  const outPath = path.join(rootPath, 'out')
+  const outPath = path.join('out')
+  
+  console.log(path.join(outPath, 'PowerTimeTracking-win32-x64'))
 
   return Promise.resolve({
-    appDirectory: path.join(outPath, 'PowerTimeTracking-win32-x64/'),
+    appDirectory: path.join('out', 'PowerTimeTracking-win32-x64'),
     authors: 'Shorya Malani',
     noMsi: true,
-    outputDirectory: path.join(outPath, 'windows-installer'),
+    outputDirectory: path.join('out', 'windows-installer'),
     exe: 'PowerTimeTracking.exe',
     setupExe: `PowerTimeTrackingAppInstaller.exe`,
     setupIcon: path.join('./src', 'assets', 'icon.ico')
