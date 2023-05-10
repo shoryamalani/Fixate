@@ -9,6 +9,7 @@ import signal
 import os
 import json
 from loguru import logger
+from datetime import datetime
 app = Flask(__name__)
 closing_apps = False
 current_notifications = []
@@ -64,6 +65,20 @@ def notification_check():
 @app.route("/get_all_time")
 def get_all_time():
     return jsonify({"all_time":get_time_spent.get_all_time()})
+
+@app.route('/get_specific_time_log',methods=["GET","POST"])
+def get_specific_time_log():
+    start_time = request.json["start_time"]
+    print(start_time)
+    # Wed May 10 2023 00:00:00
+
+    # &a %b %d %Y %H:%M:%S
+    start_time = datetime.strptime(start_time, '%a %b %d %Y %H:%M:%S') # 
+    end_time = request.json["end_time"]
+    print(end_time)
+    end_time = datetime.strptime(end_time, '%a %b %d %Y %H:%M:%S')
+    times,distractions = get_time_spent.get_specific_time(start_time,end_time)
+    return jsonify({"time":times,"distractions":distractions})
 
 @app.route("/get_time_log",methods=["GET","POST"])
 def get_time():
