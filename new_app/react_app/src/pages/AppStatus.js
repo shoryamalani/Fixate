@@ -121,14 +121,14 @@ const  AppStatus = () => {
       
       <h1 style={css.h1}>App Status</h1>
     <Stack direction="row" spacing={3}>
-      <TextField id="outlined-basic" label="Outlined" variant="outlined"  onChange={(e)=>{checkFilterText(e.target.value)}} />
+      <TextField id="outlined-basic" label="Name" variant="outlined"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select
     labelId="websiteOrAppLabel"
     style={css.body}
     id="websiteOrApp"
     value={filterValue}
-    label="filter"
+    label="type"
     onChange={(e)=>{
       console.log(e)
       setFilterValue(e.target.value)
@@ -154,7 +154,39 @@ const  AppStatus = () => {
     <MenuItem value={"website"}>Website</MenuItem>
     <MenuItem value={"app"}>App</MenuItem>
   </Select>
-  <Checkbox onChange={(e)=>{
+  {/* <InputLabel id="distractingOrNotLabel">Distracting</InputLabel> */}
+  <Select
+    labelId="distractingOrNotLabel"
+    style={css.body}
+    id="distractingOrNot"
+    value={filterValue}
+    label="Distracting Filter"
+    onChange={(e)=>{
+      console.log(e)
+      setFilterValue(e.target.value)
+      var vals = {};
+      console.log(e.target.value==="website")
+      Object.keys(filterApps).forEach((index,value) => {
+        console.log(apps[index]['type'])
+        var temp = filterApps[index] 
+        if(e.target.value === 'all'){          
+          temp['distracting'] = true;
+        } else if (apps[index]['distracting']  === (e.target.value === 'distracting' ? 1:0)){
+          temp['distracting'] = true;
+        } else {
+          temp['distracting'] = false;
+        }
+        vals[index] = temp;
+      })
+      console.log(vals);
+      setFilterApps(vals);
+    }}
+  >
+    <MenuItem value={"all"}>All</MenuItem>
+    <MenuItem value={"distracting"}>distracting</MenuItem>
+    <MenuItem value={"not distracting"}>Not distracting</MenuItem>
+  </Select>
+  {/*<Checkbox onChange={(e)=>{
     var vals = {};
     Object.keys(filterApps).forEach((index,value) => {
       var temp = filterApps[index]
@@ -167,7 +199,7 @@ const  AppStatus = () => {
     })
     setFilterApps(vals);
 
-  }}>Distracting</Checkbox>
+  }}>Distracting</Checkbox> */}
       </Stack>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -232,9 +232,25 @@ def get_time(time_period):
     else:
         data = database_worker.get_all_time_logs()
         name = "All Time"
+    if data == []:
+        return {"Total":0},{"distractions_number":0,"distractions_time_min":0/60},"No Data"
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
     return times,distractions,name
+
+def get_specific_time(start_time,end_time):
+    print(datetime.datetime.strftime(start_time,full_time_format)) 
+    print(datetime.datetime.strftime(end_time,full_time_format))
+    data = database_worker.get_logs_between_times(datetime.datetime.strftime(start_time,full_time_format),datetime.datetime.strftime(end_time,full_time_format))
+    # end_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=23,minute=59,second=59)-datetime.timedelta(days=1),full_time_format)
+    # start_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=1),full_time_format)
+    # data = database_worker.get_logs_between_times(end_of_yesterday,start_of_yesterday)
+    print(data)
+    if data == []:
+        return {"Total":0},{"distractions_number":0,"distractions_time_min":0/60}
+    times,distractions = proper_time_parse(data,get_all_distracting_apps())
+    times = parse_for_display(times)
+    return times,distractions
     
 def get_time_from_focus_session(focus_session_id):
     data = database_worker.get_logs_from_focus_session(focus_session_id)
