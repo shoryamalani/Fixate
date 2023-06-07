@@ -13,7 +13,7 @@ from datetime import datetime
 app = Flask(__name__)
 closing_apps = False
 current_notifications = []
-VERSION = "0.7.2"
+VERSION = "0.9.1"
 logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
