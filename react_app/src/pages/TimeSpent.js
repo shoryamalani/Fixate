@@ -101,7 +101,7 @@ function TimeSpent() {
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
       <h1 style={css.h1}>Time Spent</h1>
-    <Stack direction="row" spacing={1} style={css.body}>
+    <Stack direction="row" spacing={1} style={css.contrastContent}>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}} >Last 30 minutes</Button>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
@@ -109,8 +109,13 @@ function TimeSpent() {
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
-      <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button>
+      
     </Stack>
+    <div style={{backgroundColor:'black',borderRadius:'2em'}}>
+        <div style={css.contrastContent}>
+        <Button variant="contained" onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button> 
+        </div>
+    <div style={css.contrastContent}>
     
     <Calendar style = {css.body}
           onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
@@ -119,6 +124,8 @@ function TimeSpent() {
           locale={"en-US"}
           selectRange={true}
         />
+        </div>
+        </div>
         {pieChartData && 
         <div style={css.contrastContent}>
         <Pie data={pieChartData}
