@@ -1,7 +1,8 @@
 
 const css = {
     h1: {
-        // color: 'red',
+        color: 'white',
+
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -19,6 +20,7 @@ const css = {
     mainContent:{
         flex: 1,
         maxWidth:'80vw',
+        color:'#d9eaff',
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
@@ -28,13 +30,27 @@ const css = {
     },
     
     container: {
-    display: 'flex',
-    flexDirection: 'column',
-    minWidth: '100vw',
-    minHeight: '100vh',
-    padding: '0',
-    margin: '0',
+        backgroundColor: '#00316e',
+        display: 'flex',
+        flexDirection: 'column',
+        minWidth: '100vw',
+        minHeight: '100vh',
+        padding: '0',
+        margin: '0',
     },
+    contrastContent: {
+        backgroundColor: '#000000',
+        // use all available space
+        flex: 1,
+        // center content
+        justifyContent: 'center',
+        display: 'flex',
+        padding: '1vw',
+        margin: '1em',
+        borderRadius: '3em',
+        color: 'white'
+    }
+
 
 }
 export default css;

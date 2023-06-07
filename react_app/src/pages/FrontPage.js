@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
 import {setLogging,setClosingApps} from '../features/LoggerSlice';
+import { Grid } from '@mui/material';
 function FrontPage() {
   const logging = useSelector(state => state.logger.logging);
   const closingApps = useSelector(state => state.logger.closingApps);
@@ -66,11 +67,14 @@ function FrontPage() {
       
       <h1 style={css.h1}>Server Controls</h1>
     <Stack direction="row" spacing={3} style={css.body}>
-      <Button variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Server</span></Button>
-      <Button variant='contained' color={closingApps ? 'success': 'error'} onClick={toggle_blocking}><span>{closingApps ? 'Stop': 'Start'} blocking</span></Button>
+      <div style={css.contrastContent}>
+      <Button style={{margin:5}} variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Server</span></Button>
+      <Button style={{margin:5}} variant='contained' color={closingApps ? 'success': 'error'} onClick={toggle_blocking}><span>{closingApps ? 'Stop': 'Start'} blocking</span></Button>
       {/* <Button variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>Start Server</span></Button> */}
-      <Button variant='contained' color='error' onClick={restart_server}><span>Restart Server</span></Button>
+      <Button style={{margin:5}} variant='contained' color='error' onClick={restart_server}><span>Restart Server</span></Button>
+      </div>
     </Stack>
+    <div style={css.contrastContent}>
     <p>
       When the server is running, it will automatically start logging data about what applications you are using. <br></br>
       This data is stored locally on your computer and is not sent anywhere. <br></br>
@@ -78,6 +82,7 @@ function FrontPage() {
       You can stop the server at any time by clicking the "Stop Server" button.
 
     </p>
+    </div>
     </div>
   )
 }

@@ -120,15 +120,17 @@ const  AppStatus = () => {
       <div>
       
       <h1 style={css.h1}>App Status</h1>
+  <div style={css.contrastContent}>
     <Stack direction="row" spacing={3}>
-      <TextField id="outlined-basic" label="Name" variant="outlined"  onChange={(e)=>{checkFilterText(e.target.value)}} />
+      <TextField id="outlined-basic" style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}} label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select
     labelId="websiteOrAppLabel"
-    style={css.body}
     id="websiteOrApp"
+    style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}}
     value={filterValue}
     label="type"
+    variant='filled'
     onChange={(e)=>{
       console.log(e)
       setFilterValue(e.target.value)
@@ -157,7 +159,8 @@ const  AppStatus = () => {
   {/* <InputLabel id="distractingOrNotLabel">Distracting</InputLabel> */}
   <Select
     labelId="distractingOrNotLabel"
-    style={css.body}
+    style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}}
+    variant='filled'
     id="distractingOrNot"
     value={filterValue}
     label="Distracting Filter"
@@ -186,6 +189,7 @@ const  AppStatus = () => {
     <MenuItem value={"distracting"}>distracting</MenuItem>
     <MenuItem value={"not distracting"}>Not distracting</MenuItem>
   </Select>
+
   {/*<Checkbox onChange={(e)=>{
     var vals = {};
     Object.keys(filterApps).forEach((index,value) => {
@@ -201,6 +205,7 @@ const  AppStatus = () => {
 
   }}>Distracting</Checkbox> */}
       </Stack>
+      </div>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>

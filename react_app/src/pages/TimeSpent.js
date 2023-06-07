@@ -7,12 +7,14 @@ import dayjs from 'dayjs';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
 import {Pie} from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
 	
 import 'react-calendar/dist/Calendar.css';
 import { Colors } from 'chart.js/auto';
 function TimeSpent() {
   const [customDayValue, setCustomDayValue] = React.useState(new Date());
   const [pieChartData, setPieChartData] = React.useState(null);
+  Chart.defaults.color = '#FFFFFF';
   const fetchTimeSpent = async (start, end) => {
     const response = await fetch('http://localhost:5005/get_specific_time_log', {
       method: 'POST',
@@ -24,7 +26,7 @@ function TimeSpent() {
         "end_time": end.toDateString() + " "+end.toTimeString().split(" ")[0]
       })
     }).catch(error => {console.log(error)});
-    const data = await response.json().catch(error => {console.log(error)});
+    var data = await response.json().catch(error => {console.log(error)});
     // remove the first element from an array
     data['time'].shift();
     await setPieChartData({
@@ -32,7 +34,7 @@ function TimeSpent() {
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]),
+          data: data['time'].map((i) => i[1]/60),
           borderColor: "black",
           backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 0
@@ -44,7 +46,7 @@ function TimeSpent() {
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]),
+          data: data['time'].map((i) => i[1]/60),
           borderColor: "black",
           backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 2
@@ -72,7 +74,7 @@ function TimeSpent() {
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]),
+          data: data['time'].map((i) => i[1]/60),
           borderColor: "black",
           backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 0
@@ -84,7 +86,7 @@ function TimeSpent() {
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]),
+          data: data['time'].map((i) => i[1]/60),
           borderColor: "black",
           backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 2
@@ -109,7 +111,7 @@ function TimeSpent() {
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
       <Button variant="contained" style={css.button} onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button>
     </Stack>
-
+    
     <Calendar style = {css.body}
           onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
           value={customDayValue}
@@ -117,15 +119,21 @@ function TimeSpent() {
           locale={"en-US"}
           selectRange={true}
         />
-        {pieChartData && <Pie data={pieChartData}
+        {pieChartData && 
+        <div style={css.contrastContent}>
+        <Pie data={pieChartData}
         options={{
           plugins: {
             title: {
               display: true,
-              text: "Minutes Spent per App"
+              text: "Minutes Spent per App",
+              
             }
+            
           }
-        }} />}
+          
+        }} /></div>
+        }
     </div>
   )
 }
