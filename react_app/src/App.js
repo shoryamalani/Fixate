@@ -6,7 +6,7 @@ import FrontPage from './pages/FrontPage';
 import TimeSpent from './pages/TimeSpent'
 // import { Nav, NavLink, NavMenu }
 // 	from "./components/NavbarElements";
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import css from './Style';
 import FocusModes from './pages/FocusModes';
 import AppStatus from './pages/AppStatus';
