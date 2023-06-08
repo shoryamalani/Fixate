@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
 import {setApp, setCertainApp, flipDistractingApp} from '../features/AppSlice'
-import { Checkbox, InputLabel, MenuItem, Select, TableContainer, TextField } from '@mui/material';
+import { Checkbox, InputLabel, MenuItem, Select, TableContainer, TextField, createTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,7 +12,9 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { FaSearch } from 'react-icons/fa';
-
+import { useTheme } from '@mui/material/styles';
+import { ThemeProvider } from 'styled-components';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const  AppStatus = () => {
   // const [allApps, setAllApps] = useState(null);
@@ -21,6 +23,13 @@ const  AppStatus = () => {
   const [filterText, setFilterText] = useState('');
   const [filterApps, setFilterApps] = useState({});
   console.log(apps)
+  const theme = createTheme(
+    {
+      palette: {
+        mode: 'dark',
+      }
+    }
+  );
   const dispatch = useDispatch();
   // write a use effect that gets the app status and sets the state
 
@@ -117,17 +126,18 @@ const  AppStatus = () => {
       setFilterApps(vals);
     }
     return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
       <div>
       
       <h1 style={css.h1}>App Status</h1>
   <div style={css.contrastContent}>
     <Stack direction="row" spacing={3}>
-      <TextField id="outlined-basic" style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}} label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
+      <TextField   label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select
     labelId="websiteOrAppLabel"
     id="websiteOrApp"
-    style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}}
     value={filterValue}
     label="type"
     variant='filled'
@@ -159,7 +169,6 @@ const  AppStatus = () => {
   {/* <InputLabel id="distractingOrNotLabel">Distracting</InputLabel> */}
   <Select
     labelId="distractingOrNotLabel"
-    style={{padding: '1em', paddingTop:'0em', backgroundColor: 'white'}}
     variant='filled'
     id="distractingOrNot"
     value={filterValue}
@@ -206,8 +215,10 @@ const  AppStatus = () => {
   }}>Distracting</Checkbox> */}
       </Stack>
       </div>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <div style={css.contrastContent}>
+      
+      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+        <Table >
         <TableHead>
           <TableRow>
             <TableCell>App Name </TableCell>
@@ -230,6 +241,7 @@ const  AppStatus = () => {
         </TableBody>
         </Table>
       </TableContainer>
+      </div>
     {/* { 
         Object.keys(apps).map(appNum => {
           return (
@@ -243,6 +255,7 @@ const  AppStatus = () => {
       }  */}
       
     </div>
+    </ThemeProvider>
   )
 }
 
