@@ -14,7 +14,6 @@ import datetime
 import database_worker
 
 
-
 logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 
 last_mouse_move_set = datetime.datetime.now()
