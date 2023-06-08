@@ -10,19 +10,15 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import css from './Style';
 import FocusModes from './pages/FocusModes';
 import AppStatus from './pages/AppStatus';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { orange } from '@mui/material/colors';
-import { ThemeProvider } from 'styled-components';
+
 import { CssBaseline } from '@mui/material';
 // import { Text } from 'react';
 const theme = createTheme({
-	status: {
-	  danger: orange[500],
-	},
-	// palette: {
-	// 	mode: 'dark',
-	// }
-
+	palette: {
+		mode: 'dark',
+	}
   });
 function App() {
 	console.log(window.innerHeight);
@@ -36,7 +32,7 @@ return (
 	// </Router>
 
 <ThemeProvider theme={theme}>
-	<CssBaseline>
+	<CssBaseline/>
 <div style={css.container} height ={window.innerHeight +'px'}>
 	<Router>
 	{/* <Nav>
@@ -58,7 +54,6 @@ return (
 	<Navbar />
 	</Router>
 	</div>
-	</CssBaseline>
 	</ThemeProvider>
 );
 }
