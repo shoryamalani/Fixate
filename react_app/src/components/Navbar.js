@@ -2,25 +2,27 @@
 import React from "react";
 import { Nav, NavLink, NavMenu }
 	from "./NavbarElements";
+import { useNavigate } from "react-router-dom";
 import css from "../Style";
 
   const Navbar = () => {
+    const navigate = useNavigate()
     return (
       <>
         <Nav>
           <NavMenu>
-            <NavLink to="/" activestyle="true" default>
+            <button onClick={() => navigate('/')}>
               Front Page
-            </NavLink>
-            <NavLink to="/timeSpent" activestyle="true">
+            </button>
+            <button onClick={() => navigate('/timeSpent')}>
               Time Spent
-            </NavLink>
-            <NavLink to="/focusModes" activestyle="true">
+            </button>
+            <button onClick={() => navigate('/focusModes')}>
               Focus Modes
-            </NavLink>
-            <NavLink to="/appStatus" activestyle="true">
+            </button>
+            <button onClick={() => navigate('/appStatus')}>
               App Status
-            </NavLink>
+            </button>
           </NavMenu>
         </Nav>
       </>
