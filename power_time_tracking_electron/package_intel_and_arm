@@ -18,4 +18,4 @@ pwd
 sleep 2
 xcrun notarytool submit out/PowerTimeTracking-intel-0.9.1.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
 sleep 2
-xcrun stapler staple out/PowerTimeTracking-intel-0.9.1.pkgZ 
+xcrun stapler staple out/PowerTimeTracking-intel-0.9.1.pkg 
