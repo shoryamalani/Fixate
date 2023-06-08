@@ -260,7 +260,7 @@ function createWindow() {
             
     // // }
     // if(!!process.env.DEBUGMENU){
-      win.openDevTools();
+      // win.openDevTools();
     // }
     startServer();
 
