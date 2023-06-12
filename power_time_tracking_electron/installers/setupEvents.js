@@ -51,6 +51,7 @@ switch (squirrelEvent) {
     
     spawnUpdate(['--createShortcut', exeName]);
     
+
     
  case '--squirrel-updated':
    

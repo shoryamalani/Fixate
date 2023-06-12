@@ -4,6 +4,7 @@ import { Nav, NavLink, NavMenu }
 	from "./NavbarElements";
 import { useNavigate } from "react-router-dom";
 import css from "../Style";
+import { Button } from "@mui/material";
 
   const Navbar = () => {
     const navigate = useNavigate()
@@ -11,18 +12,18 @@ import css from "../Style";
       <>
         <Nav>
           <NavMenu>
-            <button onClick={() => navigate('/')}>
-              Front Page
-            </button>
-            <button onClick={() => navigate('/timeSpent')}>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/')}>
+              Home Page
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}}onClick={() => navigate('/timeSpent')}>
               Time Spent
-            </button>
-            <button onClick={() => navigate('/focusModes')}>
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/focusModes')}>
               Focus Modes
-            </button>
-            <button onClick={() => navigate('/appStatus')}>
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/appStatus')}>
               App Status
-            </button>
+            </Button>
           </NavMenu>
         </Nav>
       </>
