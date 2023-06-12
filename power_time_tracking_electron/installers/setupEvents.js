@@ -31,6 +31,7 @@ handleSquirrelEvent: function() {
  const squirrelEvent = process.argv[1];
 switch (squirrelEvent) {
  case '--squirrel-install':
+    
  case '--squirrel-updated':
  // Optionally do things such as:
  // - Add your .exe to the PATH

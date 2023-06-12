@@ -297,6 +297,30 @@ def boot_up_checker():
         logger.debug(e)
         return e
     return True
+def get_focus_mode_status():
+    global FOCUS_MODE
+    try:
+        if FOCUS_MODE:
+            latest_focus_mode = database_worker.get_latest_focus_session()
+            print(latest_focus_mode)
+            if(latest_focus_mode):
+                end_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=latest_focus_mode[2])
+                start_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S')
+                time_elapsed = datetime.datetime.now() - start_time
+                time_elapsed = f"{int(time_elapsed.total_seconds()/60)}:{  time_elapsed.seconds%60 if time_elapsed.seconds%60> 9 else '0'+str(time_elapsed.seconds%60)}"
+                time_remaining = end_time - datetime.datetime.now()
+                time_remaining = f"{int(time_remaining.total_seconds()/60)}:{  time_remaining.seconds%60 if time_remaining.seconds%60> 9 else '0'+str(time_remaining.seconds%60)}"
+                if (end_time < datetime.datetime.now()):
+                    stop_focus_mode(latest_focus_mode[0])
+                    return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+                return {"status":True, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0]}
+            else:
+                return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None} 
+        else:
+            return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+    except Exception as e:
+        print(e)
+        return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
 if __name__ == "__main__":
     boot_up_checker()
     
