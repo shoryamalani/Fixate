@@ -142,7 +142,7 @@ def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
 def get_all_time_logs():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log")
@@ -178,7 +178,7 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
