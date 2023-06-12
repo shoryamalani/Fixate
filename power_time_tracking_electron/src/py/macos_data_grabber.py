@@ -12,10 +12,11 @@ from Foundation import NSObject
 from ApplicationServices import AXIsProcessTrusted
 import datetime
 import database_worker
+import constants
 
 
 
-logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 
 last_mouse_move_set = datetime.datetime.now()
 
