@@ -241,8 +241,8 @@ function createWindow() {
     if(app.isPackaged) {
       win.loadFile('index.html'); // prod
     }else{
-      // win.loadURL('http://localhost:3000'); // dev
-      win.loadFile('../react_app/build/index.html'); // prod
+      win.loadURL('http://localhost:3000'); // dev
+      // win.loadFile('../react_app/build/index.html'); // prod
       win.webContents.session.setProxy({mode:"direct","proxyRules":"http://127.0.0.1:5005"});
     }
     // try{
@@ -259,9 +259,9 @@ function createWindow() {
     //     // });
             
     // // }
-    // if(!!process.env.DEBUGMENU){
-      // win.openDevTools();
-    // }
+    if(!app.isPackaged){
+      win.openDevTools();
+    }
     startServer();
 
 

@@ -17,6 +17,7 @@ Set things as distrating just from daily things
 Move phone reminder when pomodoro starts
 User day planner
 Day rating mechanism
+add DAILY MEMOIZATION
 
 // COMMAND TO NOTARIZE
 xcrun notarytool submit PowerTimeTracking-darwin-x64-0.7.0.zip --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"

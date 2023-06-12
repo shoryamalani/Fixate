@@ -1,6 +1,6 @@
 import sys
 from flask import Flask,jsonify,request
-from flask_cors import cross_origin
+from flask_cors import CORS
 import application as logger_application
 import get_time_spent
 import time
@@ -11,6 +11,7 @@ from loguru import logger
 from datetime import datetime
 import constants
 app = Flask(__name__)
+CORS(app)
 closing_apps = False
 current_notifications = []
 VERSION = "0.9.1"
@@ -42,7 +43,9 @@ def logger_status():
     # resp = Flask.make_response({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger()})
     # resp.headers["Access-Control-Allow-Origin"] = "*"
     # return resp
-    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger()})
+    in_focus_mode = logger_application.get_focus_mode_status()
+
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode})
 @app.route("/is_running")
 def is_running():
     return jsonify({"success":True})
@@ -114,6 +117,8 @@ def complete_task():
     
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
+    if closing_apps == False:
+        toggle_closing_apps()
     if request.json["task_id"]!=None:
         return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json["task_id"])}),200
     return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
