@@ -11,14 +11,24 @@ import css from './Style';
 import FocusModes from './pages/FocusModes';
 import AppStatus from './pages/AppStatus';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { orange } from '@mui/material/colors';
+import { blue, orange } from '@mui/material/colors';
 
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, colors } from '@mui/material';
 // import { Text } from 'react';
 const theme = createTheme({
 	palette: {
 		mode: 'dark',
-	}
+		secondary: {
+			main: '#f44336',
+		},
+		info: {
+			main: '#2196f3',
+		},
+		failure: {
+			main: '#f44336',
+		}
+	},
+
   });
 function App() {
 	console.log(window.innerHeight);
