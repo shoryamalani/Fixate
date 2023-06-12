@@ -1,4 +1,3 @@
-#!/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin/python3
 import sys
 from flask import Flask,jsonify,request
 from flask_cors import CORS
@@ -10,15 +9,15 @@ import os
 import json
 from loguru import logger
 from datetime import datetime
+import constants
 app = Flask(__name__)
 CORS(app)
 closing_apps = False
 current_notifications = []
 VERSION = "0.9.1"
-logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
-	
     if logger_application.boot_up_checker():
         return jsonify(success=True)
 
