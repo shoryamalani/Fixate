@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
-import {setLogging,setClosingApps} from '../features/LoggerSlice';
-import { Grid } from '@mui/material';
+import {setLogging,setClosingApps,setFocusMode} from '../features/LoggerSlice';
+import { Grid, LinearProgress, duration } from '@mui/material';
+import zIndex from '@mui/material/styles/zIndex';
 function FrontPage() {
   const logging = useSelector(state => state.logger.logging);
   const closingApps = useSelector(state => state.logger.closingApps);
+  const currentFocusMode = useSelector(state => state.logger.currentFocusMode);
   const dispatch = useDispatch();
   // const [logging, setlogging] = useState(false);
   // const [closingApps, setclosingApps] = useState(false);
+  useEffect(() => {
   setInterval(function () {
       fetch('http://127.0.0.1:5005/logger_status').then(response => response.json()).then(data => {
         console.log(data);
@@ -23,6 +26,11 @@ function FrontPage() {
           dispatch(setClosingApps(true))
         } else {
           dispatch(setClosingApps(false))
+        }
+        if (data['in_focus_mode']['status'] === true) {
+          dispatch(setFocusMode(data['in_focus_mode']))
+        } else {
+          dispatch(setFocusMode({status:false}))
         }
         console.log(logging)
         console.log(closingApps)
@@ -39,7 +47,8 @@ function FrontPage() {
         console.log(error);
       }
       )
-    }, 2000)
+    }, 1000)
+  }, [])
 
   function start_logger() {
     console.log("clicked starting logger")
@@ -61,10 +70,23 @@ function FrontPage() {
     }
     fetch(`http://127.0.0.1:5005/toggle_closing_apps`)
   }
+  function stopFocusMode(){
+    fetch(`http://127.0.0.1:5005/stop_focus_mode`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": currentFocusMode['id']
+      })
+
+    }).catch(error => {console.log(error)})
+  }
   return (
     <div>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
-      
+    {currentFocusMode['status'] == false ?
+    <>
       <h1 style={css.h1}>Server Controls</h1>
     <Stack direction="row" spacing={3} style={css.body}>
       <div style={css.contrastContent}>
@@ -74,6 +96,21 @@ function FrontPage() {
       <Button style={{margin:5}} variant='contained' color='error' onClick={restart_server}><span>Restart Server</span></Button>
       </div>
     </Stack>
+    </>
+    :
+    <>
+      <div style={css.contrastContent}>
+    <Stack direction="column" spacing={3} style={css.body}>
+    <h1 style={css.h1}>Focus Mode</h1>
+    <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/>
+        {/* stop focus mode button */}
+        <p>There is {currentFocusMode["Time Remaining"]} on the clock for the focus mode: {currentFocusMode["Name"]}</p>
+        <p>{currentFocusMode["Duration"]} minute focus mode </p>
+        <Button style={{margin:5}} variant='contained' color='error' onClick={stopFocusMode}><span>Stop Focus Mode</span></Button>
+    </Stack>
+        </div>
+    </>
+    }
     <div style={css.contrastContent}>
     <p>
       When the server is running, it will automatically start logging data about what applications you are using. <br></br>

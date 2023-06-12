@@ -55,7 +55,7 @@ const  AppStatus = () => {
     
   // },[dispatch])
     // const getData = useCallback(async () => {
-      useEffect(() => {
+    useEffect(() => {
       const get_all_apps = async () => {
         const response = await fetch('http://localhost:5005/get_app_status').catch(error => {});
         const data = await response.json().catch(error => {});

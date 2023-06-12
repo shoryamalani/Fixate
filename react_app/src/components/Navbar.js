@@ -12,16 +12,16 @@ import { Button } from "@mui/material";
       <>
         <Nav>
           <NavMenu>
-            <Button variant="contained" style={{margin:'1em'}} onClick={() => navigate('/')}>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/')}>
               Home Page
             </Button>
-            <Button variant="contained" style={{margin:'1em'}}onClick={() => navigate('/timeSpent')}>
+            <Button color='info' variant="contained" style={{margin:'1em'}}onClick={() => navigate('/timeSpent')}>
               Time Spent
             </Button>
-            <Button variant="contained" style={{margin:'1em'}} onClick={() => navigate('/focusModes')}>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/focusModes')}>
               Focus Modes
             </Button>
-            <Button variant="contained" style={{margin:'1em'}} onClick={() => navigate('/appStatus')}>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/appStatus')}>
               App Status
             </Button>
           </NavMenu>
