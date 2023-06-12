@@ -14,12 +14,19 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 import { useDispatch, useSelector } from 'react-redux';
 import { setFocusModes } from '../features/FocusModesSlice';
 import {CircularProgressWithLabel} from '../components/CircularProgressBar';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 function TimeSpent() {
   
   const [customDayValue, setCustomDayValue] = React.useState(new Date());
   const [pieChartData, setPieChartData] = React.useState(null);
-  const [currentFocusModes, setCurrentFocusModes] = React.useState(null);
+  const location = useLocation();
+  console.log(location.state)
+  if (!location.state) {
+    location.state = { focusModes: null };
+  }
+  const currentFocusModes = location.state.focusModes;
+  console.log(currentFocusModes)
   const focusModes = useSelector(state => state.focusModes.focusModes);
   const dispatch = useDispatch();
   Chart.defaults.color = '#FFFFFF';
@@ -122,10 +129,10 @@ function TimeSpent() {
     if(currentFocusModes==null){
       return true;
     }else {
-      if(focusModeId in currentFocusModes){
+      if(currentFocusModes.includes(parseInt(focusModeId))){
         return true;
       }else {
-        return true;
+        return false;
       }
     }
   }

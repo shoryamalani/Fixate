@@ -11,7 +11,7 @@ import { FaCalendarCheck } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import {setCurrentTasks} from '../features/TasksSlice'
 import { Box, CircularProgress, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { waitFor } from '@testing-library/react';
 import { CircularProgressWithLabel } from '../components/CircularProgressBar';
 
@@ -57,6 +57,7 @@ function FocusModes() {
   const currentTasks = useSelector(state => state.tasks.currentTasks);
   console.log(currentTasks)
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const [followUp, setFollowUp] = useState(false);
   const [dataForStartFocusMode, setDataForStartFocusMode] = useState(null);
 
@@ -70,7 +71,9 @@ function FocusModes() {
   const handleClose = (data) => {
     console.log("Closing modal")
     setOpen(false);
-    startFocusMode(duration,data['name'],data['taskId'])
+    console.log(dataForStartFocusMode)
+    setName(dataForStartFocusMode['name'])
+    startFocusMode(duration,dataForStartFocusMode['name'],dataForStartFocusMode['taskId'])
   };
   useEffect(() => {
     
@@ -125,7 +128,7 @@ function FocusModes() {
       "duration": d,
       "task_id": taskId
     }
-    
+    console.log(data)
     fetch('http://localhost:5005/start_focus_mode', {
       method: 'POST',
       headers: {
@@ -153,6 +156,15 @@ function FocusModes() {
 }
   const seeFocusModes = (taskId) => {
     console.log("See focus modes for task: " + taskId)
+    var task = {}
+    for(var i = 0; i < currentTasks.length; i++){
+      if(currentTasks[i]['id'] === taskId){
+        task = currentTasks[i];
+        break;
+      }
+    }
+    console.log(task)
+    navigate('/timeSpent',{state:{"focusModes":task['ids_of_focus_modes']}})
   }
   const startFocusModeForTask = async (name,taskId) => {
     // ask the user for duration through a dialog
