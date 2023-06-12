@@ -431,3 +431,14 @@ def stop_focus_mode(focus_session_id):
     c.execute("UPDATE focus_sessions SET actual_duration = ? WHERE id = ?",[get_time_in_format(),focus_session_id])
     conn.commit()
     conn.close()
+
+def get_latest_focus_session():
+    """
+    Gets the latest focus session
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM focus_sessions ORDER BY id DESC LIMIT 1")
+    data = c.fetchone()
+    conn.close()
+    return data
