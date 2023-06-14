@@ -12,7 +12,7 @@
         "activeTab"
     ],
     "host_permissions": [
-        "*://localhost:*/*"
+        "http://localhost/*"
     ],
     "background": {
         "service_worker": "script2.js",
