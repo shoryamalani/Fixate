@@ -24,4 +24,17 @@ async function postData() {
         console.log(error)
     })
 }
-setInterval(() => postData(), 1000);
+// setInterval(() => postData(), 300);
+chrome.runtime.onInstalled.addListener(({ reason }) => {
+    chrome.alarms.create("periodic", { periodInMinutes: 1 / 180 });
+});
+
+chrome.runtime.onStartup.addListener(({ reason }) => {
+    chrome.alarms.create("periodic", { periodInMinutes: 1 / 180 });
+});
+
+chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === "periodic") {
+        postData();
+    }    
+});
