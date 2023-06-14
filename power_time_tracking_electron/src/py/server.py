@@ -10,15 +10,16 @@ import os
 import json
 from loguru import logger
 from datetime import datetime
+import ppt_api_worker
 app = Flask(__name__)
 CORS(app)
 closing_apps = False
+logger_application.boot_up_checker()
 current_notifications = []
 VERSION = "0.9.1"
 logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
-	
     if logger_application.boot_up_checker():
         return jsonify(success=True)
 
@@ -139,6 +140,31 @@ def get_daily_tasks():
 @app.route("/get_all_focus_sessions",methods=["GET"])
 def get_all_focus_modes():
     return jsonify({"focus_sessions":logger_application.get_all_focus_sessions()})
+
+@app.route("/get_current_user",methods=["GET"])
+def get_current_user():
+    return jsonify({"user":logger_application.get_current_user()})
+
+@app.route('/set_display_name', methods=['POST'])
+def set_display_name():
+    return jsonify({"success":ppt_api_worker.set_display_name(request.json["display_name"])})
+
+@app.route('/create_user', methods=['POST'])
+def create_user():
+    print(logger_application.get_current_user())
+    ppt_api_worker.create_user(request.json["name"],request.json["privacy_level"],logger_application.get_current_user()['device_id'])
+    print(request.json["name"],request.json["privacy_level"],logger_application.get_current_user()['device_id'])
+    return jsonify({"user":logger_application.get_current_user()})
+
+@app.route('/set_privacy', methods=['POST'])
+def change_privacy():
+    try:
+        ppt_api_worker.change_privacy(request.json["privacy_level"])
+        return jsonify({"user":logger_application.get_current_user()})
+    except:
+        return "error",500
+
+
 if __name__ == "__main__":
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)

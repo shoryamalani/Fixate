@@ -11,15 +11,12 @@ export const loggerSlice = createSlice({
   },
   reducers: {
     setClosingApps: (state,action) => {
-      console.log(action.payload)
       state.closingApps = action.payload;
     },
     setLogging: (state,action) => {
-      console.log(action.payload)
       state.logging = action.payload;
     },
     setFocusMode: (state,action) => {
-      console.log(action.payload)
       state.currentFocusMode = action.payload;
     }
   },

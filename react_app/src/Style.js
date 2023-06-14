@@ -33,7 +33,6 @@ const css = {
         backgroundColor: '#00316e',
         display: 'flex',
         flexDirection: 'column',
-        minWidth: '100vw',
         minHeight: '100vh',
         padding: '0',
         margin: '0',
