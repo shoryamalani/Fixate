@@ -30,7 +30,7 @@ class windowsOperatingSystemDataGrabber:
         if 'Chrome' in self.app_name:
             data = database_worker.get_latest_chrome_url()
             if data:
-                if database_worker.get_time_from_format(data[1])  - datetime.datetime.now() < datetime.timedelta(seconds=3):
+                if datetime.datetime.now() - database_worker.get_time_from_format(data[1]) < datetime.timedelta(seconds=3):
                     self.url = data[2]
         # more_data = macos_get_window_and_tab_name.getInfo()
         #FIGURE OUT HOW TO GET TAB DATA
