@@ -246,7 +246,7 @@ def stop_focus_mode(id):
 
 
 def boot_up_checker():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     try:
         if not os.path.exists(constants.DATABASE_LOCATION):
             os.mkdir(constants.DATABASE_LOCATION)
