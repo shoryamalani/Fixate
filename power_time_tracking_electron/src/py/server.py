@@ -1,6 +1,6 @@
 import sys
 from flask import Flask,jsonify,request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import application as logger_application
 import get_time_spent
 import time
@@ -12,6 +12,7 @@ from datetime import datetime
 import constants
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
 current_notifications = []
 VERSION = "0.9.1"
@@ -138,6 +139,15 @@ def get_daily_tasks():
 @app.route("/get_all_focus_sessions",methods=["GET"])
 def get_all_focus_modes():
     return jsonify({"focus_sessions":logger_application.get_all_focus_sessions()})
+
+@app.route("/dump_chrome_data",methods=["POST"])
+@cross_origin()
+def dump_chrome_url():
+    print(request.json)
+    logger_application.save_chrome_url(request.json["url"])
+    return "Success", 200
+    
+
 if __name__ == "__main__":
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)

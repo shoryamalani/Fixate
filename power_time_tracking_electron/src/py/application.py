@@ -275,6 +275,9 @@ def boot_up_checker():
             if database_created[1] == "1.4":
                 database_worker.update_to_database_version_1_5()
                 database_created[1] = "1.5"
+            if database_created[1] == "1.5":
+                database_worker.update_to_database_version_1_6()
+                database_created[1] = "1.6"
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
         logger.debug(multiprocessing.active_children())
@@ -321,6 +324,9 @@ def get_focus_mode_status():
     except Exception as e:
         print(e)
         return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+def save_chrome_url(url: str):
+    database_worker.save_chrome_url(url)
+
 if __name__ == "__main__":
     boot_up_checker()
     

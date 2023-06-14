@@ -133,6 +133,22 @@ def update_to_database_version_1_5():
     c.execute("UPDATE database_and_application_version SET database_version = '1.5' WHERE id=1")
     conn.commit()
     conn.close()
+
+def update_to_database_version_1_6():
+    """
+    Updates the database to version 1.6
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    current_url_table = create_table_command("current_url",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["url","text"]])
+    c.execute(current_url_table)
+    conn.commit()
+    insert_current_url = make_write_to_db([(["1",get_time_in_format(),""])] ,"current_url",["id","time","url"])
+    c.execute(insert_current_url)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.6' WHERE id=1")
+    conn.commit()
+    conn.close()
+
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
 
@@ -439,6 +455,27 @@ def get_latest_focus_session():
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM focus_sessions ORDER BY id DESC LIMIT 1")
+    data = c.fetchone()
+    conn.close()
+    return data
+
+def save_chrome_url(url: str):
+    """
+    Saves the chrome url
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE current_url SET time = ?, url = ? WHERE id = ?",(get_time_in_format(),url,1))
+    conn.commit()
+    conn.close()
+
+def get_latest_chrome_url():
+    """
+    Gets the latest chrome url
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM current_url ORDER BY id DESC LIMIT 1")
     data = c.fetchone()
     conn.close()
     return data
