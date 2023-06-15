@@ -4,8 +4,8 @@ import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
 import {setLogging,setClosingApps,setFocusMode} from '../features/LoggerSlice';
-import { Grid, LinearProgress, duration } from '@mui/material';
-import zIndex from '@mui/material/styles/zIndex';
+import { Grid, Input, LinearProgress, duration } from '@mui/material';
+import { UserProfileCard } from '../components/UserProfileCard';
 function FrontPage() {
   const logging = useSelector(state => state.logger.logging);
   const closingApps = useSelector(state => state.logger.closingApps);
@@ -16,7 +16,6 @@ function FrontPage() {
   useEffect(() => {
   setInterval(function () {
       fetch('http://127.0.0.1:5005/logger_status').then(response => response.json()).then(data => {
-        console.log(data);
         if (data['logger_running_status'] === true) {
           dispatch(setLogging(true))
         } else {
@@ -32,8 +31,6 @@ function FrontPage() {
         } else {
           dispatch(setFocusMode({status:false}))
         }
-        console.log(logging)
-        console.log(closingApps)
         // if (data['closing_apps'] == true && data['logger_running_status'] == true) {
         //   document.getElementById("closing_app_status").innerText = "Closing apps is enabled"
         //   document.getElementById("toggle_closing_apps").classList = ["float-child-element button-error"]
@@ -119,6 +116,11 @@ function FrontPage() {
       You can stop the server at any time by clicking the "Stop Server" button.
 
     </p>
+    </div>
+    <div style={css.contrastContent}>
+      {/* This is a user profile box where users can set their display name and find a share button for friends */}
+      <UserProfileCard></UserProfileCard>
+
     </div>
     </div>
   )

@@ -10,6 +10,7 @@ import os
 import json
 from loguru import logger
 from datetime import datetime
+import ppt_api_worker
 import constants
 import ppt_api_worker
 app = Flask(__name__)
