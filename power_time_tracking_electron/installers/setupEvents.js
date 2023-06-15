@@ -1,5 +1,9 @@
 const electron = require('electron')
 const app = electron.app
+const log = require('electron-log');
+const { spawn } = require('node:child_process');
+
+
 
 module.exports = {
 handleSquirrelEvent: function() {
@@ -30,15 +34,36 @@ handleSquirrelEvent: function() {
 
  const squirrelEvent = process.argv[1];
 switch (squirrelEvent) {
+   
  case '--squirrel-install':
+    async function setup() {
+      const setup_windows = spawn('cmd.exe', ['/c', '%LocalAppData%/PowerTimeTracking/app-0.9.1/resources/app/installers/windows-setup.bat']);
+      setup_windows.stdout.on('data', (data) => {
+         log.info(`bat stdout: ${data}`);
+      });
+      setup_windows.stderr.on('data', (data) => {
+         log.error(`dir stderr: ${data}`);
+      });
+    }
+    setup();
+    
+    
+    
+    spawnUpdate(['--createShortcut', exeName]);
+    
+
+    
  case '--squirrel-updated':
+   
+   log.info("Squirrel is updating");
  // Optionally do things such as:
  // - Add your .exe to the PATH
  // - Write to the registry for things like file associations and
  // explorer context menus
 
  // Install desktop and start menu shortcuts
- spawnUpdate(['--createShortcut', exeName]);
+
+//  spawnUpdate(['--createShortcut', exeName]);
 
  setTimeout(app.quit, 1000);
  return true;

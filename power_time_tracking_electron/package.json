@@ -1,7 +1,7 @@
 {
   "name": "PowerTimeTracking",
   "productName": "PowerTimeTracking",
-  "version": "0.9.1",
+  "version": "0.9.3",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "scripts": {
@@ -15,7 +15,6 @@
     "make-arm": "electron-forge make --arch=arm64",
     "lint": "echo \"No linting configured\""
   },
-  
   "keywords": [],
   "author": {
     "name": "Shorya Malani",
@@ -28,6 +27,7 @@
   "dependencies": {
     "apexcharts": "^3.35.3",
     "dotenv": "^16.0.3",
+    "electron-log": "^4.4.8",
     "node-fetch": "^2.6.7",
     "purecss": "^2.1.0"
   },

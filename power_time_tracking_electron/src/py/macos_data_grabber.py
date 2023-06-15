@@ -12,10 +12,14 @@ from Foundation import NSObject
 from ApplicationServices import AXIsProcessTrusted
 import datetime
 import database_worker
+import constants
 
 
 
-logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+
+#logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+
 
 last_mouse_move_set = datetime.datetime.now()
 
@@ -60,7 +64,6 @@ class macosOperatingSystemDataGrabber:
         self.current_app = get_frontmost_app()
         more_data = macos_get_window_and_tab_name.getInfo()
         if more_data:
-            # logger.debug(self.current_app)
             if 'url' in more_data:
                 return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
             return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}

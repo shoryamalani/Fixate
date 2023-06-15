@@ -7,6 +7,7 @@ import datetime
 import constants
 from loguru import logger
 import os
+import json
 DATABASE_PATH = constants.DATABASE_LOCATION + "/" + constants.DATABASE_NAME
 DATABASE_VERSION = "1.0"
 def connect_to_db():
@@ -133,6 +134,39 @@ def update_to_database_version_1_5():
     c.execute("UPDATE database_and_application_version SET database_version = '1.5' WHERE id=1")
     conn.commit()
     conn.close()
+
+def update_to_database_version_1_6():
+    """
+    Updates the database to version 1.6
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    current_url_table = create_table_command("current_url",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["url","text"]])
+    c.execute(current_url_table)
+    conn.commit()
+    insert_current_url = make_write_to_db([(["1",get_time_in_format(),""])] ,"current_url",["id","time","url"])
+    c.execute(insert_current_url)
+    create_user_table = create_table_command("user",[["id","INTEGER PRIMARY KEY"],["name","text"],["data","json"]])
+    c.execute(create_user_table)
+    create_memoized_data_table = create_table_command("memoized_data",[["id","INTEGER PRIMARY KEY"],["start_time","DATETIME"],['end_time',"DATETIME"],['duration','int'],["data","json"]])
+    c.execute(create_memoized_data_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.6' WHERE id=1")
+
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_7():
+    """
+    Updates the database to version 1.7
+    """
+    # add a user to user table
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO user (id,name,data) VALUES (1,'default',json('{}'))")
+    c.execute("UPDATE database_and_application_version SET database_version = '1.7' WHERE id=1")
+    conn.commit()
+    conn.close()
+
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
 
@@ -142,7 +176,7 @@ def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
 def get_all_time_logs():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log")
@@ -178,7 +212,7 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
@@ -431,3 +465,60 @@ def stop_focus_mode(focus_session_id):
     c.execute("UPDATE focus_sessions SET actual_duration = ? WHERE id = ?",[get_time_in_format(),focus_session_id])
     conn.commit()
     conn.close()
+
+def get_latest_focus_session():
+    """
+    Gets the latest focus session
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM focus_sessions ORDER BY id DESC LIMIT 1")
+    data = c.fetchone()
+    conn.close()
+    return data
+
+def save_chrome_url(url: str):
+    """
+    Saves the chrome url
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE current_url SET time = ?, url = ? WHERE id = ?",(get_time_in_format(),url,1))
+    conn.commit()
+    conn.close()
+
+def get_latest_chrome_url():
+    """
+    Gets the latest chrome url
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM current_url ORDER BY id DESC LIMIT 1")
+    data = c.fetchone()
+    conn.close()
+    return data
+
+def get_current_user_data():
+    """
+    Gets the current device id
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    # just get id 1 in users table
+    c.execute("SELECT * FROM user WHERE id=1")
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return None
+    return json.loads(data[2])
+
+def set_current_user_data(data):
+    """
+    Sets the current device id
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE user SET data = ? WHERE id=1",[json.dumps(data)])
+    conn.commit()
+    conn.close()
+

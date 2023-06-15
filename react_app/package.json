@@ -1,6 +1,6 @@
 {
-  "name": "react_app",
-  "version": "0.1.0",
+  "name": "react_front_end_app",
+  "version": "0.3.0",
   "private": true,
   "homepage": "./",
   "dependencies": {
