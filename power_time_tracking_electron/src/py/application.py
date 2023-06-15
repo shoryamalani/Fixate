@@ -125,7 +125,8 @@ def search_close_and_log_apps():
         database_worker.log_current_app(current_app_name,tabname,active,title)
         
         # logger.debug(current_app_name)
-        sleep(1)
+        if sys.platform != "win32":
+            sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         # except Exception as err:
         #     logger.error(err)
@@ -336,6 +337,9 @@ def get_focus_mode_status():
     except Exception as e:
         print(e)
         return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+   
+def save_chrome_url(url: str):
+    database_worker.save_chrome_url(url)
 
 def get_current_user():
     device_id = database_worker.get_current_user_data()['device_id'] if'device_id' in database_worker.get_current_user_data() else None
@@ -345,6 +349,5 @@ def get_current_user():
     if user_id == None:
         return {"status":True,'device_id':device_id, "user_id":None}
     return {"status":True, "user_id":user_id, 'device_id':device_id, "user_data":database_worker.get_current_user_data()}
-    
 if __name__ == "__main__":
     boot_up_checker()
