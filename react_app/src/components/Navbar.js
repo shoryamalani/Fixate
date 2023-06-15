@@ -2,25 +2,28 @@
 import React from "react";
 import { Nav, NavLink, NavMenu }
 	from "./NavbarElements";
+import { useNavigate } from "react-router-dom";
 import css from "../Style";
+import { Button } from "@mui/material";
 
   const Navbar = () => {
+    const navigate = useNavigate()
     return (
       <>
         <Nav>
           <NavMenu>
-            <NavLink to="/" activestyle="true" default>
-              Front Page
-            </NavLink>
-            <NavLink to="/timeSpent" activestyle="true">
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/')}>
+              Home Page
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}}onClick={() => navigate('/timeSpent')}>
               Time Spent
-            </NavLink>
-            <NavLink to="/focusModes" activestyle="true">
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/focusModes')}>
               Focus Modes
-            </NavLink>
-            <NavLink to="/appStatus" activestyle="true">
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/appStatus')}>
               App Status
-            </NavLink>
+            </Button>
           </NavMenu>
         </Nav>
       </>

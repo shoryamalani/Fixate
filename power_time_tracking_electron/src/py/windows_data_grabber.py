@@ -1,4 +1,4 @@
-`import win32gui
+import win32gui
 import win32con
 import win32api
 import win32process
@@ -7,6 +7,8 @@ from time import sleep
 import database_worker
 import psutil
 import uiautomation as auto
+import datetime
+
 #https://stackoverflow.com/questions/25466795/how-to-minimize-a-specific-window-in-python
 #https://stackoverflow.com/questions/10266281/obtain-active-window-using-python
 
@@ -22,11 +24,14 @@ class windowsOperatingSystemDataGrabber:
     def get_current_frontmost_app(self):
         self.current_app = win32gui.GetForegroundWindow()
         self.title = win32gui.GetWindowText(self.current_app)
-        pid = win32process.GetWindowThreadProcessId(self.current_app) 
-        self.app_name = psutil.Process(pid[-1]).name()
+        pid = win32process.GetWindowThreadProcessId(self.current_app)
+        self.app_name = self.getFileDescription(psutil.Process(pid[-1]).exe())
+        self.url = ""
         if 'Chrome' in self.app_name:
-            browser = BrowserWindow('Google Chrome')
-            self.url = browser.current_tab_url
+            data = database_worker.get_latest_chrome_url()
+            if data:
+                if datetime.datetime.now() - database_worker.get_time_from_format(data[1]) < datetime.timedelta(seconds=3):
+                    self.url = data[2]
         # more_data = macos_get_window_and_tab_name.getInfo()
         #FIGURE OUT HOW TO GET TAB DATA
         # if more_data:
@@ -37,6 +42,16 @@ class windowsOperatingSystemDataGrabber:
     
     def hide_current_frontmost_app(self):
         return win32gui.ShowWindow(self.current_app,win32con.SW_MINIMIZE)
+    
+    def getFileDescription(self, windows_exe):
+        try:
+            language, codepage = win32api.GetFileVersionInfo(windows_exe, '\\VarFileInfo\\Translation')[0]
+            stringFileInfo = u'\\StringFileInfo\\%04X%04X\\%s' % (language, codepage, "FileDescription")
+            description = win32api.GetFileVersionInfo(windows_exe, stringFileInfo)
+        except:
+            description = "unknown"
+            
+        return description
 
 def start_mouse_and_keyboard_checker():
     multiprocessing.Process(target=check_periodic).start()

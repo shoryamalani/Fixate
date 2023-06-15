@@ -1,0 +1,21 @@
+{
+    "name": "PowerTimeTracking Chrome Logging",
+    "version": "0.1.0",
+    "description": "Logs current tab url for use with PowerTimeTracking",
+    "manifest_version": 3,
+    "author": "PowerTimeTracking Team",
+    "icons": {
+        "128": "icon_128.png"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "http://localhost/*"
+    ],
+    "background": {
+        "service_worker": "script2.js",
+        "type": "module"
+    }
+}

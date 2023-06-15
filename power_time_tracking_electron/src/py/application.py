@@ -15,6 +15,7 @@ from loguru import logger
 import requests
 import re
 import math
+import ppt_api_worker
 if sys.platform == "darwin":
     from macos_data_grabber import macosOperatingSystemDataGrabber
     systemDataHandler = macosOperatingSystemDataGrabber()
@@ -27,7 +28,8 @@ elif sys.platform == "win32":
 # windows mouse movement: https://stackoverflow.com/questions/49847756/detecting-physical-mouse-movement-with-python-and-windows-10-without-cursor-move
 
 
-
+global FOCUS_MODE
+FOCUS_MODE = False
 
 
 
@@ -123,7 +125,8 @@ def search_close_and_log_apps():
         database_worker.log_current_app(current_app_name,tabname,active,title)
         
         # logger.debug(current_app_name)
-        sleep(1)
+        if sys.platform != "win32":
+            sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         # except Exception as err:
         #     logger.error(err)
@@ -244,7 +247,7 @@ def stop_focus_mode(id):
 
 
 def boot_up_checker():
-    logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     try:
         if not os.path.exists(constants.DATABASE_LOCATION):
             os.mkdir(constants.DATABASE_LOCATION)
@@ -275,6 +278,20 @@ def boot_up_checker():
             if database_created[1] == "1.4":
                 database_worker.update_to_database_version_1_5()
                 database_created[1] = "1.5"
+            if database_created[1] == "1.5":
+                database_worker.update_to_database_version_1_6()
+                database_created[1] = "1.6"
+            if database_created[1] == "1.6":
+                database_worker.update_to_database_version_1_7()
+                database_created[1] = "1.7"
+        print(database_worker.get_current_user_data())
+        if  'device_id' not in database_worker.get_current_user_data():
+            cur_data = json.loads(database_worker.get_current_user_data())
+            val = ppt_api_worker.create_devices()
+            print(val)
+            if val:
+                cur_data['device_id'] = ppt_api_worker.create_devices()
+                database_worker.set_current_user_data(cur_data)
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
         logger.debug(multiprocessing.active_children())
@@ -285,8 +302,7 @@ def boot_up_checker():
             multiprocessing.Process(target=search_close_and_log_apps).start()
         global CLOSING_APPS
         CLOSING_APPS = False
-        global FOCUS_MODE
-        FOCUS_MODE = False
+        
         global CURRENT_APP
         CURRENT_APP="default value"
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
@@ -297,7 +313,41 @@ def boot_up_checker():
         logger.debug(e)
         return e
     return True
+def get_focus_mode_status():
+    global FOCUS_MODE
+    try:
+        if FOCUS_MODE:
+            latest_focus_mode = database_worker.get_latest_focus_session()
+            print(latest_focus_mode)
+            if(latest_focus_mode):
+                end_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=latest_focus_mode[2])
+                start_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S')
+                time_elapsed = datetime.datetime.now() - start_time
+                time_elapsed = f"{int(time_elapsed.total_seconds()/60)}:{  time_elapsed.seconds%60 if time_elapsed.seconds%60> 9 else '0'+str(time_elapsed.seconds%60)}"
+                time_remaining = end_time - datetime.datetime.now()
+                time_remaining = f"{int(time_remaining.total_seconds()/60)}:{  time_remaining.seconds%60 if time_remaining.seconds%60> 9 else '0'+str(time_remaining.seconds%60)}"
+                if (end_time < datetime.datetime.now()):
+                    stop_focus_mode(latest_focus_mode[0])
+                    return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+                return {"status":True, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0]}
+            else:
+                return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None} 
+        else:
+            return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+    except Exception as e:
+        print(e)
+        return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+   
+def save_chrome_url(url: str):
+    database_worker.save_chrome_url(url)
+
+def get_current_user():
+    device_id = database_worker.get_current_user_data()['device_id'] if'device_id' in database_worker.get_current_user_data() else None
+    if device_id == None:
+        return {"status":False}
+    user_id = database_worker.get_current_user_data()['user_id'] if'user_id' in database_worker.get_current_user_data() else None
+    if user_id == None:
+        return {"status":True,'device_id':device_id, "user_id":None}
+    return {"status":True, "user_id":user_id, 'device_id':device_id, "user_data":database_worker.get_current_user_data()}
 if __name__ == "__main__":
     boot_up_checker()
-    
-    
