@@ -123,7 +123,8 @@ def search_close_and_log_apps():
         database_worker.log_current_app(current_app_name,tabname,active,title)
         
         # logger.debug(current_app_name)
-        sleep(1)
+        if sys.platform != "win32":
+            sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         # except Exception as err:
         #     logger.error(err)
