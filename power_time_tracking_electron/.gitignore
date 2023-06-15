@@ -92,3 +92,9 @@ typings/
 # Electron-Forge
 out/
 *.provisionprofile
+
+# Random
+lib/
+include/
+scripts/
+@AutomationLog.txt

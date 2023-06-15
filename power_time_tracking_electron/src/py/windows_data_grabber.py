@@ -7,6 +7,7 @@ from time import sleep
 import database_worker
 import psutil
 import uiautomation as auto
+import datetime
 
 #https://stackoverflow.com/questions/25466795/how-to-minimize-a-specific-window-in-python
 #https://stackoverflow.com/questions/10266281/obtain-active-window-using-python
@@ -25,12 +26,12 @@ class windowsOperatingSystemDataGrabber:
         self.title = win32gui.GetWindowText(self.current_app)
         pid = win32process.GetWindowThreadProcessId(self.current_app)
         self.app_name = self.getFileDescription(psutil.Process(pid[-1]).exe())
-        # if 'Chrome' in self.app_name:
-        #     browser = BrowserWindow('Google Chrome')
-        #     self.url = browser.current_tab_url
-        # else:
-        #     self.url = ""
         self.url = ""
+        if 'Chrome' in self.app_name:
+            data = database_worker.get_latest_chrome_url()
+            if data:
+                if datetime.datetime.now() - database_worker.get_time_from_format(data[1]) < datetime.timedelta(seconds=3):
+                    self.url = data[2]
         # more_data = macos_get_window_and_tab_name.getInfo()
         #FIGURE OUT HOW TO GET TAB DATA
         # if more_data:

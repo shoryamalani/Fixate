@@ -1,6 +1,7 @@
+#!/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin/python3
 import sys
 from flask import Flask,jsonify,request
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import application as logger_application
 import get_time_spent
 import time
@@ -11,8 +12,10 @@ from loguru import logger
 from datetime import datetime
 import ppt_api_worker
 import constants
+import ppt_api_worker
 app = Flask(__name__)
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
 logger_application.boot_up_checker()
 current_notifications = []
@@ -164,7 +167,28 @@ def change_privacy():
     except:
         return "error",500
 
+@app.route('/add_friend', methods=['POST'])
+def add_friend():
+    try:
+        ppt_api_worker.add_friend(request.json["friend_name"],request.json['friend_share_code'])
+        return jsonify({"user":logger_application.get_current_user()})
+    except:
+        return "error",500
 
+@app.route('/get_friends', methods=['GET'])
+def get_friends():
+    try:
+        return jsonify({"friends":ppt_api_worker.get_friends()})
+    except:
+        return "error",500
+
+@app.route("/dump_chrome_data",methods=["POST"])
+@cross_origin()
+def dump_chrome_url():
+    print(request.json)
+    logger_application.save_chrome_url(request.json["url"])
+    return "Success", 200
+    
 if __name__ == "__main__":
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)
