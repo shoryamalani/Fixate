@@ -15,6 +15,7 @@ from loguru import logger
 import requests
 import re
 import math
+import ppt_api_worker
 if sys.platform == "darwin":
     from macos_data_grabber import macosOperatingSystemDataGrabber
     systemDataHandler = macosOperatingSystemDataGrabber()
@@ -27,7 +28,8 @@ elif sys.platform == "win32":
 # windows mouse movement: https://stackoverflow.com/questions/49847756/detecting-physical-mouse-movement-with-python-and-windows-10-without-cursor-move
 
 
-
+global FOCUS_MODE
+FOCUS_MODE = False
 
 
 
@@ -279,6 +281,17 @@ def boot_up_checker():
             if database_created[1] == "1.5":
                 database_worker.update_to_database_version_1_6()
                 database_created[1] = "1.6"
+            if database_created[1] == "1.6":
+                database_worker.update_to_database_version_1_7()
+                database_created[1] = "1.7"
+        print(database_worker.get_current_user_data())
+        if  'device_id' not in database_worker.get_current_user_data():
+            cur_data = json.loads(database_worker.get_current_user_data())
+            val = ppt_api_worker.create_devices()
+            print(val)
+            if val:
+                cur_data['device_id'] = ppt_api_worker.create_devices()
+                database_worker.set_current_user_data(cur_data)
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()
         logger.debug(multiprocessing.active_children())
@@ -289,8 +302,7 @@ def boot_up_checker():
             multiprocessing.Process(target=search_close_and_log_apps).start()
         global CLOSING_APPS
         CLOSING_APPS = False
-        global FOCUS_MODE
-        FOCUS_MODE = False
+        
         global CURRENT_APP
         CURRENT_APP="default value"
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
@@ -325,10 +337,17 @@ def get_focus_mode_status():
     except Exception as e:
         print(e)
         return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
+   
 def save_chrome_url(url: str):
     database_worker.save_chrome_url(url)
 
+def get_current_user():
+    device_id = database_worker.get_current_user_data()['device_id'] if'device_id' in database_worker.get_current_user_data() else None
+    if device_id == None:
+        return {"status":False}
+    user_id = database_worker.get_current_user_data()['user_id'] if'user_id' in database_worker.get_current_user_data() else None
+    if user_id == None:
+        return {"status":True,'device_id':device_id, "user_id":None}
+    return {"status":True, "user_id":user_id, 'device_id':device_id, "user_data":database_worker.get_current_user_data()}
 if __name__ == "__main__":
     boot_up_checker()
-    
-    
