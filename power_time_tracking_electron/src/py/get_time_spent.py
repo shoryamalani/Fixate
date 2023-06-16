@@ -148,15 +148,27 @@ def proper_time_parse(data,distractions=[]):
     # distractions = get_all_distracting_apps()
     distractions_total = 0
     previous = final_data[0][2]
+    cur_time_without_distraction = 0
+    longest_time_without_distraction = 0
     for data in final_data:
         if data[2]:
             url = make_url_to_base(data[2])
             if url in distractions and url != previous:
+                if cur_time_without_distraction > longest_time_without_distraction:
+                    longest_time_without_distraction = cur_time_without_distraction
+                cur_time_without_distraction = 0
                 distractions_total +=1
+            elif url not in distractions:
+                cur_time_without_distraction += 1
             previous = url
         else:
             if data[1] in distractions and data[1] != previous:
                 distractions_total +=1
+                if cur_time_without_distraction > longest_time_without_distraction:
+                    longest_time_without_distraction = cur_time_without_distraction
+                cur_time_without_distraction = 0
+            elif data[1] not in distractions:
+                cur_time_without_distraction += 1
             previous = data[1]
     # print(distractions_total)
     # previous = data
@@ -172,7 +184,7 @@ def proper_time_parse(data,distractions=[]):
     #     distractions["distractions_time_min"] = 0
     # else:
     #     distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
-    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total if distractions_total > 0 else 0)/60}
+    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total if distractions_total > 0 else 0)/60,"longest_time_without_distraction_min":longest_time_without_distraction/60}
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()
@@ -236,6 +248,7 @@ def get_time(time_period):
         return {"Total":0},{"distractions_number":0,"distractions_time_min":0/60},"No Data"
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
+    distractions['total_time_spent'] = times[0][1]
     return times,distractions,name
 
 def get_specific_time(start_time,end_time):
