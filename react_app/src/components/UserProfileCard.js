@@ -85,6 +85,8 @@ function UserProfileCard() {
             response => response.json()
         ).then(data => {
             console.log(data)
+            // reload window
+            window.location.reload();
             setDisplayName(data['user_data']['name'])
             dispatch(setUserData(data['user']))
             console.log(userData)
