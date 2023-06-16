@@ -184,6 +184,14 @@ def get_friends():
     except:
         return "error",500
 
+@app.route('/get_friend_data_now', methods=['GET'])
+def get_friend_data_now():
+    try:
+        ppt_api_worker.getFriendData(True)
+        return jsonify({"user":logger_application.get_current_user()})
+    except:
+        return "error",500
+
 @app.route("/dump_chrome_data",methods=["POST"])
 @cross_origin()
 def dump_chrome_url():
