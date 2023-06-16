@@ -82,7 +82,7 @@ function FrontPage() {
   return (
     <div>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
-    {currentFocusMode['status'] == false ?
+    {currentFocusMode['status'] === false ?
     <>
       <h1 style={css.h1}>Server Controls</h1>
     <Stack direction="row" spacing={3} style={css.body}>

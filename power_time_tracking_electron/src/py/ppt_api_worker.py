@@ -82,6 +82,7 @@ def change_privacy(privacy_level):
 def add_friend(friend_name,friend_share_code):
     try:
         response_id = requests.post(f"{API_URL}/api/addFriend",json={"friend_name":friend_name,"friend_share_code":friend_share_code},headers=create_headers()).json()['success']
+        print(response_id)
         current_user = database_worker.get_current_user_data()
         if 'friends' not in current_user:
             current_user['friends'] = [response_id]
@@ -131,5 +132,17 @@ def update_server_data(to_update):
         if update[1] == "every_5_minute_regular":
             time = time_spent.get_time("last_30_minutes")[1]
             requests.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
+            database_worker.reset_database(update[0],update[3])
+        if update[1] == "daily":
+            time = time_spent.get_time("today")[1]
+            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'hourly'},headers=create_headers())
+            database_worker.reset_database(update[0],update[3])
+        if update[1] == "weekly":
+            time = time_spent.get_time("this_week")[1]
+            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily'},headers=create_headers())
+            database_worker.reset_database(update[0],update[3])
+        if update[1] == "monthly":
+            time = time_spent.get_time("this_month")[1]
+            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly'},headers=create_headers())
             database_worker.reset_database(update[0],update[3])
             

@@ -5,6 +5,7 @@ import css from '../Style';
 import { useSelector } from 'react-redux';
 import { setUserData } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
+import { CircularProgressWithLabel } from './CircularProgressBar';
 
 function UserProfileCard() {
     const userData = useSelector(state => state.user.userData);
@@ -90,8 +91,15 @@ function UserProfileCard() {
             setDisplayName(data['user_data']['name'])
             dispatch(setUserData(data['user']))
             console.log(userData)
-        }).catch(error => { alert("User Creation Failed") });
+        }).catch(error => { window.location.reload(); });
     }
+    const getFriendDataNow = async () => {
+        const response = await fetch('http://localhost:5005/get_friend_data_now').then(response => response.json()).then(data => {
+            console.log(data)
+            getUserData();
+        }).catch(error => { console.log(error) });
+    }
+
 
 
     const changePrivacy = async (e) => {
@@ -197,12 +205,14 @@ function UserProfileCard() {
         <Stack>
     <Container>
         <h1>Friends</h1>
+        <Button color='success' variant='contained' onClick={()=>{getFriendDataNow()}}>Refresh</Button>
         <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
         <Table >
         <TableHead>
           <TableRow>
             <TableCell>Friend Display Name</TableCell>
-            <TableCell align="right">Delete</TableCell>
+            <TableCell align="right">Time logged In the last half hour (min)</TableCell>
+            <TableCell align="right">Percent Focused</TableCell>
           </TableRow>
         </TableHead>
 
@@ -215,6 +225,8 @@ function UserProfileCard() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{friend['name']}</TableCell>
+                <TableCell align="right">{friend['data']['live']['total_time_spent']/60}</TableCell>
+                <TableCell align="right">{<CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>}</TableCell>
               </TableRow>
             ))}
         </TableBody>
