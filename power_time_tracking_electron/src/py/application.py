@@ -123,13 +123,18 @@ def search_close_and_log_apps():
         if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
             active = False
         database_worker.log_current_app(current_app_name,tabname,active,title)
-        
+        check_if_server_must_be_updated() 
         # logger.debug(current_app_name)
         if sys.platform != "win32":
             sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         # except Exception as err:
         #     logger.error(err)
+
+def check_if_server_must_be_updated():
+    to_update = database_worker.server_update_required()
+    if to_update:
+        ppt_api_worker.update_server_data(to_update)
 
 
 def make_url_to_base(full_url):
@@ -284,7 +289,11 @@ def boot_up_checker():
             if database_created[1] == "1.6":
                 database_worker.update_to_database_version_1_7()
                 database_created[1] = "1.7"
+            if database_created[1] == "1.7":
+                database_worker.update_to_database_version_1_8()
+                database_created[1] = "1.8"
         print(database_worker.get_current_user_data())
+        print("HEREERERER")
         if  'device_id' not in database_worker.get_current_user_data():
             cur_data = json.loads(database_worker.get_current_user_data())
             val = ppt_api_worker.create_devices()
@@ -318,7 +327,7 @@ def get_focus_mode_status():
     try:
         if FOCUS_MODE:
             latest_focus_mode = database_worker.get_latest_focus_session()
-            print(latest_focus_mode)
+            # print(latest_focus_mode)
             if(latest_focus_mode):
                 end_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=latest_focus_mode[2])
                 start_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S')
