@@ -162,11 +162,12 @@ def update_to_database_version_1_7():
     # add a user to user table
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("INSERT INTO user (id,name,data) VALUES (?,?,?)",(1,"default",json.dumps({})))
+    c.execute("INSERT INTO user (id,name) VALUES (?,?)",(1,"default"))
     # c.execute("UPDATE user SET name = 'default',data = ? WHERE id=1",[json.dumps({})])
     c.execute("UPDATE database_and_application_version SET database_version = '1.7' WHERE id=1")
     conn.commit()
     conn.close()
+    set_current_user_data({})
 
 def update_to_database_version_1_8():
     """
