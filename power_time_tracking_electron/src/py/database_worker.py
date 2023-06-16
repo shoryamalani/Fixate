@@ -528,7 +528,10 @@ def get_current_user_data():
     conn.close()
     if data is None:
         return None
-    return json.loads(data[2])
+    if type(data[2]) == str:
+        return json.loads(data[2])
+    else:
+        return data[2]
 
 def set_current_user_data(data):
     """
