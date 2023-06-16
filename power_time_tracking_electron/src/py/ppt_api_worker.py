@@ -32,7 +32,9 @@ def create_user(name,privacy_level,device_id):
         return current_user['user_id']
     
     try:
-        user_id =  requests.post(f"{API_URL}/api/createUser",json={"name":name,"privacy_level":privacy_level,"device_id":device_id}).json()['user_id']
+        user_id =  requests.post(f"{API_URL}/api/createUser",json={"name":name,"privacy_level":privacy_level,"device_id":device_id}, headers={'Content-Type': 'application/json','Accept': 'application/json',}).json()
+        print(user_id)
+        user_id = user_id['user_id']
         current_user['user_id'] = user_id
         current_user['device_id'] = device_id
         current_user['name'] = name
@@ -40,7 +42,8 @@ def create_user(name,privacy_level,device_id):
         database_worker.set_current_user_data(current_user)
         current_user['server_data'] = get_user_data_from_server()
         database_worker.set_current_user_data(current_user)
-    except:
+    except Exception as a:
+        print(a)
         return None
 
 def set_display_name(display_name):
