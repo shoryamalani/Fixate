@@ -42,6 +42,7 @@ def create_user(name,privacy_level,device_id):
         database_worker.set_current_user_data(current_user)
         current_user['server_data'] = get_user_data_from_server()
         database_worker.set_current_user_data(current_user)
+        return user_id
     except Exception as a:
         print(a)
         return None
