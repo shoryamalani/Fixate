@@ -13,8 +13,8 @@ def create_headers():
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'user_id': str(database_worker.get_current_user_data()['user_id']),
-        'device_id': database_worker.get_current_user_data()['device_id']
+        'user_id': str(database_worker.get_current_user_data()['user_id']) if 'user_id' in database_worker.get_current_user_data() else "",
+        'device_id': database_worker.get_current_user_data()['device_id'] if 'device_id' in database_worker.get_current_user_data() else "",
     }
     return headers
 
@@ -119,7 +119,7 @@ def getFriendData(update):
     else:
         try:
             data =database_worker.get_current_user_data()
-            if datetime.datetime.strptime(['server_data']['friends_data']['last_updated'],"%Y-%m-%d %H:%M:%S") > datetime.datetime.now() - datetime.timedelta(minutes=5):
+            if datetime.datetime.strptime(data['server_data']['friends_data']['last_updated'],"%Y-%m-%d %H:%M:%S") > datetime.datetime.now() - datetime.timedelta(minutes=5):
                 return data['server_data']['friends_data']['data'] 
             else:
                 return get_friend_data_from_server_and_save()
