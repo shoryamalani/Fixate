@@ -292,9 +292,9 @@ def boot_up_checker():
         if database_created[1] == "1.7":
             database_worker.update_to_database_version_1_8()
             database_created[1] = "1.8"
-        if database_created[1] == "1.8":
-            database_worker.update_to_database_version_1_9()
-            database_created[1] = "1.9"
+        # if database_created[1] == "1.8":
+        #     database_worker.update_to_database_version_1_9()
+        #     database_created[1] = "1.9"
         print(database_worker.get_current_user_data())
         print("HEREERERER")
         if  'device_id' not in database_worker.get_current_user_data():

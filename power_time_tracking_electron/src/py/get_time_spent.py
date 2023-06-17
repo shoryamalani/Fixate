@@ -245,7 +245,7 @@ def get_time(time_period):
         data = database_worker.get_all_time_logs()
         name = "All Time"
     if data == []:
-        return {"Total":0},{"distractions_number":0,"distractions_time_min":0/60},"No Data"
+        return {"Total":0},{'total_time_spent':0,"distractions_number":0,"distractions_time_min":0/60},"No Data"
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
     distractions['total_time_spent'] = times[0][1]
