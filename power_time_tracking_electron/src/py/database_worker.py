@@ -184,8 +184,29 @@ def update_to_database_version_1_8():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_9():
+    """
+    Updates the database to version 1.9
+    """
+    # version adds many more update times
+    conn = connect_to_db()
+    c = conn.cursor()
+    add_daily_update_time = make_write_to_db([(["2","daily",get_time_in_format(),3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_daily_update_time)
+    add_weekly_update_time = make_write_to_db([(["3","weekly",get_time_in_format(),24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_weekly_update_time)
+    add_monthly_update_time = make_write_to_db([(["4","monthly",get_time_in_format(),7*24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_monthly_update_time)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.9' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
+
+def get_time_in_format_from_datetime(time:datetime.datetime):
+    return time.strftime(get_time_format())
 
 def get_time_from_format(time):
     return datetime.datetime.strptime(time,get_time_format())

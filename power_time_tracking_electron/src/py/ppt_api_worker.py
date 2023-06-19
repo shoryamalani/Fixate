@@ -112,6 +112,11 @@ def get_friend_data_from_server_and_save():
         print(e)
         return None
 
+def get_leaderboard_data():
+    try:
+        return requests.get(f"{API_URL}/api/getLeaderboardData",headers=create_headers()).json()['leaderboard_data']['data']
+    except:
+        return None
 
 def getFriendData(update):
     if update:
@@ -131,18 +136,30 @@ def update_server_data(to_update):
     for update in to_update:
         if update[1] == "every_5_minute_regular":
             time = time_spent.get_time("last_30_minutes")[1]
-            requests.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
-            database_worker.reset_database(update[0],update[3])
+            response = requests.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
+            if response.status_code == 200:
+                database_worker.reset_database(update[0],update[3])
+            else:
+               database_worker.reset_database(update[0],60) 
         if update[1] == "daily":
             time = time_spent.get_time("today")[1]
-            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'hourly'},headers=create_headers())
-            database_worker.reset_database(update[0],update[3])
+            response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily', 'expiary':3600},headers=create_headers())
+            if response.status_code == 200:
+                database_worker.reset_database(update[0],update[3])
+            else:
+               database_worker.reset_database(update[0],600) 
         if update[1] == "weekly":
-            time = time_spent.get_time("this_week")[1]
-            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily'},headers=create_headers())
-            database_worker.reset_database(update[0],update[3])
+            time = time_spent.get_time("week")[1]
+            response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly', "expiary":84600},headers=create_headers())
+            if response.status_code == 200:
+                database_worker.reset_database(update[0],update[3])
+            else:
+               database_worker.reset_database(update[0],600) 
         if update[1] == "monthly":
             time = time_spent.get_time("this_month")[1]
-            requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly'},headers=create_headers())
-            database_worker.reset_database(update[0],update[3])
+            response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'monthly', 'expiary':7*84600 },headers=create_headers())
+            if response.status_code == 200:
+                database_worker.reset_database(update[0],update[3])
+            else:
+               database_worker.reset_database(update[0],600) 
             

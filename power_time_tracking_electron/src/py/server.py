@@ -198,6 +198,10 @@ def dump_chrome_url():
     print(request.json)
     logger_application.save_chrome_url(request.json["url"])
     return "Success", 200
+
+@app.route("/get_leaderboard_data",methods=["GET"])
+def get_leaderboard_data():
+    return jsonify({"leaderboard":ppt_api_worker.get_leaderboard_data()})
     
 if __name__ == "__main__":
     logger.debug("Starting server")
