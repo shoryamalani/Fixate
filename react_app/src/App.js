@@ -12,7 +12,7 @@ import FocusModes from './pages/FocusModes';
 import AppStatus from './pages/AppStatus';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { blue, orange } from '@mui/material/colors';
-
+import Leaderboards from './pages/Leaderboards';
 import { CssBaseline, colors } from '@mui/material';
 // import { Text } from 'react';
 const theme = createTheme({
@@ -59,6 +59,7 @@ return (
 		<Route path='/timeSpent' element={<TimeSpent/>} />
 		<Route path='/focusModes' element={<FocusModes/>} />
 		<Route path="/appStatus" element={<AppStatus/>}/>
+		<Route path="/leaderboards" element={<Leaderboards/>}/>
 	</Routes>
 	</div>
 	<Navbar />

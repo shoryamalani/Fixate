@@ -24,6 +24,9 @@ import { Button } from "@mui/material";
             <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/appStatus')}>
               App Status
             </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/leaderboards')}>
+              Leaderboards
+            </Button>
           </NavMenu>
         </Nav>
       </>
