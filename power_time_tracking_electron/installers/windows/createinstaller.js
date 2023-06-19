@@ -16,7 +16,7 @@ function getInstallerConfig () {
 
   return Promise.resolve({
     appDirectory: path.join('out', 'PowerTimeTracking-win32-x64'),
-    authors: 'Shorya Malani',
+    authors: 'PowerTimeTracking Team',
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),
     exe: 'PowerTimeTracking.exe',
