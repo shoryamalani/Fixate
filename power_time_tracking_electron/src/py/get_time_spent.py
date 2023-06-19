@@ -241,6 +241,14 @@ def get_time(time_period):
         start_of_last_30_minutes = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(minutes=30),full_time_format)
         data = database_worker.get_logs_between_times(start_of_last_30_minutes,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "Last 30 Minutes"
+    elif time_period == "last_month":
+        start_of_last_month = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=30),full_time_format)
+        data = database_worker.get_logs_between_times(start_of_last_month,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "Last Month"
+    elif time_period == "this_month":
+        start_of_this_month = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=30),full_time_format)
+        data = database_worker.get_logs_between_times(start_of_this_month,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
+        name = "This Month"
     else:
         data = database_worker.get_all_time_logs()
         name = "All Time"
@@ -249,7 +257,15 @@ def get_time(time_period):
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
     distractions['total_time_spent'] = times[0][1]
+    distractions['distractions_time_min'] = get_distractions_time_in_minutes(times,get_all_distracting_apps())
     return times,distractions,name
+
+def get_distractions_time_in_minutes(times,distractions):
+    total_time = 0
+    for time in times:
+        if time[0] in distractions:
+            total_time += time[1]
+    return total_time/60
 
 def get_specific_time(start_time,end_time):
     print(datetime.datetime.strftime(start_time,full_time_format)) 
