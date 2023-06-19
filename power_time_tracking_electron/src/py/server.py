@@ -19,7 +19,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
 logger_application.boot_up_checker()
 current_notifications = []
-VERSION = "0.9.5"
+VERSION = "0.9.6"
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
