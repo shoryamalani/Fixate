@@ -1,21 +1,21 @@
 npm run package-arm
 sleep 2
-pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-arm-0.9.3.pkg
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-arm-0.9.6.pkg
 spctl -a -vv out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/
 xcrun stapler validate out/PowerTimeTracking-darwin-arm64/PowerTimeTracking.app/
 sleep 2
-xcrun notarytool submit out/PowerTimeTracking-arm-0.9.3.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+xcrun notarytool submit out/PowerTimeTracking-arm-0.9.6.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
 sleep 2
-xcrun stapler staple out/PowerTimeTracking-arm-0.9.3.pkg 
+xcrun stapler staple out/PowerTimeTracking-arm-0.9.6.pkg 
 
 npm run package-int
 spctl -a -vv out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/
 xcrun stapler validate out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/
 sleep 2
 pwd
-pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-intel-0.9.3.pkg
+pkgbuild --scripts src/scripts/ --component out/PowerTimeTracking-darwin-x64/PowerTimeTracking.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/PowerTimeTracking-intel-0.9.6.pkg
 pwd
 sleep 2
-xcrun notarytool submit out/PowerTimeTracking-intel-0.9.3.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+xcrun notarytool submit out/PowerTimeTracking-intel-0.9.6.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
 sleep 2
-xcrun stapler staple out/PowerTimeTracking-intel-0.9.3.pkg 
+xcrun stapler staple out/PowerTimeTracking-intel-0.9.6.pkg 

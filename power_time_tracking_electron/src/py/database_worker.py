@@ -162,13 +162,51 @@ def update_to_database_version_1_7():
     # add a user to user table
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("INSERT INTO user (id,name,data) VALUES (1,'default',json('{}'))")
+    c.execute("INSERT INTO user (id,name) VALUES (?,?)",(1,"default"))
+    # c.execute("UPDATE user SET name = 'default',data = ? WHERE id=1",[json.dumps({})])
     c.execute("UPDATE database_and_application_version SET database_version = '1.7' WHERE id=1")
     conn.commit()
     conn.close()
+    set_current_user_data({})
+
+def update_to_database_version_1_8():
+    """
+    Updates the database to version 1.8
+    """
+    # add a user to user table
+    conn = connect_to_db()
+    c = conn.cursor()
+    server_update_times = create_table_command("server_update_times",[["id","INTEGER PRIMARY KEY"],["name","text"],["next_time","DATETIME"],["seconds_between_updates","int"],["last_updated","DATETIME"]])
+    c.execute(server_update_times)
+    add_every_5_minute_current_upload_time = make_write_to_db([(["1","every_5_minute_regular",get_time_in_format(),300,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_every_5_minute_current_upload_time)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.8' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_9():
+    """
+    Updates the database to version 1.9
+    """
+    # version adds many more update times
+    conn = connect_to_db()
+    c = conn.cursor()
+    add_daily_update_time = make_write_to_db([(["2","daily",get_time_in_format(),3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_daily_update_time)
+    add_weekly_update_time = make_write_to_db([(["3","weekly",get_time_in_format(),24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_weekly_update_time)
+    add_monthly_update_time = make_write_to_db([(["4","monthly",get_time_in_format(),7*24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_monthly_update_time)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.9' WHERE id=1")
+    conn.commit()
+    conn.close()
+
 
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
+
+def get_time_in_format_from_datetime(time:datetime.datetime):
+    return time.strftime(get_time_format())
 
 def get_time_from_format(time):
     return datetime.datetime.strptime(time,get_time_format())
@@ -222,6 +260,7 @@ def get_logs_between_times(start_time,end_time):
     data = c.fetchall()
     conn.close()
     return data
+
 def get_time_logs_from_yesterday():
     """
     Returns the time logs from yesterday
@@ -253,6 +292,7 @@ def get_time_logs_from_last_five_hours():
     data = c.fetchall()
     conn.close()
     return data
+
 def get_time_of_last_mouse_movement():
     """
     Returns the time of the last mouse movement
@@ -282,6 +322,7 @@ def set_new_time_in_mouse_moved():
     except Exception as e:
         logger.error(e)
         return None
+    
 def add_daily_task(name,info):
     """
     Adds a daily task
@@ -510,7 +551,10 @@ def get_current_user_data():
     conn.close()
     if data is None:
         return None
-    return json.loads(data[2])
+    if type(data[2]) == str:
+        return json.loads(data[2])
+    else:
+        return data[2]
 
 def set_current_user_data(data):
     """
@@ -522,3 +566,26 @@ def set_current_user_data(data):
     conn.commit()
     conn.close()
 
+def server_update_required():
+    """
+    Checks if a server update is required
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    # select everything where next_time is less than current time
+    c.execute("SELECT * FROM server_update_times WHERE next_time <= ?",[get_time_in_format()])
+    data = c.fetchall()
+    conn.close()
+    if data is None:
+        return None
+    return data
+
+def reset_database(update_id,update_time):
+    """
+    Resets the database
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE server_update_times SET next_time = ?, last_updated = ? WHERE id = ?",[datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(seconds=update_time),get_time_format()),get_time_in_format(),update_id])
+    conn.commit()
+    conn.close()

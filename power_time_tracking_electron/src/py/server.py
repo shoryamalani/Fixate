@@ -19,7 +19,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
 logger_application.boot_up_checker()
 current_notifications = []
-VERSION = "0.9.1"
+VERSION = "0.9.6"
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
 @app.route("/start_logger")
 def start_logger():
@@ -150,6 +150,7 @@ def get_current_user():
 
 @app.route('/set_display_name', methods=['POST'])
 def set_display_name():
+    print(request.json["display_name"])
     return jsonify({"success":ppt_api_worker.set_display_name(request.json["display_name"])})
 
 @app.route('/create_user', methods=['POST'])
@@ -162,17 +163,18 @@ def create_user():
 @app.route('/set_privacy', methods=['POST'])
 def change_privacy():
     try:
-        ppt_api_worker.change_privacy(request.json["privacy_level"])
-        return jsonify({"user":logger_application.get_current_user()})
+        
+        return jsonify({"user":ppt_api_worker.change_privacy(request.json["privacy_level"])})
     except:
         return "error",500
 
 @app.route('/add_friend', methods=['POST'])
 def add_friend():
     try:
-        ppt_api_worker.add_friend(request.json["friend_name"],request.json['friend_share_code'])
-        return jsonify({"user":logger_application.get_current_user()})
-    except:
+       
+        return jsonify({"user": ppt_api_worker.add_friend(request.json["friend_name"],request.json['friend_share_code'])})
+    except Exception as e:
+        print(e)
         return "error",500
 
 @app.route('/get_friends', methods=['GET'])
@@ -182,12 +184,24 @@ def get_friends():
     except:
         return "error",500
 
+@app.route('/get_friend_data_now', methods=['GET'])
+def get_friend_data_now():
+    try:
+        ppt_api_worker.getFriendData(True)
+        return jsonify({"user":logger_application.get_current_user()})
+    except:
+        return "error",500
+
 @app.route("/dump_chrome_data",methods=["POST"])
 @cross_origin()
 def dump_chrome_url():
     print(request.json)
     logger_application.save_chrome_url(request.json["url"])
     return "Success", 200
+
+@app.route("/get_leaderboard_data",methods=["GET"])
+def get_leaderboard_data():
+    return jsonify({"leaderboard":ppt_api_worker.get_leaderboard_data()})
     
 if __name__ == "__main__":
     logger.debug("Starting server")

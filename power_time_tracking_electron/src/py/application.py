@@ -123,13 +123,18 @@ def search_close_and_log_apps():
         if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
             active = False
         database_worker.log_current_app(current_app_name,tabname,active,title)
-        
+        check_if_server_must_be_updated() 
         # logger.debug(current_app_name)
         if sys.platform != "win32":
             sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         # except Exception as err:
         #     logger.error(err)
+
+def check_if_server_must_be_updated():
+    to_update = database_worker.server_update_required()
+    if to_update:
+        ppt_api_worker.update_server_data(to_update)
 
 
 def make_url_to_base(full_url):
@@ -260,33 +265,40 @@ def boot_up_checker():
             if not time_table:
                 logger.debug("database failed")
                 sys.exit()
-        else:
-            logger.debug(database_created)
-            database_created = list(database_created)
-            if database_created[1] == "1.0":
-                database_worker.update_to_database_version_1_1()
-                database_created[1] = "1.1"
-            if database_created[1] == "1.1":
-                database_worker.update_to_database_version_1_2()
-                database_created[1] = "1.2"
-            if database_created[1] == "1.2":
-                database_worker.update_to_database_version_1_3()
-                database_created[1] = "1.3"
-            if database_created[1] == "1.3":
-                database_worker.update_to_database_version_1_4()
-                database_created[1] = "1.4"
-            if database_created[1] == "1.4":
-                database_worker.update_to_database_version_1_5()
-                database_created[1] = "1.5"
-            if database_created[1] == "1.5":
-                database_worker.update_to_database_version_1_6()
-                database_created[1] = "1.6"
-            if database_created[1] == "1.6":
-                database_worker.update_to_database_version_1_7()
-                database_created[1] = "1.7"
+
+        logger.debug(database_created)
+        database_created = list(database_created)
+        if database_created[1] == "1.0":
+            database_worker.update_to_database_version_1_1()
+            database_created[1] = "1.1"
+        if database_created[1] == "1.1":
+            database_worker.update_to_database_version_1_2()
+            database_created[1] = "1.2"
+        if database_created[1] == "1.2":
+            database_worker.update_to_database_version_1_3()
+            database_created[1] = "1.3"
+        if database_created[1] == "1.3":
+            database_worker.update_to_database_version_1_4()
+            database_created[1] = "1.4"
+        if database_created[1] == "1.4":
+            database_worker.update_to_database_version_1_5()
+            database_created[1] = "1.5"
+        if database_created[1] == "1.5":
+            database_worker.update_to_database_version_1_6()
+            database_created[1] = "1.6"
+        if database_created[1] == "1.6":
+            database_worker.update_to_database_version_1_7()
+            database_created[1] = "1.7"
+        if database_created[1] == "1.7":
+            database_worker.update_to_database_version_1_8()
+            database_created[1] = "1.8"
+        if database_created[1] == "1.8":
+            database_worker.update_to_database_version_1_9()
+            database_created[1] = "1.9"
         print(database_worker.get_current_user_data())
+        print("HEREERERER")
         if  'device_id' not in database_worker.get_current_user_data():
-            cur_data = json.loads(database_worker.get_current_user_data())
+            cur_data = database_worker.get_current_user_data()
             val = ppt_api_worker.create_devices()
             print(val)
             if val:
@@ -308,7 +320,7 @@ def boot_up_checker():
         # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
         # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
         # multiprocessing.Process(target=web_app.start_app).start()
-        
+    
     except Exception as e:
         logger.debug(e)
         return e
@@ -318,7 +330,7 @@ def get_focus_mode_status():
     try:
         if FOCUS_MODE:
             latest_focus_mode = database_worker.get_latest_focus_session()
-            print(latest_focus_mode)
+            # print(latest_focus_mode)
             if(latest_focus_mode):
                 end_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S') + datetime.timedelta(minutes=latest_focus_mode[2])
                 start_time = datetime.datetime.strptime(latest_focus_mode[1], '%Y-%m-%d %H:%M:%S')
