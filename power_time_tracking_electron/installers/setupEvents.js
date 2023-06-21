@@ -38,11 +38,21 @@ switch (squirrelEvent) {
  case '--squirrel-install':
     async function setup() {
       const setup_windows = spawn('cmd.exe', ['/c', '%LocalAppData%/PowerTimeTracking/app-0.9.6/resources/app/installers/windows-setup.bat']);
+      
       setup_windows.stdout.on('data', (data) => {
-         log.info(`bat stdout: ${data}`);
+         log.info(`setup stdout: ${data}`);
       });
       setup_windows.stderr.on('data', (data) => {
-         log.error(`dir stderr: ${data}`);
+         log.error(`setup stderr: ${data}`);
+      });
+
+      const setup_service = spawn('cmd.exe', ['/c', '%LocalAppData%/PowerTimeTracking/app-0.9.6/resources/app/installers/setup-service.bat']);
+
+      setup_service.stdout.on('data', (data) => {
+         log.info(`service stdout: ${data}`);
+      });
+      setup_service.stderr.on('data', (data) => {
+         log.error(`service stderr: ${data}`);
       });
     }
     setup();

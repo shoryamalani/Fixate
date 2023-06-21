@@ -42,7 +42,7 @@ PROCESSES = {}
 UNRECORDED_APPS = ["loginwindow"]
 
 def get_distracting_apps():
-    data = requests.get("http://localhost:5005/check_closing_apps").json()
+    data = requests.get("http://127.0.0.1:5005/check_closing_apps").json()
     return data
 def check_if_must_be_closed(app,tabname,closing_app):
     try:

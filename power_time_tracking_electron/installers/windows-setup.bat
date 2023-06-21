@@ -1,0 +1,2 @@
+del "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\run-server.bat"
+copy "%LocalAppData%\PowerTimeTracking\app-0.9.6\resources\app\installers\start-service.bat" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\start-service.bat"
