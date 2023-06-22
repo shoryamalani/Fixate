@@ -19,8 +19,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
 logger_application.boot_up_checker()
 current_notifications = []
-VERSION = "0.9.6"
-logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+VERSION = "0.9.7"
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 @app.route("/start_logger")
 def start_logger():
     if logger_application.boot_up_checker():
@@ -202,7 +202,36 @@ def dump_chrome_url():
 @app.route("/get_leaderboard_data",methods=["GET"])
 def get_leaderboard_data():
     return jsonify({"leaderboard":ppt_api_worker.get_leaderboard_data()})
-    
+
+@app.route("/invite_friend_to_live_focus",methods=["POST"])
+def invite_friend_to_live_focus():
+    val = ppt_api_worker.invite_to_live_focus_mode(request.json["friend_id"])
+    return jsonify({"status":"success" if val else "error", "data":val})
+
+@app.route("/get_live_focus_mode_data",methods=["GET"])
+def get_live_focus_data():
+    return jsonify({"live_focus_data":ppt_api_worker.get_live_focus_mode_data()})
+
+@app.route("/create_live_focus_mode",methods=["POST"])
+def create_live_focus_mode():
+    return jsonify(ppt_api_worker.create_live_focus_mode(request.json["name"]))
+
+@app.route('/join_live_focus_mode', methods=['POST'])
+def join_live_focus_mode():
+    return jsonify({"status":ppt_api_worker.join_live_focus_mode(request.json["id"])})
+
+@app.route('/end_live_focus_mode', methods=['POST'])
+def end_live_focus_mode():
+    return jsonify({"status":ppt_api_worker.end_live_focus_mode()})
+
+@app.route('/leave_live_focus_mode', methods=['POST'])
+def leave_live_focus_mode():
+    return jsonify({"status":ppt_api_worker.leave_live_focus_mode()})
+
+@app.route('/get_cached_live_focus_mode_data', methods=['GET'])
+def get_cached_live_focus_mode_data():
+    return jsonify({"data":ppt_api_worker.get_cached_live_focus_mode_data(), 'status': 'success'})
+
 if __name__ == "__main__":
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)

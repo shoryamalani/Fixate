@@ -1,11 +1,12 @@
 
 import React, { useEffect, useState } from 'react';
-import { Button, Container, Input, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, private_createTypography } from '@mui/material';
+import { Avatar, Button, Container, Input, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, private_createTypography } from '@mui/material';
 import css from '../Style';
 import { useSelector } from 'react-redux';
 import { setUserData } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 import { CircularProgressWithLabel } from './CircularProgressBar';
+import { blue } from '@mui/material/colors';
 
 function UserProfileCard() {
     const userData = useSelector(state => state.user.userData);
@@ -32,6 +33,7 @@ function UserProfileCard() {
                     
 
                 dispatch(setUserData(data));
+                getFriendDataNow();
             }
         }).catch(error => { console.log(error)});
     }
@@ -143,6 +145,7 @@ function UserProfileCard() {
             response => response.json()
         ).then(data => {
             console.log(data)
+            window.location.reload();
         }).catch(error => { alert("Friend Add Failed") });
     }
     return (
@@ -224,8 +227,8 @@ function UserProfileCard() {
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">{friend['name']}</TableCell>
-                <TableCell align="right">{friend['data']['live'] != null ? friend['data']['live']['total_time_spent']/60: 0 }</TableCell>
+              <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{friend['name'][0]}</Avatar>{friend['name']}</TableCell>
+                <TableCell align="right"> {friend['data']['live'] != null ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
                 <TableCell align="right">{<CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>}</TableCell>
               </TableRow>
             ))}

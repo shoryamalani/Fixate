@@ -170,7 +170,8 @@ function TimeSpent() {
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
       <h1 style={css.h1}>Time Spent</h1>
-    <Stack direction="row" spacing={1} style={css.contrastContent}>
+      <div style={css.contrastContent}>
+    <Stack direction="row" spacing={1}>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_30_minutes")}} >Last 30 minutes</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
@@ -178,13 +179,14 @@ function TimeSpent() {
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
-      
     </Stack>
+    </div>
     <div style={{backgroundColor:'black',borderRadius:'2em'}}>
         <div style={css.contrastContent}>
+          <Stack direction={'column'} spacing={1}>
+
         <Button color='info' variant="contained" onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button> 
-        </div>
-    <div style={css.contrastContent}>
+    {/* <div style={css.contrastContent}> */}
     
     <Calendar style = {css.body}
           onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
@@ -192,8 +194,28 @@ function TimeSpent() {
           showNeighboringMonth={false}
           locale={"en-US"}
           selectRange={true}
-        />
+          />
+          </Stack>
+          </div>
         </div>
+    {pieChartData && 
+        <div style={css.contrastContent}>
+        <Pie data={pieChartData}
+        id = "pieChart"
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: "Minutes Spent per App",
+              
+            }
+            
+          }
+          
+        }} /></div>
+        }
+
+    
       <div style={css.contrastContent}>
         <Stack direction="column" spacing={1} >
       <h1 style={css.h1}>Old Focus Modes</h1>
@@ -230,23 +252,8 @@ function TimeSpent() {
         </Stack>
       </div>
         </div>
-        {pieChartData && 
-        <div style={css.contrastContent}>
-        <Pie data={pieChartData}
-        id = "pieChart"
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Minutes Spent per App",
-              
-            }
-            
-          }
-          
-        }} /></div>
-        }
-    </div>
+        
+    // </div>
   )
 }
 

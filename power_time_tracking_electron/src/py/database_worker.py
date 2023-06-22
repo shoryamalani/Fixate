@@ -201,6 +201,32 @@ def update_to_database_version_1_9():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_10():
+    """
+    Updates the database to version 1.10
+    """
+    # version adds many more update times
+    conn = connect_to_db()
+    c = conn.cursor()
+    add_live_focus_mode_update_time = make_write_to_db([(["5","live_focus_mode",get_time_in_format(),2,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_live_focus_mode_update_time)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.10' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_11():
+    """
+    Updates the database to version 1.11
+    """
+    # add a user to user table
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO user (id,name) VALUES (?,?)",(2,"live_focus_mode"))
+    # c.execute("UPDATE user SET name = 'default',data = ? WHERE id=1",[json.dumps({})])
+    c.execute("UPDATE database_and_application_version SET database_version = '1.11' WHERE id=1")
+    conn.commit()
+    conn.close()
+    set_live_focus_mode_data({})
 
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
@@ -214,7 +240,7 @@ def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
 def get_all_time_logs():
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB",retention=5)
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log")
@@ -250,7 +276,7 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
@@ -589,3 +615,45 @@ def reset_database(update_id,update_time):
     c.execute("UPDATE server_update_times SET next_time = ?, last_updated = ? WHERE id = ?",[datetime.datetime.strftime(datetime.datetime.now() + datetime.timedelta(seconds=update_time),get_time_format()),get_time_in_format(),update_id])
     conn.commit()
     conn.close()
+
+def start_updating_live_focus_mode():
+    """
+    Starts updating the live focus mode
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE server_update_times SET next_time = ?, last_updated = ? WHERE name = ?",[datetime.datetime.strftime(datetime.datetime.now(),get_time_format()),get_time_in_format(),"live_focus_mode"])
+    conn.commit()
+    conn.close()
+
+def set_live_focus_mode_data(data):
+    """
+    Sets the live focus mode data
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    final_data = {"time":get_time_in_format(),"data":data}
+    c.execute("UPDATE user SET data = ? WHERE id=2",[json.dumps(final_data)])
+    conn.commit()
+    conn.close()
+
+def get_live_focus_mode_data():
+    """
+    Gets the live focus mode data
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    # just get id 1 in users table
+    c.execute("SELECT * FROM user WHERE id=2")
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return None
+    final_data = {}
+    if type(data[2]) == str:
+        final_data =  json.loads(data[2])
+    else:
+        final_data =  data[2]
+    if get_time_from_format(final_data['time']) < datetime.datetime.now() - datetime.timedelta(seconds=10):
+        return None
+    return final_data['data']

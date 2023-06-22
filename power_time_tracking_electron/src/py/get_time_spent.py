@@ -125,6 +125,9 @@ def proper_time_parse(data,distractions=[]):
             final_data.append(data[i])
         i += 1
     # print(len(final_data))
+    if len(final_data) == 0:
+        return {},{'total_time_spent':0,"distractions_number":0,"distractions_time_min":0/60}
+    
     previous_time = datetime.datetime.strptime(final_data[0][0],full_time_format)
     time = 0
     all_times = {}

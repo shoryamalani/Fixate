@@ -31,6 +31,8 @@ elif sys.platform == "win32":
 global FOCUS_MODE
 FOCUS_MODE = False
 
+global LAST_FEW_SECONDS
+LAST_FEW_SECONDS = []
 
 
 # import web_app_stuff.app as web_app
@@ -71,13 +73,14 @@ def search_close_and_log_apps():
     apps_in_name_form = [app[1] for app in apps]
     last_thirty_mins_distracting = 0
     whole_time = 0
+    global LAST_FEW_SECONDS
     while True:
         
-        # # logger.debug(front_app)
-        # if front_app != None:
-            
-            #Getting data replaced by JXA and applescript for macos
-        # try:
+    # # logger.debug(front_app)
+    # if front_app != None:
+        
+        #Getting data replaced by JXA and applescript for macos
+    # try:
         app = systemDataHandler.get_current_frontmost_app()
         distracting_apps = get_distracting_apps()
         current_app_name = app['app_name']
@@ -100,6 +103,11 @@ def search_close_and_log_apps():
                 apps_in_name_form.append(short_tab)
             if short_tab in distracting_apps['apps_to_close']:
                 last_thirty_mins_distracting += 1
+                LAST_FEW_SECONDS.append(False)
+            else:
+                LAST_FEW_SECONDS.append(True)
+            if len(LAST_FEW_SECONDS) > 10:
+                LAST_FEW_SECONDS = []
         #     except Exception as err:
         #         logger.debug(err)
         #         tabname = None
@@ -109,8 +117,13 @@ def search_close_and_log_apps():
             if app["app_name"] not in UNRECORDED_APPS:
                 database_worker.add_application_to_db(app["app_name"],"app",0,0)
                 apps_in_name_form.append(app["app_name"])
-            if app["app_name"] in distracting_apps['apps_to_close']:
-                    last_thirty_mins_distracting += 1
+        if app["app_name"] in distracting_apps['apps_to_close']:
+            last_thirty_mins_distracting += 1
+            LAST_FEW_SECONDS.append(False)
+        else:
+            LAST_FEW_SECONDS.append(True)
+        if len(LAST_FEW_SECONDS) > 10:
+            LAST_FEW_SECONDS = []
         whole_time +=1
         if whole_time == 60*30: # 30 mins
             whole_time = 0
@@ -122,7 +135,9 @@ def search_close_and_log_apps():
         last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
         if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
             active = False
+            LAST_FEW_SECONDS.pop()
         database_worker.log_current_app(current_app_name,tabname,active,title)
+        print(LAST_FEW_SECONDS)
         check_if_server_must_be_updated() 
         # logger.debug(current_app_name)
         if sys.platform != "win32":
@@ -133,8 +148,15 @@ def search_close_and_log_apps():
 
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()
+    global LAST_FEW_SECONDS
+    vals = {}
     if to_update:
-        ppt_api_worker.update_server_data(to_update)
+        for a in to_update:
+            if a[1] == "live_focus_mode":
+                vals['focused'] = all(LAST_FEW_SECONDS)
+                vals['seconds'] = len(LAST_FEW_SECONDS)
+                LAST_FEW_SECONDS = []
+        ppt_api_worker.update_server_data(to_update,vals)
 
 
 def make_url_to_base(full_url):
@@ -252,12 +274,28 @@ def stop_focus_mode(id):
 
 
 def boot_up_checker():
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
+    # check if too many items in logger folder
+    try:
+        path = os.path.dirname(constants.LOGGER_LOCATION)
+        # get the folder of the file
+        folder = path
+
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        else:
+            if len(os.listdir(folder)) > 5:
+                for file in os.listdir(folder):
+                    os.remove(folder+"/"+file)
+    except Exception as e:
+        logger.debug(e)
+        return e
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
     try:
         if not os.path.exists(constants.DATABASE_LOCATION):
             os.mkdir(constants.DATABASE_LOCATION)
         elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
             create_time_database()
+        
         database_created = check_if_database_created()
         if not database_created:
             time_table = create_time_database() 
@@ -295,6 +333,12 @@ def boot_up_checker():
         if database_created[1] == "1.8":
             database_worker.update_to_database_version_1_9()
             database_created[1] = "1.9"
+        if database_created[1] == "1.9":
+            database_worker.update_to_database_version_1_10()
+            database_created[1] = "1.10"
+        if database_created[1] == "1.10":
+            database_worker.update_to_database_version_1_11()
+            database_created[1] = "1.11"
         print(database_worker.get_current_user_data())
         print("HEREERERER")
         if  'device_id' not in database_worker.get_current_user_data():
@@ -361,5 +405,6 @@ def get_current_user():
     if user_id == None:
         return {"status":True,'device_id':device_id, "user_id":None}
     return {"status":True, "user_id":user_id, 'device_id':device_id, "user_data":database_worker.get_current_user_data()}
+
 if __name__ == "__main__":
     boot_up_checker()
