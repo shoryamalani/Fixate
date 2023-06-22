@@ -30,6 +30,7 @@ function LiveFocusMode(){
     const [userChartData, setUserChartData] = useState({
         labels: [],
     });
+    const [leaderboardList, setLeaderboardList] = useState([]);
     const dispatch = useDispatch();
 
     if(userData!=null){
@@ -164,7 +165,7 @@ function LiveFocusMode(){
             if (data['status'] === 'success') {
                 console.log(data['data']['data']['data'])
                 var newUserChartData = userChartData
-
+                
                 for(var key in data['data']['data']['data']['time_data']){
                     if(!(key in userChartData)){
                         newUserChartData[key] = []
@@ -182,6 +183,17 @@ function LiveFocusMode(){
                         newUserChartData[key].push(100*(data['data']['data']['data']['seconds'][key]['focused']/(data['data']['data']['data']['seconds'][key]['focused'] + data['data']['data']['data']['seconds'][key]['unfocused'])))
                     }
                 }
+                var newLeaderboardList = []
+                for(var key in data['data']['data']['data']['time_data']){
+                    newLeaderboardList.push({
+                        'name':data['data']['data']['member_names'][key],
+                        'percent_focused':100*(data['data']['data']['data']['seconds'][key]['focused']/(data['data']['data']['data']['seconds'][key]['focused'] + data['data']['data']['data']['seconds'][key]['unfocused'])),
+                        'id':key
+                    })
+                }
+                // sort the leaderboard list
+                newLeaderboardList.sort((a,b)=>{return b['percent_focused']-a['percent_focused']})
+                setLeaderboardList(newLeaderboardList)
                 setUserChartData(newUserChartData)
                 console.log(newUserChartData)
                 dispatch(setLiveFocusModeCachedData(data['data']));
@@ -294,6 +306,30 @@ function LiveFocusMode(){
     <>
     <div style={css.contrastContent}>
         <Stack direction='column'>
+            {/* Leaderboard spot */}
+            <h2>Leaderboard</h2>
+            <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+        <Table >
+        <TableHead>
+            <TableRow>
+                <TableCell>Friend Display Name</TableCell>
+                <TableCell align="right">Percent Focused</TableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            {leaderboardList.map((member) => (
+                <TableRow
+                    key={member.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{member.name[0]}</Avatar> {member.name}</TableCell>
+                    <TableCell align="right">{<CircularProgressWithLabel value={member.percent_focused}></CircularProgressWithLabel>}</TableCell>
+                </TableRow>
+            ))}
+        </TableBody>
+        </Table>
+        </TableContainer>
+
             <h2>Live Focus Mode Data</h2>
             {
                 liveFocusModeCachedData['data']['members'].map((member) => (
