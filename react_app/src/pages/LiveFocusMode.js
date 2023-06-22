@@ -33,7 +33,7 @@ function LiveFocusMode(){
     const dispatch = useDispatch();
 
     if(userData!=null){
-        if(userData['user_data']['server_data']['friends_data'] !== undefined){
+        if(userData['user_data']['server_data']['friends_data'] !== null){
             if(userData['user_data']['server_data']['friends_data'].length === 0){
                 console.log("In dedication to Mark Wood, maybe you should not have said 'make me a sandwich.'")
                 }
