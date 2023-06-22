@@ -21,6 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import { CircularProgressWithLabel } from './CircularProgressBar';
 
 
 
@@ -60,29 +61,29 @@ const headCells = [
   {
     id: 'name',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'Display Name',
   },
   {
-    id: 'timeSpent',
+    id: 'total_time_spent',
     numeric: true,
     disablePadding: false,
     label: 'Time Spent Minutes',
   },
   {
-    id: 'averageTimeBetweenDistractions',
+    id: 'time_between_distractions',
     numeric: true,
     disablePadding: false,
     label: 'Average Time Between Distractions',
   },
   {
-    id: 'numberOfDistractionsPerHour',
+    id: 'distractions_per_hour',
     numeric: true,
     disablePadding: false,
     label: 'Number of Distractions Per Hour',
   },
   {
-    id: 'PercentTimeFocused',
+    id: 'percent_time_focused',
     numeric: true,
     disablePadding: false,
     label: 'Percent Time Focused',
@@ -139,7 +140,6 @@ function Leaderboard(props) {
 Leaderboard.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -179,36 +179,22 @@ function EnhancedTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
     </Toolbar>
   );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 function SingleLeaderboard(props) {
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('percentTimeFocused');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const {leaderboardData} = props;
-    console.log(leaderboardData);
+  console.log(leaderboardData);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -242,13 +228,13 @@ function SingleLeaderboard(props) {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
-    [order, orderBy, page, rowsPerPage],
+    [order, orderBy, page, rowsPerPage,leaderboardData],
   );
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - leaderboardData.length) : 0;
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', mb: 2,padding:'2em' }}>
         <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
           <Table
@@ -275,7 +261,7 @@ function SingleLeaderboard(props) {
                     // role="checkbox"
                     // aria-checked={isItemSelected}
                     tabIndex={-1}
-                    key={row.name}
+                    key={row.id}
                     // selected={isItemSelected}
                     sx={{ cursor: 'pointer' }}
                   >
@@ -288,10 +274,10 @@ function SingleLeaderboard(props) {
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell align="right">{row.total_time_spent != null ? row.total_time_spent : 'Unknown' }</TableCell>
-                    <TableCell align="right">{row.time_between_distractions != null ? row.time_between_distractions: 'Unknown'}</TableCell>
-                    <TableCell align="right">{row.distractions_per_hour != null ? row.distractions_per_hour: 'Unknown'}</TableCell>
-                    <TableCell align="right">{row.percent_time_focused != null ? row.percent_time_focused:0}</TableCell>
+                    <TableCell align="right" id={row.id} value={row.total_time_spent}>{row.total_time_spent.toFixed(2) }</TableCell>
+                    <TableCell align="right">{row.time_between_distractions != null ? row.time_between_distractions.toFixed(2): 'Unknown'}</TableCell>
+                    <TableCell align="right">{row.distractions_per_hour != null ? row.distractions_per_hour.toFixed(2): 'Unknown'}</TableCell>
+                    <TableCell align="right"><CircularProgressWithLabel value={row.percent_time_focused}></CircularProgressWithLabel></TableCell>
                   </TableRow>
                 );
               })}
@@ -310,7 +296,7 @@ function SingleLeaderboard(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={props.leaderboardData.length}
+          count={leaderboardData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

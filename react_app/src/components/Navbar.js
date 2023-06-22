@@ -5,8 +5,9 @@ import { Nav, NavLink, NavMenu }
 import { useNavigate } from "react-router-dom";
 import css from "../Style";
 import { Button } from "@mui/material";
+import { LiveFocusMode } from "../pages/LiveFocusMode";
 
-  const Navbar = () => {
+const Navbar = () => {
     const navigate = useNavigate()
     return (
       <>
@@ -26,6 +27,9 @@ import { Button } from "@mui/material";
             </Button>
             <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/leaderboards')}>
               Leaderboards
+            </Button>
+            <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/liveFocusMode')}>
+              Live Focus Mode
             </Button>
           </NavMenu>
         </Nav>

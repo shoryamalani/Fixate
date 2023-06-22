@@ -20,6 +20,7 @@ import {SingleLeaderboard}  from '../components/Leaderboard';
 const Leaderboards = () => {
     let leaderboardData = useSelector(state => state.user.leaderboardData);
     let dispatch = useDispatch();
+
     useEffect(() => {
         if (leaderboardData == null) {
             fetch('http://localhost:5005/get_leaderboard_data').then(response => response.json()).then(data => {
@@ -39,12 +40,13 @@ const Leaderboards = () => {
                             console.log(key2)
                             final_data[key2].push(
                                 {
-                                    'total_time_spent':(data[key][key2]['data']['total_time_spent']/60).toFixed(2),
-                                    'time_between_distractions':((data[key][key2]['data']['total_time_spent']/60-data[key][key2]['data']['distractions_time_min'])/data[key][key2]['data']['distractions_number']).toFixed(2),
+                                    'total_time_spent':(data[key][key2]['data']['total_time_spent']/60),
+                                    'time_between_distractions':((data[key][key2]['data']['total_time_spent']/60-data[key][key2]['data']['distractions_time_min'])/data[key][key2]['data']['distractions_number']),
                                     'name':data[key]['name'],
-                                    'longest_time_without_distraction':(data[key][key2]['data']['longest_time_without_distraction_min']).toFixed(2),
-                                    'distractions_per_hour':(data[key][key2]['data']['distractions_number']/(data[key][key2]['data']['total_time_spent']/3600)).toFixed(2),
-                                    'percent_time_focused':(100*((data[key][key2]['data']['total_time_spent']-(data[key][key2]['data']['distractions_time_min']*60))/data[key][key2]['data']['total_time_spent'])).toFixed(2),
+                                    'longest_time_without_distraction':(data[key][key2]['data']['longest_time_without_distraction_min']),
+                                    'distractions_per_hour':(data[key][key2]['data']['distractions_number']/(data[key][key2]['data']['total_time_spent']/3600)),
+                                    'percent_time_focused':(100*((data[key][key2]['data']['total_time_spent']-(data[key][key2]['data']['distractions_time_min']*60))/data[key][key2]['data']['total_time_spent'])),
+                                    'id':key,
                                     // 100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60
                                 })
                         }
@@ -61,6 +63,12 @@ const Leaderboards = () => {
 
     return (
         <>
+            <div style={css.contrastContent}>
+                <Stack direction="column" spacing={2}>
+                <h1>Leaderboards</h1>
+                <Button variant="contained" color="primary" onClick={() => { window.location.reload() }}>Refresh Leaderboard Data</Button>
+                </Stack>
+            </div>
             <div style={css.contrastContent}>
                 { leaderboardData != null && leaderboardData['daily'] != null ?
                 <SingleLeaderboard title='Daily' leaderboardData={leaderboardData['daily']} />
