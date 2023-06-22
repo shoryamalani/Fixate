@@ -20,7 +20,7 @@ function getInstallerConfig () {
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),
     exe: 'PowerTimeTracking.exe',
-    setupExe: `PowerTimeTrackingAppInstaller.exe`,
+    setupExe: `PowerTimeTrackingAppInstaller-0.9.6.exe`,
     setupIcon: path.join('./src', 'assets', 'icon.ico')
   })
 }
