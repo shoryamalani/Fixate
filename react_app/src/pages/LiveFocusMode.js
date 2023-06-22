@@ -300,8 +300,8 @@ function LiveFocusMode(){
                     <div>
                         <h3>{liveFocusModeCachedData['data']['member_names'][member]} has been distracted for {(liveFocusModeCachedData['data']['data']['seconds'][member]['unfocused']/60).toFixed(1)} minutes while being focused for {(liveFocusModeCachedData['data']['data']['seconds'][member]['focused']/60).toFixed(1)} minutes</h3>
                         {/* Chart js line chart */}
-                        <div style={{width:'100%', height:Object.keys(liveFocusModeCachedData['data']['member_names']).length*40+'vh'}}>
-                            <Line  style={{width:'100%', height:'50vh'}}options={{
+                        <div style={{width:'100%', height:'50vh'}}>
+                            <Line  style={{width:'100%', height:'20vh'}}options={{
                                     responsive: true,
                                         plugins: {
                                         legend: {
