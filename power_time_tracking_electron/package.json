@@ -1,7 +1,7 @@
 {
   "name": "PowerTimeTracking",
   "productName": "PowerTimeTracking",
-  "version": "0.9.6",
+  "version": "0.9.7",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "scripts": {

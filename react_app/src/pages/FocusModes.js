@@ -254,7 +254,7 @@ function FocusModes() {
       
       <h1 style={css.h1}>Focus Modes and Tasks</h1>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Set focus mode length</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Enter the duration of the focus mode in minutes
