@@ -98,5 +98,4 @@ lib/
 include/
 scripts/
 @AutomationLog.txt
-*.bat
 *.db
