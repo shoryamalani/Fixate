@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>Label</key>
-	<string>com.electron.powertimetracking.backend.plist</string>
+	<string>com.fixate.macos.backend.plist</string>
 	<key>ProgramArguments</key>
 	<array>
         <!-- <string>sh</string>
         <string>-c</string> -->
         <!-- <string>./Applications/PowerTimeTracking.app/Contents/Resources/app/src/scripts/runbackend</string> -->
-        <string>/Applications/PowerTimeTracking.app/Contents/Resources/app/src/py/../python/bin/python3</string>
-        <string>/Applications/PowerTimeTracking.app/Contents/Resources/app/src/py/server.py</string>
+        <string>/Applications/Fixate.app/Contents/Resources/app/src/py/../python/bin/python3</string>
+        <string>/Applications/Fixate.app/Contents/Resources/app/src/py/server.py</string>
         <string>></string>
-        <string>/tmp/powertimetracking.log</string>
+        <string>/tmp/Fixate.log</string>
         <string>2>&1</string>
         <string>&</string>
 	</array>

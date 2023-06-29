@@ -1,0 +1,8 @@
+sleep 2
+pkgbuild --scripts src/scripts/ --component out/Fixate-darwin-x64/Fixate.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/Fixate-x64-0.9.8.pkg
+# spctl -a -vv out/Fixate-mas-universal/Fixate.app/
+# xcrun stapler validate out/Fixate-mas-universal/Fixate.app/
+sleep 2
+xcrun notarytool submit out/Fixate-x64-0.9.8.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+sleep 2
+xcrun stapler staple out/Fixate-x64-0.9.8.pkg
