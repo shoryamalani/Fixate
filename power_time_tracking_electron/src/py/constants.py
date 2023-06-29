@@ -2,11 +2,13 @@ import os
 import sys
 
 if sys.platform == "win32":
-    DATABASE_LOCATION = f"{os.path.expanduser( '~' )}/.PowerTimeTracking"
-    LOGGER_LOCATION = f"{os.path.expanduser( '~' )}/.PowerTimeTracking/logs/log.log"
+    OLD_DATABASE_LOCATION = f"{os.path.expanduser( '~' )}/PowerTimeTracking"
+    DATABASE_LOCATION = f"{os.path.expanduser( '~' )}/.Fixate"
+    LOGGER_LOCATION = f"{os.path.expanduser( '~' )}/.Fixate/logs/log.log"
 else:
-    DATABASE_LOCATION = f"{os.getenv('HOME')}/.PowerTimeTracking"
-    LOGGER_LOCATION = f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log"
+    OLD_DATABASE_LOCATION = f"{os.getenv('HOME')}/.PowerTimeTracking"
+    DATABASE_LOCATION = f"{os.getenv('HOME')}/.Fixate"
+    LOGGER_LOCATION = f"{os.getenv('HOME')}/.Fixate/logs/log.log"
 
 
 DATABASE_NAME = "time_database.db"

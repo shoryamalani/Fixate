@@ -1,5 +1,11 @@
  //handle setupevents as quickly as possible
  const setupEvents = require('../installers/setupEvents')
+ require('update-electron-app')({
+  repo: 'shoryamalani/Fixate',
+  logger: require('electron-log'),
+
+
+})
  if (setupEvents.handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     return;
@@ -104,7 +110,7 @@ async function setUpTray() {
       contextMenu.items[1].visible = false;
       }, visible: logging},
   ])
-  tray.setToolTip('Power Time Tracking Application Helper')
+  tray.setToolTip('Fixate Application Helper')
   tray.setContextMenu(contextMenu)
 }
 class HTTPResponseError extends Error {
