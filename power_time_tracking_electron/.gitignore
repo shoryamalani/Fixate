@@ -100,3 +100,4 @@ scripts/
 @AutomationLog.txt
 *.bat
 *.db
+python_
