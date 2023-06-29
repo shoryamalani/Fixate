@@ -98,6 +98,5 @@ lib/
 include/
 scripts/
 @AutomationLog.txt
-*.bat
 *.db
 python_

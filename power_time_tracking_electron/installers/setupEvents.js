@@ -36,6 +36,12 @@ handleSquirrelEvent: function() {
 switch (squirrelEvent) {
    
  case '--squirrel-install':
+    async function setup() {
+      const setup_windows = spawn('cmd.exe', 
+      ['/c', '%LocalAppData%/PowerTimeTracking/app-0.9.7/resources/app/installers/windows-setup.bat'], {
+         detached: true,
+         stdio: 'ignore'
+      }).unref();
     
    // for windows
    async function setup() {
