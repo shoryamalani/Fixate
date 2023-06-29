@@ -72,6 +72,7 @@ function LiveFocusMode(){
             if (data['status'] === 'success') {
                 console.log(data)
                 dispatch(setLiveFocusModeData(data));
+                getUserData();
             }
         }).catch(error => { console.log(error)});
     }
