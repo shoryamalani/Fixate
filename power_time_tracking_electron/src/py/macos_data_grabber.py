@@ -18,9 +18,6 @@ import constants
 
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 
-#logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
-
-
 last_mouse_move_set = datetime.datetime.now()
 
 
@@ -58,7 +55,8 @@ class macosOperatingSystemDataGrabber:
     
     def check_interaction_periodic(self):
         start_process_to_deal_with_permissions()
-        multiprocessing.Process(target=start_mouse_and_keyboard_checker).start()
+        keyboard_checker = multiprocessing.Process(target=start_mouse_and_keyboard_checker).start()
+        keyboard_checker.daemon = True
 
     def get_current_frontmost_app(self):
         self.current_app = get_frontmost_app()
@@ -124,7 +122,7 @@ def get_permission_to_accessibility():
         accessibility_permissions = AXIsProcessTrusted()
         if not accessibility_permissions:
             title = "Missing accessibility permissions"
-            info = "For Power Time Tracking to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Power Time Tracking in System Preferences"
+            info = "For Fixate to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Fixate in System Preferences"
 
             alert = NSAlert.new()
             alert.setMessageText_(title)

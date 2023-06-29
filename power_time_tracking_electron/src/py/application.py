@@ -67,7 +67,6 @@ def check_if_must_be_closed(app,tabname,closing_app):
         
 
 def search_close_and_log_apps():
-    # logger.add(f"{os.getenv('HOME')}/.PowerTimeTracking/logs/log.log",backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB")
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_in_name_form = [app[1] for app in apps]
@@ -80,71 +79,71 @@ def search_close_and_log_apps():
     # if front_app != None:
         
         #Getting data replaced by JXA and applescript for macos
-    # try:
-        app = systemDataHandler.get_current_frontmost_app()
-        distracting_apps = get_distracting_apps()
-        current_app_name = app['app_name']
-        tabname = app['url'] if 'url' in app else None
-        title = app['title'] if 'title' in app else "Unknown"
-        active = True
-        #Being replaced by JXA
-        # if current_app_name in BROWSERS:
-            
-        #     try:
-        #         future = browser_tab_name(current_app_name)
-        #         tabname = future.result()
-        #         logger.debug(type(tabname))
-        #         logger.debug(tabname)
-        #         # tabname = browser_tab_name(current_app_name)
-        if tabname:
-            short_tab = make_url_to_base(tabname)
-            if short_tab not in apps_in_name_form:
-                database_worker.add_application_to_db(short_tab,"website",0,0)
-                apps_in_name_form.append(short_tab)
-            if short_tab in distracting_apps['apps_to_close']:
+        try:
+            app = systemDataHandler.get_current_frontmost_app()
+            distracting_apps = get_distracting_apps()
+            current_app_name = app['app_name']
+            tabname = app['url'] if 'url' in app else None
+            title = app['title'] if 'title' in app else "Unknown"
+            active = True
+            #Being replaced by JXA
+            # if current_app_name in BROWSERS:
+                
+            #     try:
+            #         future = browser_tab_name(current_app_name)
+            #         tabname = future.result()
+            #         logger.debug(type(tabname))
+            #         logger.debug(tabname)
+            #         # tabname = browser_tab_name(current_app_name)
+            if tabname:
+                short_tab = make_url_to_base(tabname)
+                if short_tab not in apps_in_name_form:
+                    database_worker.add_application_to_db(short_tab,"website",0,0)
+                    apps_in_name_form.append(short_tab)
+                if short_tab in distracting_apps['apps_to_close']:
+                    last_thirty_mins_distracting += 1
+                    LAST_FEW_SECONDS.append(False)
+                else:
+                    LAST_FEW_SECONDS.append(True)
+                if len(LAST_FEW_SECONDS) > 10:
+                    LAST_FEW_SECONDS = []
+            #     except Exception as err:
+            #         logger.debug(err)
+            #         tabname = None
+            #         logger.debug("not found")
+            # else:
+            if app["app_name"] not in apps_in_name_form:
+                if app["app_name"] not in UNRECORDED_APPS:
+                    database_worker.add_application_to_db(app["app_name"],"app",0,0)
+                    apps_in_name_form.append(app["app_name"])
+            if app["app_name"] in distracting_apps['apps_to_close']:
                 last_thirty_mins_distracting += 1
                 LAST_FEW_SECONDS.append(False)
             else:
                 LAST_FEW_SECONDS.append(True)
             if len(LAST_FEW_SECONDS) > 10:
                 LAST_FEW_SECONDS = []
-        #     except Exception as err:
-        #         logger.debug(err)
-        #         tabname = None
-        #         logger.debug("not found")
-        # else:
-        if app["app_name"] not in apps_in_name_form:
-            if app["app_name"] not in UNRECORDED_APPS:
-                database_worker.add_application_to_db(app["app_name"],"app",0,0)
-                apps_in_name_form.append(app["app_name"])
-        if app["app_name"] in distracting_apps['apps_to_close']:
-            last_thirty_mins_distracting += 1
-            LAST_FEW_SECONDS.append(False)
-        else:
-            LAST_FEW_SECONDS.append(True)
-        if len(LAST_FEW_SECONDS) > 10:
-            LAST_FEW_SECONDS = []
-        whole_time +=1
-        if whole_time == 60*30: # 30 mins
-            whole_time = 0
-            if last_thirty_mins_distracting > 60*20:
-                requests.post("http://127.0.0.1:5005/add_current_notification",json={"notification":{"title":"Just know...","body":f"You have been distracted for more than {math.floor(last_thirty_mins_distracting/60)} minutes in the last 30 minutes. Its ok to be distracted but important to be aware of it."}})
-            last_thirty_mins_distracting = 0
-        check_if_must_be_closed(app,tabname,distracting_apps)
-        
-        last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
-        if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
-            active = False
-            LAST_FEW_SECONDS.pop()
-        database_worker.log_current_app(current_app_name,tabname,active,title)
-        print(LAST_FEW_SECONDS)
-        check_if_server_must_be_updated() 
-        # logger.debug(current_app_name)
-        if sys.platform != "win32":
-            sleep(1)
+            whole_time +=1
+            if whole_time == 60*30: # 30 mins
+                whole_time = 0
+                if last_thirty_mins_distracting > 60*20:
+                    requests.post("http://127.0.0.1:5005/add_current_notification",json={"notification":{"title":"Just know...","body":f"You have been distracted for more than {math.floor(last_thirty_mins_distracting/60)} minutes in the last 30 minutes. Its ok to be distracted but important to be aware of it."}})
+                last_thirty_mins_distracting = 0
+            check_if_must_be_closed(app,tabname,distracting_apps)
+            
+            last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
+            if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
+                active = False
+                LAST_FEW_SECONDS.pop()
+            database_worker.log_current_app(current_app_name,tabname,active,title)
+            print(LAST_FEW_SECONDS)
+            check_if_server_must_be_updated() 
+            # logger.debug(current_app_name)
+            if sys.platform != "win32":
+                sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
-        # except Exception as err:
-        #     logger.error(err)
+        except Exception as err:
+            logger.error(err)
 
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()
@@ -161,6 +160,7 @@ def check_if_server_must_be_updated():
 
 def make_url_to_base(full_url):
     return re.sub(r'(http(s)?:\/\/)|(\/.*){1}', '', full_url)
+
 
 def stop_logger():
     for process in multiprocessing.active_children():
@@ -274,6 +274,12 @@ def stop_focus_mode(id):
 
 
 def boot_up_checker():
+    # check if still using PowerTimeTracking folder
+    if os.path.exists(constants.OLD_DATABASE_LOCATION):
+        try:
+            os.rename(constants.OLD_DATABASE_LOCATION,constants.DATABASE_LOCATION)
+        except Exception as e:
+            logger.debug(e)
     # check if too many items in logger folder
     try:
         path = os.path.dirname(constants.LOGGER_LOCATION)
@@ -355,7 +361,8 @@ def boot_up_checker():
             systemDataHandler.check_interaction_periodic()
             # PROCESSES["mouse_movement"] = mouse_movement
             # PROCESSES["mouse_movement"].start()
-            multiprocessing.Process(target=search_close_and_log_apps).start()
+            log = multiprocessing.Process(target=search_close_and_log_apps).start()
+            # log.daemon = True
         global CLOSING_APPS
         CLOSING_APPS = False
         

@@ -1,6 +1,7 @@
-#!/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin/python3
+#!/Applications/Fixate.app/Contents/Resources/app/src/python/bin/python3
 import sys
 from flask import Flask,jsonify,request
+import multiprocessing
 from flask_cors import CORS, cross_origin
 import application as logger_application
 import get_time_spent
@@ -21,6 +22,10 @@ logger_application.boot_up_checker()
 current_notifications = []
 VERSION = "0.9.7"
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+
+def create_app():
+    return app
+
 @app.route("/start_logger")
 def start_logger():
     if logger_application.boot_up_checker():
@@ -111,8 +116,14 @@ def get_version():
 @app.route('/kill_server', methods=['GET'])
 def kill_server():
     logger_application.stop_logger()
-    os.kill(os.getpid(), signal.SIGTERM)
+    logger_application.boot_up_checker()
 
+
+@app.route('/restart_server_macos', methods=['GET'])
+def restart_server_macos():
+    logger_application.stop_logger()
+    os.kill(os.getpid(), signal.SIGTERM)
+    return jsonify({"success":True})
 @app.route('/stop_showing_task', methods=['POST'])
 def stop_showing_task():
     return jsonify({"success":logger_application.stop_showing_task(request.json["id"])})
@@ -232,6 +243,10 @@ def leave_live_focus_mode():
 def get_cached_live_focus_mode_data():
     return jsonify({"data":ppt_api_worker.get_cached_live_focus_mode_data(), 'status': 'success'})
 
-if __name__ == "__main__":
+def start_server():
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)
+
+if __name__ == "__main__":
+    multiprocessing.freeze_support()
+    start_server()
