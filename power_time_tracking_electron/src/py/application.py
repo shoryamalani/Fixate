@@ -13,6 +13,7 @@ from pebble import concurrent
 from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
+import shutil
 import re
 import math
 import ppt_api_worker
@@ -275,11 +276,21 @@ def stop_focus_mode(id):
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
-    if os.path.exists(constants.OLD_DATABASE_LOCATION):
-        try:
-            os.rename(constants.OLD_DATABASE_LOCATION,constants.DATABASE_LOCATION)
-        except Exception as e:
-            logger.debug(e)
+    if os.path.exists(constants.OLD_DATABASE_LOCATION) and not os.path.exists(constants.DATABASE_LOCATION+"/time_database.db"):
+        # try:
+        print("moving database")
+        # shutil.move(constants.OLD_DATABASE_LOCATION, constants.DATABASE_LOCATION)
+        # shutil.copytree(constants.OLD_DATABASE_LOCATION, constants.DATABASE_LOCATION)
+        shutil.copyfile(constants.OLD_DATABASE_LOCATION+"/time_database.db", constants.DATABASE_LOCATION+"/time_database.db")
+
+        # except Exception as e:
+        #     logger.error("SDHFOISHDOF IHSODIH J")
+        #     logger.debug(e)
+    else:
+        logger.debug(os.path.exists(constants.OLD_DATABASE_LOCATION) )
+        logger.debug(os.path.exists(constants.DATABASE_LOCATION))
+        logger.debug(constants.DATABASE_LOCATION)
+        logger.debug("no need to move database")
     # check if too many items in logger folder
     try:
         path = os.path.dirname(constants.LOGGER_LOCATION)
