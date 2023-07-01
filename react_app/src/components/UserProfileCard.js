@@ -1,12 +1,16 @@
 
 import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Container, Input, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, private_createTypography } from '@mui/material';
+import { Avatar, Button, Container, Icon, IconButton, Input, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, private_createTypography } from '@mui/material';
 import css from '../Style';
 import { useSelector } from 'react-redux';
 import { setUserData } from '../features/UserSlice';
 import { useDispatch } from 'react-redux';
 import { CircularProgressWithLabel } from './CircularProgressBar';
 import { blue } from '@mui/material/colors';
+// import { Icon } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { Refresh } from '@mui/icons-material';
+// import AddIcon from '@mui/icons-material/Add';
 
 function UserProfileCard() {
     const userData = useSelector(state => state.user.userData);
@@ -191,7 +195,7 @@ function UserProfileCard() {
         <Stack direction={'row'} justifyContent={'center'} spacing={3}>
             <TextField value={friendDisplayName} onChange={(e)=>setFriendDisplayName(e.target.value)} label='Enter Display name' />
             <TextField value={friendShareCode} onChange={(e)=>setFriendShareCode(e.target.value)} label='Enter Share Code' />
-            <Button color='success' variant='contained' onClick={addFriend}>Add Friend</Button>
+            <Button color='success' variant='contained' onClick={addFriend}><AddIcon/></Button>
         </Stack>
         
         </>
@@ -208,7 +212,7 @@ function UserProfileCard() {
         <Stack>
     <Container>
         <h1>Friends</h1>
-        <Button color='success' variant='contained' onClick={()=>{getFriendDataNow()}}>Refresh</Button>
+        <Button color='success' variant='contained' onClick={()=>{getFriendDataNow()}}><Refresh></Refresh></Button>
         <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
         <Table >
         <TableHead>

@@ -131,48 +131,72 @@ def proper_time_parse(data,distractions=[]):
     previous_time = datetime.datetime.strptime(final_data[0][0],full_time_format)
     time = 0
     all_times = {}
-    for data in final_data:
-        if datetime.datetime.strptime(data[0],full_time_format) - previous_time > datetime.timedelta(seconds=180):
-            time += 1
-            url_or_app = make_url_to_base(data[2]) if data[2] else data[1]
-            if url_or_app in all_times:
-                all_times[url_or_app] += 1
-            else:
-                all_times[url_or_app] = 1
-        else:
-            current_time = (datetime.datetime.strptime(data[0],full_time_format) - previous_time).seconds
-            time += current_time
-            url_or_app = make_url_to_base(data[2]) if data[2] else data[1]
-            if url_or_app in all_times:
-                all_times[url_or_app] += current_time
-            else:
-                all_times[url_or_app] = current_time
-        previous_time = datetime.datetime.strptime(data[0],full_time_format)
-    # distractions = get_all_distracting_apps()
+    distracted_percentage_over_time = {}
+    previous = final_data[0][2] if final_data[0][2] else final_data[0][1]
     distractions_total = 0
-    previous = final_data[0][2]
     cur_time_without_distraction = 0
     longest_time_without_distraction = 0
+    distractions_time = 0
     for data in final_data:
-        if data[2]:
-            url = make_url_to_base(data[2])
-            if url in distractions and url != previous:
-                if cur_time_without_distraction > longest_time_without_distraction:
-                    longest_time_without_distraction = cur_time_without_distraction
-                cur_time_without_distraction = 0
-                distractions_total +=1
-            elif url not in distractions:
-                cur_time_without_distraction += 1
-            previous = url
+        current_time = (datetime.datetime.strptime(data[0],full_time_format) - previous_time).seconds
+        if current_time > 180:
+            current_time = 1
+        time += current_time
+        url_or_app = make_url_to_base(data[2]) if data[2] else data[1]
+        if url_or_app in all_times:
+            all_times[url_or_app] += current_time
         else:
-            if data[1] in distractions and data[1] != previous:
-                distractions_total +=1
-                if cur_time_without_distraction > longest_time_without_distraction:
-                    longest_time_without_distraction = cur_time_without_distraction
-                cur_time_without_distraction = 0
-            elif data[1] not in distractions:
-                cur_time_without_distraction += 1
-            previous = data[1]
+            all_times[url_or_app] =  current_time
+        cur_time = datetime.datetime.strptime(data[0],full_time_format)
+        cur_time = cur_time.replace(second=0,microsecond=0,minute=0)
+        entry = cur_time.strftime('%m/%d %H:%M')
+        if entry not in distracted_percentage_over_time: # month day hour %M %S %f
+            distracted_percentage_over_time[entry] = {
+                "distracted": 0,
+                "not_distracted": 0,
+                "distractions": 0
+            }
+
+        if url_or_app in distractions and url_or_app != previous:
+            if cur_time_without_distraction > longest_time_without_distraction:
+                longest_time_without_distraction = cur_time_without_distraction
+            cur_time_without_distraction = 0
+            distractions_total += 1
+            distractions_time += current_time
+            distracted_percentage_over_time[entry]["distractions"] += 1
+            distracted_percentage_over_time[entry]["distracted"] += current_time
+        elif url_or_app in distractions:
+            distractions_time += current_time
+            distracted_percentage_over_time[entry]["distracted"] += current_time
+        elif url_or_app not in distractions:
+            distracted_percentage_over_time[entry]["not_distracted"] += current_time
+            cur_time_without_distraction += current_time
+        previous_time = datetime.datetime.strptime(data[0],full_time_format)
+        previous = url_or_app
+    # distractions = get_all_distracting_apps()
+    
+    
+    
+    # for data in final_data:
+    #     if data[2]:
+    #         url = make_url_to_base(data[2])
+    #         if url in distractions and url != previous:
+    #             if cur_time_without_distraction > longest_time_without_distraction:
+    #                 longest_time_without_distraction = cur_time_without_distraction
+    #             cur_time_without_distraction = 0
+    #             distractions_total +=1
+    #         elif url not in distractions:
+    #             cur_time_without_distraction += 1
+    #         previous = url
+    #     else:
+    #         if data[1] in distractions and data[1] != previous:
+    #             distractions_total +=1
+    #             if cur_time_without_distraction > longest_time_without_distraction:
+    #                 longest_time_without_distraction = cur_time_without_distraction
+    #             cur_time_without_distraction = 0
+    #         elif data[1] not in distractions:
+    #             cur_time_without_distraction += 1
+    #         previous = data[1]
     # print(distractions_total)
     # previous = data
     # print(time)
@@ -187,7 +211,7 @@ def proper_time_parse(data,distractions=[]):
     #     distractions["distractions_time_min"] = 0
     # else:
     #     distractions["distractions_time_min"] = (sum(times_between_distractions)/final_distractions_num)/60
-    return all_times,{"distractions_number":distractions_total,"distractions_time_min":(time/distractions_total if distractions_total > 0 else 0)/60,"longest_time_without_distraction_min":longest_time_without_distraction/60}
+    return all_times,{"distractions_number":distractions_total,"distractions_per_minute":(time/distractions_total if distractions_total > 0 else 0)/60,"longest_time_without_distraction_min":longest_time_without_distraction/60,"distractions_time_total":distractions_time/60,"distracted_percentage_over_time":distracted_percentage_over_time}
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()
@@ -279,9 +303,11 @@ def get_specific_time(start_time,end_time):
     # data = database_worker.get_logs_between_times(end_of_yesterday,start_of_yesterday)
     print(data)
     if data == []:
-        return {"Total":0},{"distractions_number":0,"distractions_time_min":0/60}
+        return {"Total":0},{'total_time_spent':0,"distractions_number":0,"distractions_time_min":0/60}
     times,distractions = proper_time_parse(data,get_all_distracting_apps())
     times = parse_for_display(times)
+    distractions['total_time_spent'] = times[0][1]
+    distractions['distractions_time_min'] = get_distractions_time_in_minutes(times,get_all_distracting_apps())
     return times,distractions
     
 def get_time_from_focus_session(focus_session_id):

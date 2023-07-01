@@ -10,7 +10,7 @@
     "package": "electron-forge package",
     "package-int": "electron-forge package --arch=x64",
     "package-arm": "electron-forge package --arch=arm64",
-    "package-mas": "electron-forge package --arch=universal --platform=darwin",
+    "package-universal": "electron-forge package --arch=universal --platform=darwin",
     "package-win": "electron-forge package --platform=win32",
     "create-installer-win": "node ./installers/windows/createinstaller.js",
     "make": "electron-forge make",

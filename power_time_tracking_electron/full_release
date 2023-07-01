@@ -1,0 +1,3 @@
+npm run package-int
+npm run package-arm
+npm run package-universal

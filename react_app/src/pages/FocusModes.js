@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
-import { Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
+import { Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
@@ -14,7 +14,8 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { waitFor } from '@testing-library/react';
 import { CircularProgressWithLabel } from '../components/CircularProgressBar';
-
+import { Check, CheckBoxOutlineBlank } from '@mui/icons-material';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -249,10 +250,16 @@ function FocusModes() {
   }
 
   return (
-    <div>
+
+    <div style={css.mainContent}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
       <h1 style={css.h1}>Focus Modes and Tasks</h1>
+      <div style={css.contrastContent}>
+      <h3>
+        Focus modes are a way to block distracting apps and websites for a set amount of time.<br></br> They can be especially useful when you need to work on something that is boring.
+      </h3>
+    </div>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Set focus mode length</DialogTitle>
         <DialogContent>
@@ -274,42 +281,46 @@ function FocusModes() {
           <Button onClick={()=>handleClose('submit')}>Submit</Button>
         </DialogActions>
       </Dialog>
-    <div>
+    <Stack direction="row" spacing={3}>
+    {/* <div> */}
+      <Stack direction="column" spacing={3}>
       {/* make a description of focus modes later */}
         <div style={css.contrastContent}>
           <Stack direction="column" spacing={3} style={css.body}>
         <h2 style={css.h2}>Create Focus Mode</h2>
       <Stack direction="row" spacing={3} style={css.body}>
-        <InputLabel id="Name">Name</InputLabel>
-        <BootstrapInput id="Name" value={name} onChange={(e) =>{setName(e.target.value)}}/>
-        <InputLabel id="Duration">Duration (Minutes)</InputLabel>
-        <BootstrapInput id="Duration" type="number" value={duration} onChange={(e)=>{setDuration(e.target.value)}} />
+        {/* <InputLabel id="Name">Name</InputLabel> */}
+        <TextField id="Name" label='Name' value={name} onChange={(e) =>{setName(e.target.value)}}/>
+        {/* <InputLabel id="Duration"></InputLabel> */}
+        <TextField aria-label='Duration (Minutes)' label='Duration (Minutes)' id="Duration" type="number" value={duration} onChange={(e)=>{setDuration(e.target.value)}} />
+    </Stack>
         <Button style={{margin:5}} variant='contained' color='success' onClick={()=>{startFocusMode()}}><span>Start Focus Mode</span></Button>
     </Stack>
-    </Stack>
     </div>
-    <div style={css.contrastContent}>
-      <h3>
-        Focus modes are a way to block distracting apps and websites for a set amount of time.<br></br> They can be especially useful when you need to work on something that is boring.
-      </h3>
-    </div>
-    <div style={css.contrastContent}>
-      <Stack direction="column" spacing={3} style={css.body}>
+   
+    
+      
+    <div style={{...css.contrastContent,minWidth:320}}>
+      <Stack direction='column' spacing={3}>
       <h2 style={css.h2}>Create Task</h2>
       <Stack direction="row" spacing={3} style={css.body}>
-        <InputLabel id="Name">Name</InputLabel>
+        {/* <InputLabel id="Name">Name</InputLabel>
         <BootstrapInput id="Name" value={taskName} onChange={(e) =>{setTaskName(e.target.value)}}/>
         <InputLabel id="Duration">Estimated Duration (Minutes)</InputLabel>
-        <BootstrapInput id="Duration" type="number" value={taskDuration} onChange={(e)=>{setTaskDuration(e.target.value)}} />
-        <Button style={{margin:5}} variant='contained' color='success' onClick={()=>{createTask()}}><span>Start Task</span></Button>
+        <BootstrapInput id="Duration" type="number" value={taskDuration} onChange={(e)=>{setTaskDuration(e.target.value)}} /> */}
+        <TextField id="Name" label='Name' value={taskName} onChange={(e) =>{setTaskName(e.target.value)}}/>
+        <TextField aria-label='Duration (Minutes)' label='Estimated Duration (Minutes)' id="Duration" type="number" value={taskDuration} onChange={(e)=>{setTaskDuration(e.target.value)}} />
       </Stack>
-    </Stack>
+        <Button style={{margin:5}} variant='contained' color='success' onClick={()=>{createTask()}}><span>Create Task</span></Button>
+      </Stack>
       </div>
-    </div>
-    <div style={css.contrastContent}>
+      </Stack> 
+      <Divider orientation="vertical" flexItem />
+      <Stack direction="column" spacing={3}>
+    <div style={{...css.contrastContent,minWidth:550}}>
       <Stack direction={'column'}>
-      <h3>Current Tasks</h3>
-      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+      <h2>Current Tasks</h2>
+      <TableContainer component={Paper} style={{ minWidth: 350, maxWidth:'inherit', maxHeight:'60vh' }}>
         <Table >
         <TableHead>
           <TableRow>
@@ -320,8 +331,8 @@ function FocusModes() {
             <TableCell align="right">Progress</TableCell>
             <TableCell align="right">See Focus Modes</TableCell>
             <TableCell align="right">Start Focus Mode</TableCell>
-            <TableCell align="right">Set Completed</TableCell>
-            <TableCell align="right">Delete</TableCell>
+            <TableCell align="right">Actions</TableCell>
+            {/* <TableCell align="right">Delete</TableCell> */}
           </TableRow>
         </TableHead>
         {currentTasks!= null &&
@@ -334,13 +345,14 @@ function FocusModes() {
             >
               <TableCell component="th" scope="row">{currentTasks[task]['name']}</TableCell>
               <TableCell align="right">{currentTasks[task]['estimated_time']}</TableCell>
-              <TableCell align="right">{currentTasks[task]['complete'] ? 'Completed': 'Not Completed'}</TableCell>
+              
+              <TableCell align="right">{currentTasks[task]['complete'] ? <CheckBoxIcon></CheckBoxIcon> : <CheckBoxOutlineBlank></CheckBoxOutlineBlank> }</TableCell>
               <TableCell align="right">{currentTasks[task]['time_completed']}</TableCell>
               <TableCell align="right"><CircularProgressWithLabel value={(currentTasks[task]['time_completed']/currentTasks[task]['estimated_time'])*100} /></TableCell>
               <TableCell align="right"><Button variant='contained'  onClick={()=>{seeFocusModes(currentTasks[task]['id'])}}>See Focus Modes</Button></TableCell>
               <TableCell align="right"><Button variant='contained' onClick={()=>{startFocusModeForTask(currentTasks[task]['name'],currentTasks[task]['id'])}}>Start Focus Modes</Button></TableCell>
-              <TableCell align="right"><Button variant='contained' color='success' onClick={()=>{setCompleted(currentTasks[task]['id'])}}>Set Completed</Button></TableCell>
-              <TableCell align="right"><Button variant='contained' color='failure' onClick={()=>{deleteTask(currentTasks[task]['id'])}}>Delete</Button></TableCell>
+              <TableCell align="right"><Button variant='contained' color='success' onClick={()=>{setCompleted(currentTasks[task]['id'])}}>Complete</Button><Button variant='contained' color='failure' onClick={()=>{deleteTask(currentTasks[task]['id'])}}>Delete</Button></TableCell>
+              {/* <TableCell align="right"></TableCell> */}
               
               </TableRow>
             ))}
@@ -349,8 +361,11 @@ function FocusModes() {
         </Table>
       </TableContainer>
       </Stack>
-
+      
     </div>
+    </Stack>
+    {/* </div> */}
+      </Stack>
     
     </div>
   )

@@ -126,6 +126,7 @@ const  AppStatus = () => {
       setFilterApps(vals);
     }
     return (
+      <div style={css.mainContent}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
       <div>
@@ -256,6 +257,7 @@ const  AppStatus = () => {
       
     </div>
     </ThemeProvider>
+    </div>
   )
 }
 

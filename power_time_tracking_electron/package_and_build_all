@@ -1,0 +1,4 @@
+# do this command in another folder
+./package_arm &
+./package_intel &
+./package_universal &
