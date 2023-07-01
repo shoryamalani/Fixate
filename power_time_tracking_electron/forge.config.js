@@ -14,7 +14,9 @@ module.exports = {
     },
     "ignore": [".out","requirements.txt","package_intel_and_arm"],
     "appBundleId": "com.fixate.macos",
-
+    "extraResource": [
+      "./src/python",
+    ],
     
     overwrite: true,
     extendInfo: {
