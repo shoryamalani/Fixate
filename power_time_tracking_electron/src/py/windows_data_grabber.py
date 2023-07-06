@@ -18,9 +18,7 @@ class windowsOperatingSystemDataGrabber:
         
     
     def check_interaction_periodic(self):
-        
         multiprocessing.Process(target=start_mouse_and_keyboard_checker).start()
-
     def get_current_frontmost_app(self):
         self.current_app = win32gui.GetForegroundWindow()
         self.title = win32gui.GetWindowText(self.current_app)

@@ -14,12 +14,6 @@ Zello
 Steam
 """
 distracting_sites = """
-43things.com
-4chan.org
-82apps.com
-8ch.net
-8chan.co
-9gag.com
 9to5mac.com
 abcnews.go.com
 addictinggames.com
@@ -95,10 +89,8 @@ devour.com
 digg.com
 divxme.com
 divxstage.to
-docs.google.com
 dpadd.com
 draynor.net
-drive.google.com
 dropvideo.com
 dzone.com
 ebaumsworld.com
@@ -340,7 +332,6 @@ wanelo.com
 watchers.to
 wholecloud.net
 wikia.com
-wikipedia.org
 wimp.com
 wired.com
 wizards.com

@@ -13,8 +13,10 @@ from ApplicationServices import AXIsProcessTrusted
 import datetime
 import database_worker
 import constants
-
-
+from PIL import Image
+from io import BytesIO
+import io
+import base64
 
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 
@@ -60,13 +62,30 @@ class macosOperatingSystemDataGrabber:
 
     def get_current_frontmost_app(self):
         self.current_app = get_frontmost_app()
+        # get app icon
+        # self.icon_path = self.get_icon_path(self.current_app["NSApplicationBundleIdentifier"])
+        print(self.current_app)
         more_data = macos_get_window_and_tab_name.getInfo()
         if more_data:
             if 'url' in more_data:
                 return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
             return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}
         return {"app_name":self.current_app["NSApplicationName"],"app_title":"Unknown"}
-    
+    def get_icon_path(self):
+        # get app icon
+        app = NSWorkspace.sharedWorkspace().runningApplications()
+        file = None
+        for i in app:
+            if i.bundleIdentifier() == self.current_app["NSApplicationBundleIdentifier"]:
+                file = i.icon().TIFFRepresentation().base64EncodedStringWithOptions_(0)
+        if file:
+            # compressed image
+            image_ = Image.open(io.BytesIO(base64.decodebytes(bytes(file,'utf-8'))))
+            # use image_.save(path) to save the image
+            return file
+
+            
+        
     def hide_current_frontmost_app(self):
         return close_app_with_bundle_id(self.current_app["NSApplicationBundleIdentifier"])
 

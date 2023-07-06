@@ -254,6 +254,13 @@ def get_workflows():
 def get_all_apps_in_workflow():
     return jsonify({"apps":logger_application.get_all_apps_in_workflow(request.json["workflow_id"])})
 
+@app.route('/add_workflow_modification',methods=["POST"])
+def add_workflow_modification():
+    print(request.json['modification'])
+    print(type(request.json['modification']))
+    return jsonify({"success":logger_application.add_workflow_modification(request.json["workflow_id"],request.json["modification"])})
+
+
 def start_server():
     logger.debug("Starting server")
     app.run(host='127.0.0.1', port=5005)
