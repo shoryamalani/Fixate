@@ -172,7 +172,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":app[4]}
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 0.9.10
     return parsed_apps
 
 def get_all_distracting_apps():
@@ -273,6 +273,45 @@ def stop_focus_mode(id):
         database_worker.update_daily_task_info(task_data[0],json.dumps(task_info))
     return True
 
+def get_workflows():
+    workflow_data =  database_worker.get_workflows()
+    final_workflows = {}
+    for workflow in workflow_data:
+        final_workflows[workflow[0]] = {
+            "name":workflow[1],
+            "id":workflow[0],
+            "data":json.loads(workflow[2]),
+        }
+    return final_workflows
+
+def get_all_apps_in_workflow(workflow_id):
+    if not workflow_id:
+        workflow_id = database_worker.get_current_workflow_data()['id']
+    print(workflow_id)
+    workflow_data = database_worker.get_workflow_by_id(workflow_id)[2]
+    workflow_apps = json.loads(workflow_data)['applications']['applications']
+    workflow_mods = json.loads(workflow_data)['modifications']
+    all_apps = get_all_apps_statuses() # in proper dictionary format
+    final_apps = {}
+    # print(workflow_apps)
+    for value in workflow_apps.values():
+        # print(value)
+        if value['name'] not in final_apps:
+            final_apps[value['name']] = value # this is data based and nice in a json
+    for value in workflow_mods.values():
+        final_apps[value['name']] = value
+    for value in all_apps.values():
+        # print(value)
+        if value['name'] not in final_apps:
+            final_apps[value['name']] = value
+    final_apps.pop("",None)
+    # print(final_apps)
+    return final_apps
+
+def get_current_workflow_data():
+    return database_worker.get_current_workflow_data()
+
+
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
@@ -307,85 +346,88 @@ def boot_up_checker():
         logger.debug(e)
         return e
     logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
-    try:
-        if not os.path.exists(constants.DATABASE_LOCATION):
-            os.mkdir(constants.DATABASE_LOCATION)
-        elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
-            create_time_database()
-        
-        database_created = check_if_database_created()
-        if not database_created:
-            time_table = create_time_database() 
-            
-            if not time_table:
-                logger.debug("database failed")
-                sys.exit()
-
-        logger.debug(database_created)
-        database_created = list(database_created)
-        if database_created[1] == "1.0":
-            database_worker.update_to_database_version_1_1()
-            database_created[1] = "1.1"
-        if database_created[1] == "1.1":
-            database_worker.update_to_database_version_1_2()
-            database_created[1] = "1.2"
-        if database_created[1] == "1.2":
-            database_worker.update_to_database_version_1_3()
-            database_created[1] = "1.3"
-        if database_created[1] == "1.3":
-            database_worker.update_to_database_version_1_4()
-            database_created[1] = "1.4"
-        if database_created[1] == "1.4":
-            database_worker.update_to_database_version_1_5()
-            database_created[1] = "1.5"
-        if database_created[1] == "1.5":
-            database_worker.update_to_database_version_1_6()
-            database_created[1] = "1.6"
-        if database_created[1] == "1.6":
-            database_worker.update_to_database_version_1_7()
-            database_created[1] = "1.7"
-        if database_created[1] == "1.7":
-            database_worker.update_to_database_version_1_8()
-            database_created[1] = "1.8"
-        if database_created[1] == "1.8":
-            database_worker.update_to_database_version_1_9()
-            database_created[1] = "1.9"
-        if database_created[1] == "1.9":
-            database_worker.update_to_database_version_1_10()
-            database_created[1] = "1.10"
-        if database_created[1] == "1.10":
-            database_worker.update_to_database_version_1_11()
-            database_created[1] = "1.11"
-        print(database_worker.get_current_user_data())
-        print("HEREERERER")
-        if  'device_id' not in database_worker.get_current_user_data():
-            cur_data = database_worker.get_current_user_data()
-            val = ppt_api_worker.create_devices()
-            print(val)
-            if val:
-                cur_data['device_id'] = ppt_api_worker.create_devices()
-                database_worker.set_current_user_data(cur_data)
-        # start_running_event_loop_in_ns_application()
-        # start_mouse_movement_checker()
-        logger.debug(multiprocessing.active_children())
-        if len(multiprocessing.active_children()) < 2:
-            systemDataHandler.check_interaction_periodic()
-            # PROCESSES["mouse_movement"] = mouse_movement
-            # PROCESSES["mouse_movement"].start()
-            log = multiprocessing.Process(target=search_close_and_log_apps).start()
-            # log.daemon = True
-        global CLOSING_APPS
-        CLOSING_APPS = False
-        
-        global CURRENT_APP
-        CURRENT_APP="default value"
-        # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
-        # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
-        # multiprocessing.Process(target=web_app.start_app).start()
+    # try:
+    if not os.path.exists(constants.DATABASE_LOCATION):
+        os.mkdir(constants.DATABASE_LOCATION)
+    elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
+        create_time_database()
     
-    except Exception as e:
-        logger.debug(e)
-        return e
+    database_created = check_if_database_created()
+    if not database_created:
+        time_table = create_time_database() 
+        
+        if not time_table:
+            logger.debug("database failed")
+            sys.exit()
+
+    logger.debug(database_created)
+    database_created = list(database_created)
+    if database_created[1] == "1.0":
+        database_worker.update_to_database_version_1_1()
+        database_created[1] = "1.1"
+    if database_created[1] == "1.1":
+        database_worker.update_to_database_version_1_2()
+        database_created[1] = "1.2"
+    if database_created[1] == "1.2":
+        database_worker.update_to_database_version_1_3()
+        database_created[1] = "1.3"
+    if database_created[1] == "1.3":
+        database_worker.update_to_database_version_1_4()
+        database_created[1] = "1.4"
+    if database_created[1] == "1.4":
+        database_worker.update_to_database_version_1_5()
+        database_created[1] = "1.5"
+    if database_created[1] == "1.5":
+        database_worker.update_to_database_version_1_6()
+        database_created[1] = "1.6"
+    if database_created[1] == "1.6":
+        database_worker.update_to_database_version_1_7()
+        database_created[1] = "1.7"
+    if database_created[1] == "1.7":
+        database_worker.update_to_database_version_1_8()
+        database_created[1] = "1.8"
+    if database_created[1] == "1.8":
+        database_worker.update_to_database_version_1_9()
+        database_created[1] = "1.9"
+    if database_created[1] == "1.9":
+        database_worker.update_to_database_version_1_10()
+        database_created[1] = "1.10"
+    if database_created[1] == "1.10":
+        database_worker.update_to_database_version_1_11()
+        database_created[1] = "1.11"
+    if database_created[1] == "1.11":
+        database_worker.update_to_database_version_1_12()
+        database_created[1] = "1.12"
+    print(database_worker.get_current_user_data())
+    print("HEREERERER")
+    if  'device_id' not in database_worker.get_current_user_data():
+        cur_data = database_worker.get_current_user_data()
+        val = ppt_api_worker.create_devices()
+        print(val)
+        if val:
+            cur_data['device_id'] = ppt_api_worker.create_devices()
+            database_worker.set_current_user_data(cur_data)
+    # start_running_event_loop_in_ns_application()
+    # start_mouse_movement_checker()
+    logger.debug(multiprocessing.active_children())
+    if len(multiprocessing.active_children()) < 2:
+        systemDataHandler.check_interaction_periodic()
+        # PROCESSES["mouse_movement"] = mouse_movement
+        # PROCESSES["mouse_movement"].start()
+        log = multiprocessing.Process(target=search_close_and_log_apps).start()
+        # log.daemon = True
+    global CLOSING_APPS
+    CLOSING_APPS = False
+    
+    global CURRENT_APP
+    CURRENT_APP="default value"
+    # search_close_and_log_apps = multiprocessing.Process(target=search_close_and_log_apps).start()
+    # PROCESSES["search_close_and_log_apps"] = search_close_and_log_apps
+    # multiprocessing.Process(target=web_app.start_app).start()
+    
+    # except Exception as e:
+    #     logger.debug(e)
+    #     return e
     return True
 def get_focus_mode_status():
     global FOCUS_MODE

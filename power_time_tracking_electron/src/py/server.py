@@ -1,4 +1,4 @@
-#!/Applications/Fixate.app/Contents/Resources/app/src/python/bin/python3
+#!/Applications/Fixate.app/Contents/Resources/python/bin/python3
 import sys
 from flask import Flask,jsonify,request
 import multiprocessing
@@ -43,7 +43,6 @@ def toggle_closing_apps():
 @app.route("/check_closing_apps")
 def check_closing_apps():
     if logger_application.is_running_logger() == True:
-        
         return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":logger_application.get_all_distracting_apps()})
     else:
         return jsonify({"closing_apps":False,"apps_to_close":[]})
@@ -115,6 +114,8 @@ def get_version():
 
 @app.route('/kill_server', methods=['GET'])
 def kill_server():
+    if "darwin" in sys.platform:
+        os.kill(os.getpid(), signal.SIGTERM)
     logger_application.stop_logger()
     logger_application.boot_up_checker()
 
@@ -242,6 +243,16 @@ def leave_live_focus_mode():
 @app.route('/get_cached_live_focus_mode_data', methods=['GET'])
 def get_cached_live_focus_mode_data():
     return jsonify({"data":ppt_api_worker.get_cached_live_focus_mode_data(), 'status': 'success'})
+
+# workflows
+@app.route('/get_workflows', methods=['GET'])
+def get_workflows():
+    workflow_data = logger_application.get_current_workflow_data()
+    return jsonify({"workflows":logger_application.get_workflows(),"current_workflow":workflow_data['id']})
+
+@app.route('/get_all_apps_in_workflow',methods=["POST"])
+def get_all_apps_in_workflow():
+    return jsonify({"apps":logger_application.get_all_apps_in_workflow(request.json["workflow_id"])})
 
 def start_server():
     logger.debug("Starting server")

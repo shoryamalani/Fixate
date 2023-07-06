@@ -3,16 +3,15 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
-import {setApp, setCertainApp, flipDistractingApp} from '../features/AppSlice'
+import {setApp, setCertainApp, flipDistractingApp, setWorkflows, flipFocusedApp} from '../features/AppSlice'
 import { Checkbox, InputLabel, MenuItem, Select, TableContainer, TextField, createTheme } from '@mui/material';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
 import { FaSearch } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
+
+import {DndContext} from '@dnd-kit/core';
+import Draggable from '../components/DraggableApp';
+import Droppable from '../components/DroppableColumn';
+
 import { ThemeProvider } from 'styled-components';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -22,6 +21,8 @@ const  AppStatus = () => {
   const [filterValue, setFilterValue] = useState('all');
   const [filterText, setFilterText] = useState('');
   const [filterApps, setFilterApps] = useState({});
+  const workflows = useSelector(state => state.app.workflows);
+  const currentWorkflow = useSelector(state => state.app.currentWorkflow);
   console.log(apps)
   const theme = createTheme(
     {
@@ -31,42 +32,32 @@ const  AppStatus = () => {
     }
   );
   const dispatch = useDispatch();
-  // write a use effect that gets the app status and sets the state
-
-  // useEffect(() => {
-    
-  //   // dispatch(setApps());
-  //   const getAppStatus = async () => {
-  //     await fetch('http://localhost:5005/get_app_status').then(response => response.json()).then(data => {
-  //     setAllApps(data['applications'])
-      
-  //     }).catch(error => {
-  //       console.log(error);
-  //     })
-  //   }
-  //   getAppStatus();
-  //   console.log(allApps)
-  //   const getData = useCallback(async () => {
-  //     // const data = await get_all_apps();
-  //     // console.log(data)
-  //     const response = await fetch('http://localhost:5005/get_app_status').catch(error => {});
-  //     const data = await response.json().catch(error => {});
-  //     dispatch(setApps(data['applications']));
-    
-  // },[dispatch])
-    // const getData = useCallback(async () => {
     useEffect(() => {
       const get_all_apps = async () => {
-        const response = await fetch('http://localhost:5005/get_app_status').catch(error => {});
-        const data = await response.json().catch(error => {});
-        return data['applications']
+        return await fetch('http://localhost:5005/get_all_apps_in_workflow',{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            "workflow_id": currentWorkflow,
+          })
+        }).then(
+          response => response.json()
+        ).then( data => {
+          console.log(data)
+          return data['apps']
+        })
+
+        
       }
       get_all_apps().then(data => {
         dispatch(setApp(data));
         var vals = {};
-        Object.keys(data).forEach((element) => {
-          vals[element] = {"app_name": true, "app_type": true, "distracting": true};
-        });
+        console.log(data)
+        // Object.keys(data).forEach((element) => {
+        //   vals[element] = {"app_name": true, "app_type": true, "distracting": true};
+        // });
         // var vals = Object.keys(data).map(e => {
         //   console.log(e);
         //   return {e: {"app_name": true, "app_type": true, "distracting": true}};
@@ -75,39 +66,29 @@ const  AppStatus = () => {
         setFilterApps(vals);
       })
 
-    },[dispatch])
+    },[currentWorkflow])
     //   console.log(data)
     //   dispatch(setApps(data['applications']));
     // },[dispatch])
     // useEffect(() => {
     // },[dispatch])
-    const flipDistracting = (appNum) => {
-      
-        // send app num in message body
-        var vals = {"applications":{}}
-        if (apps[appNum]['distracting']===1){
-        vals['applications'][appNum.toString()] = 0
-        }else {
-          vals['applications'][appNum.toString()] = 1
-        }
-        console.log(vals)
-        fetch('http://localhost:5005/save_app_status', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(vals)
-        
-        }).then(response => response.json()).then(data=>console.log(data)).catch(error => {console.log(error)});
-        dispatch(flipDistractingApp(appNum));
-    }
-    const checkFilter = (app) => {
-      if(filterApps[app]==null){
-        return false; 
-      }else {
-        return (filterApps[app]['app_name'] && filterApps[app]['app_type'] && filterApps[app]['distracting'])
+    useEffect(() => {
+      // Get workflows
+      const get_workflows = async () => {
+        return await fetch('http://localhost:5005/get_workflows').then(
+          response => response.json()
+        ).then( data => {
+          return {"workflows":data['workflows'], "currentWorkflow": data['currentWorkflow']}
+        })
+        .catch(error => {
+          return {};
+        });
       }
-    }
+      get_workflows().then(data => {
+        dispatch(setWorkflows(data));
+      })
+    },[])
+    
     const checkFilterText = (text) => {
       var vals = {};
       Object.keys(filterApps).forEach((index,value) => {
@@ -125,6 +106,8 @@ const  AppStatus = () => {
 
       setFilterApps(vals);
     }
+    const columns = ["Distracting","Other","Focused"]
+    const [parent, setParent] = useState(null);
     return (
       <div style={css.mainContent}>
       <ThemeProvider theme={theme}>
@@ -134,7 +117,7 @@ const  AppStatus = () => {
       <h1 style={css.h1}>App Status</h1>
   <div style={css.contrastContent}>
     <Stack direction="row" spacing={3}>
-      <TextField   label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
+      {/* <TextField   label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select
     labelId="websiteOrAppLabel"
@@ -166,99 +149,92 @@ const  AppStatus = () => {
     <MenuItem value={"all"}>All</MenuItem>
     <MenuItem value={"website"}>Website</MenuItem>
     <MenuItem value={"app"}>App</MenuItem>
-  </Select>
+  </Select> */}
   {/* <InputLabel id="distractingOrNotLabel">Distracting</InputLabel> */}
+  { workflows ?
+  <>
   <Select
-    labelId="distractingOrNotLabel"
+    labelId="workflowSelector"
     variant='filled'
-    id="distractingOrNot"
+    id="wokflowSelector"
     value={filterValue}
-    label="Distracting Filter"
-    onChange={(e)=>{
-      console.log(e)
-      setFilterValue(e.target.value)
-      var vals = {};
-      console.log(e.target.value==="website")
-      Object.keys(filterApps).forEach((index,value) => {
-        console.log(apps[index]['type'])
-        var temp = filterApps[index] 
-        if(e.target.value === 'all'){          
-          temp['distracting'] = true;
-        } else if (apps[index]['distracting']  === (e.target.value === 'distracting' ? 1:0)){
-          temp['distracting'] = true;
-        } else {
-          temp['distracting'] = false;
-        }
-        vals[index] = temp;
-      })
-      console.log(vals);
-      setFilterApps(vals);
-    }}
+    label="Workflow Selection"
+    onChange={(e)=>{}}
   >
-    <MenuItem value={"all"}>All</MenuItem>
-    <MenuItem value={"distracting"}>distracting</MenuItem>
-    <MenuItem value={"not distracting"}>Not distracting</MenuItem>
+    
+    { workflows ?
+      Object.keys(workflows).map((workflow) => (
+        <MenuItem value={workflow['id']}>{workflow['name']}</MenuItem>
+      )): <></>
+    }
   </Select>
+  </>
+  : <></>
+   }
 
-  {/*<Checkbox onChange={(e)=>{
-    var vals = {};
-    Object.keys(filterApps).forEach((index,value) => {
-      var temp = filterApps[index]
-      if(e.target.checked === (apps[index]['distracting'] === 1)){
-        temp['distracting'] = true;
-      } else {
-        temp['distracting'] = false;
-      }
-      vals[index] = temp;
-    })
-    setFilterApps(vals);
+</Stack>
+      </div>
+      {/* <div style={css.contrastContent}> */}
+      <Stack direction="row" spacing={3}>
+      <DndContext onDragEnd={handleDragEnd}>
 
-  }}>Distracting</Checkbox> */}
+
+      {columns.map((id) => (
+        // We updated the Droppable component so it would accept an `id`
+        // prop and pass it to `useDroppable`
+        <>
+        <div style={css.contrastContent}>
+        <Stack direction="column" spacing={3}>
+        <h2>{id}</h2>
+        <Droppable key={id} id={id}>
+        {apps ? 
+        Object.keys(apps).map((index) => {
+          console.log(apps[index])
+          if(id === "Other"){
+            if(apps[index]['distracting'] === false && apps[index]['focused'] === false){
+              return(<Draggable id={index} key={index} parent={apps[index]} app={apps[index]} >{apps[index]['name']} </Draggable>)
+            }else{
+              return(<></>)
+            }
+          } 
+          else if (id === "Distracting"){
+            if(apps[index]['distracting'] === true){
+              return(<Draggable id={index} key={index} parent={apps[index]} app={apps[index]} >{apps[index]['name']} </Draggable>)
+            }else{
+              return(<></>)
+            }
+          }
+          else if (id === "Focused"){
+            if(apps[index]['focused'] === true){
+              return(<Draggable id={index} key={index} parent={apps[index]} app={apps[index]} >{apps[index]['name']} </Draggable>)
+            }else{
+              return(<></>)
+            }
+          }
+
+        }): <></>
+        }
+        </Droppable>
+        </Stack>
+        </div>
+        </>
+      ))}
+    </DndContext>
       </Stack>
-      </div>
-      <div style={css.contrastContent}>
       
-      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
-        <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell>App Name </TableCell>
-            <TableCell align="right">App Type</TableCell>
-            <TableCell align="right">Distracting</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.keys(apps).map((appNum) => (
-            <TableRow
-              key={appNum}
-              style={{visibility: checkFilter(appNum) ? 'visible':'collapse'}}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">{apps[appNum]['name']}</TableCell>
-              <TableCell align="right">{apps[appNum]['type']}</TableCell>
-              <TableCell align="right"><Checkbox checked={apps[appNum]['distracting'] ? true:false} onClick={()=>{flipDistracting(appNum)}}></Checkbox></TableCell>
-            </TableRow>
-            ))}
-        </TableBody>
-        </Table>
-      </TableContainer>
-      </div>
-    {/* { 
-        Object.keys(apps).map(appNum => {
-          return (
-            <div>
-              <h2>{appNum}</h2>
-              <h1>{apps[appNum]['name']}</h1>
-              <h2>{apps[appNum]['distracting']}</h2>
-            </div>
-          )
-        })
-      }  */}
       
+      {/* </div> */}
     </div>
     </ThemeProvider>
     </div>
   )
+  function handleDragEnd(event) {
+    const {over} = event;
+
+    // If the item is dropped over a container, set it as the parent
+    // otherwise reset the parent to `null`
+    setParent(over ? over.id : null);
+  }
 }
 
 export default AppStatus
