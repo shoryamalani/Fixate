@@ -1,15 +1,18 @@
 #!/bin/sh
 echo $USER > /tmp/env.txt
 
-cd $2/Fixate.app/Contents/Resources/app/launch_processes
+cd /Applications/Fixate.app/Contents/Resources/app/launch_processes
 # cd /Users/shoryamalani/Documents/coding/electron_apps/new_app/power_time_tracking_electron/launch_processes
-cp com.fixate.macos.backendserver.plist ~/Library/LaunchAgents/
+cp -rf com.fixate.macos.backendserver.plist ~/Library/LaunchAgents/
+sudo -u $USER launchctl unload -w ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
 rm -f ~/Library/LaunchAgents/com.electron.powertimetracking.backendserver.plist
 echo "adding PowerTimeTracking backend server to launchd..."
 sleep 1
 sudo -u $USER launchctl unload -w ~/Library/LaunchAgents/com.fixate.macos.backendserver.plist
+
 sudo -u $USER launchctl load -w ~/Library/LaunchAgents/com.fixate.macos.backendserver.plist
 echo "Starting PowerTimeTracking backend server..."
 # osascript -e 'tell app "System Events" to restart'
+
 open -a Fixate
 exit 0 # all good

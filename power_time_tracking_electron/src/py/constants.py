@@ -10,6 +10,8 @@ else:
     DATABASE_LOCATION = f"{os.getenv('HOME')}/.Fixate"
     LOGGER_LOCATION = f"{os.getenv('HOME')}/.Fixate/logs/log.log"
 
+WORKFLOW_LOCATION = "."
+
 
 DATABASE_NAME = "time_database.db"
 API_URL = "https://api.powertimetracking.shoryamalani.com"

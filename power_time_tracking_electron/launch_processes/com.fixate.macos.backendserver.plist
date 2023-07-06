@@ -2,25 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Label</key>
-	<string>com.fixate.macos.backend.plist</string>
-	<key>ProgramArguments</key>
-	<array>
+    <key>Label</key>
+    <string>com.fixate.macos.backend.plist</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PYTHONHOME</key>
+        <string>/Applications/Fixate.app/Contents/Resources/python</string>
+        <key>PYTHONPATH</key>
+        <string>/Applications/Fixate.app/Contents/Resources/python/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+    <key>ProgramArguments</key>
+    <array>
         <!-- <string>sh</string>
-        <string>-c</string> -->
+        <string>-c</string> -->
         <!-- <string>./Applications/PowerTimeTracking.app/Contents/Resources/app/src/scripts/runbackend</string> -->
-        <string>/Applications/Fixate.app/Contents/Resources/app/src/py/../python/bin/python3</string>
+        <!-- <string>PYTHONHOME=/Applications/Fixate.app/Contents/Resources/python</string>
+        <string>PYTHONPATHPATH=/Applications/Fixate.app/Contents/Resources/python/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string> -->
+        <string>/Applications/Fixate.app/Contents/Resources/python/bin/python3</string>
         <string>/Applications/Fixate.app/Contents/Resources/app/src/py/server.py</string>
         <string>></string>
         <string>/tmp/Fixate.log</string>
-        <string>2>&1</string>
-        <string>&</string>
-	</array>
-    <!-- <key>StandardOutPath</key>
+        <string>2>1</string>
+        <!-- <string>&</string> -->
+    </array>
+    <key>StandardOutPath</key>
     <string>/tmp/com.electron.powertimetracking.backend.log</string>
     <key>StandardErrorPath</key>
-    <string>/tmp/com.electron.powertimetracking.backend.log</string> -->
-	<key>KeepAlive</key>
-	<true/>
+    <string>/tmp/com.electron.powertimetracking.backend.log</string>
+    <key>KeepAlive</key>
+    <true/>
 </dict>
 </plist>

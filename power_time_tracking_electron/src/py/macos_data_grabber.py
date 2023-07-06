@@ -56,7 +56,7 @@ class macosOperatingSystemDataGrabber:
     def check_interaction_periodic(self):
         start_process_to_deal_with_permissions()
         keyboard_checker = multiprocessing.Process(target=start_mouse_and_keyboard_checker).start()
-        keyboard_checker.daemon = True
+        # keyboard_checker.daemon = True
 
     def get_current_frontmost_app(self):
         self.current_app = get_frontmost_app()

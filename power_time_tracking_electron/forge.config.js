@@ -84,17 +84,17 @@ module.exports = {
         "darwin"
       ],
     },
-    {
-      name: "@electron-forge/maker-pkg",
-      config: {
-        "identity": "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)",
-        "identity-validation": true,
-        "install-location": "/Applications",
-        "scripts": "src/scripts",
-        "identifier": "com.fixate.macos",
-        "isRelocatable": false,
-      }
-    },
+    // {
+    //   name: "@electron-forge/maker-pkg",
+    //   config: {
+    //     "identity": "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)",
+    //     "identity-validation": true,
+    //     "install-location": "/Applications",
+    //     "scripts": "src/scripts",
+    //     "identifier": "com.fixate.macos",
+    //     "isRelocatable": false,
+    //   }
+    // },
     {
       name: "@electron-forge/maker-deb",
       config: {}
