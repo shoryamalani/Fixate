@@ -6,14 +6,17 @@ function Draggable(props) {
     id: props.id,
   });
   const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0`,
+    
+
   } : undefined;
 
   
-  return (
-    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
+  return ( 
+    props.visible ?
+    <button   ref={setNodeRef} style={{...style,backgroundColor:'transparent',border:'none',zIndex:10}} {...listeners} {...attributes}>
       {props.children}
-    </button>
-  );
+    </button>: null
+    )
 }
 export default Draggable;

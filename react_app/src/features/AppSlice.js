@@ -7,6 +7,7 @@ export const appSlice= createSlice({
     },
     currentWorkflow: null,
     workflows: {},
+    initialApps: {}
   },
   reducers: {
     
@@ -18,14 +19,9 @@ export const appSlice= createSlice({
     setCertainApp:(state,action) =>{
       state.apps[action.payload['appNum']] = action.payload['newApp'];
     },
-    flipDistractingApp:(state,action) =>{
-      console.log(action.payload)
-     if (state.apps[action.payload]['distracting']===1){
-        state.apps[action.payload]['distracting'] = 0;
-     } 
-      else{
-        state.apps[action.payload]['distracting'] = 1;
-      }
+    setAppDistracted:(state,action) =>{
+      state.apps[action.payload]['distracting'] = true;
+      state.apps[action.payload]['focused'] = false;
     },
     setWorkflows: (state,action) => {
       state.workflows = action.payload
@@ -33,20 +29,21 @@ export const appSlice= createSlice({
     setCurrentWorkflow: (state,action) => {
       state.currentWorkflow = action.payload
     },
-    flipFocusedApp:(state,action) =>{
-      console.log(action.payload)
-      if (state.apps[action.payload]['focused']===1){
-        state.apps[action.payload]['focused'] = 0;
-      }
-      else{
-        state.apps[action.payload]['focused'] = 1;
-      }
+    setAppFocused:(state,action) =>{
+      state.apps[action.payload]['focused'] = true;
+      state.apps[action.payload]['distracting'] = false;
     },
-
+    setAppNeither:(state,action) =>{
+      state.apps[action.payload]['focused'] = false;
+      state.apps[action.payload]['distracting'] = false;
+    },
+    setInitialApps: (state,action) => {
+      state.initialApps = action.payload
+    }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setApp,setCertainApp,flipDistractingApp,flipFocusedApp,setWorkflows } = appSlice.actions
+export const { setApp,setCertainApp,setAppDistracted,setAppFocused,setAppNeither,setWorkflows,setCurrentWorkflow,setInitialApps } = appSlice.actions
 
 export default appSlice.reducer

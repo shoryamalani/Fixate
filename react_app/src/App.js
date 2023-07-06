@@ -67,7 +67,7 @@ return (
 		<Route path='*' index element={<FrontPage />} />
 		<Route path='/timeSpent' element={<TimeSpent/>} />
 		<Route path='/focusModes' element={<FocusModes/>} />
-		<Route path="/appStatus" element={<AppStatus/>}/>
+		<Route path="/appStatus" element={<AppStatus theme={theme}/>}/>
 		<Route path="/leaderboards" element={<Leaderboards/>}/>
 		<Route path="/liveFocusMode" element={<LiveFocusMode/>}/>
 	</Routes>

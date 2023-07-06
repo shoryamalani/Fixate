@@ -16,6 +16,7 @@ MarkupSafe==2.1.1
 packaging==21.3
 Pebble==4.6.3
 pyobjc==8.4.1
+pillow
 # pyobjc-core==8.4.1
 # pyobjc-framework-Accessibility==8.4.1
 # pyobjc-framework-Accounts==8.4.1
