@@ -247,14 +247,28 @@ def update_to_database_version_1_12():
     print(distractions_and_focus)
     conn.commit()
     conn.close()
-    add_workflow("default",make_workflow_data("default",make_workflow_data("default",distractions_and_focus)))
-    add_workflow("none",make_workflow_data("none",make_workflow_data("none",[])))
+    add_workflow("work",make_workflow_data("work",make_workflow_data("work",distractions_and_focus)))
+    add_workflow("custom",make_workflow_data("custom",make_workflow_data("custom",{})))
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("UPDATE database_and_application_version SET database_version = '1.12' WHERE id=1")
     conn.commit()
     conn.close()
-    
+
+def update_to_database_version_1_13():
+    """
+    Updates the database to version 1.13
+    """
+    # add a table for all icons
+    conn = connect_to_db()
+    c = conn.cursor()
+    icons_table_string = create_table_command("icons",[["id","INTEGER PRIMARY KEY"],["name","text"],["bundleId","text"],['type','text'],['has_icon','boolean'],["data","json"]])
+    c.execute(icons_table_string)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.13' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+
 def make_data_from_default_distraction_list(current_distractions={}):
     import distracting_apps
     distractions_data = current_distractions
@@ -268,7 +282,7 @@ def add_focus_data_to_list(current_application_statuses):
     import focus_sites_and_apps
     app_data = current_application_statuses
     for app in focus_sites_and_apps.General_focus_apps.split("\n"):
-        app_data[app] = {"name":app,"type":'application',"distracting":False,'focused':True,"custom_time_out":0}
+        app_data[app] = {"name":app,"type":'app',"distracting":False,'focused':True,"custom_time_out":0}
     for website in focus_sites_and_apps.General_focus_sites.split("\n"):
         app_data[website] = {"name":website,"type":'website',"distracting":False,'focused':True,"custom_time_out":0}
     return app_data
@@ -765,12 +779,36 @@ def add_workflow(name,data):
     conn.commit()
     conn.close()
 
-def update_workflow(id,name,data):
+def update_workflow(id,data):
     """
     Updates a workflow
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("UPDATE workflows SET name = ?, data = ? WHERE id = ?",(name,json.dumps(data),id))
+    c.execute("UPDATE workflows SET data = ? WHERE id = ?",(json.dumps(data),id))
+    conn.commit()
+    conn.close()
+
+def check_icon_by_name(name,type):
+    """
+    Checks if an icon exists by name
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT has_icon FROM icons WHERE name = ? AND type = ?",[name,type])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return False
+    else:
+        return data[0]
+
+def set_icon(name,type,icon_data):
+    """
+    Sets an icon
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO icons (name,type,data,has_icon) VALUES (?,?,?,?)",(name,type,json.dumps(icon_data),True))
     conn.commit()
     conn.close()
