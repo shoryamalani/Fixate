@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
-import {setApp, setCertainApp, flipDistractingApp, setWorkflows, setAppDistracted,setAppFocused,setAppNeither, setCurrentWorkflow,setInitialApps} from '../features/AppSlice'
+import {setApp, setCertainApp, flipDistractingApp, setWorkflows, setAppDistracted,setAppFocused,setAppNeither, setCurrentWorkflow,setInitialApps,setFilterApps} from '../features/AppSlice'
 import { Checkbox, CircularProgress, Divider, InputLabel, MenuItem, Select, TableContainer, TextField, createTheme } from '@mui/material';
 import { FaSearch } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
@@ -21,7 +21,8 @@ const  AppStatus = (props) => {
   const apps = useSelector(state => state.app.apps);
   const [filterValue, setFilterValue] = useState('all');
   const [filterText, setFilterText] = useState('');
-  const [filterApps, setFilterApps] = useState({});
+  // const [filterApps, setFilterApps] = useState({});
+  const filterApps = useSelector(state => state.app.filterApps);
   const refs = {
     Distracting: React.useRef(null),
     Other: React.useRef(null),
@@ -55,6 +56,7 @@ const  AppStatus = (props) => {
       }
       get_all_apps().then(data => {
         console.log(data)
+        dispatch(setApp(null))
         dispatch(setApp(data['apps']));
         var vals = {};
         var initialAppsTemp = {
@@ -90,37 +92,47 @@ const  AppStatus = (props) => {
 
 
 
-        initialAppsTemp['Distracting'] = initialAppsTemp['Distracting'].slice(0,200);
-        initialAppsTemp['Focused'] = initialAppsTemp['Focused'].slice(0,200);
-        initialAppsTemp['Neutral'] = initialAppsTemp['Neutral'].slice(0,200);
+        initialAppsTemp['Distracting'] = initialAppsTemp['Distracting'].slice(0,800);
+        initialAppsTemp['Focused'] = initialAppsTemp['Focused'].slice(0,800);
+        initialAppsTemp['Neutral'] = initialAppsTemp['Neutral'].slice(0,800);
         console.log(initialAppsTemp)
         dispatch(setInitialApps(initialAppsTemp));
+
         console.log(data)
-        Object.keys(data).forEach((element) => {
-          vals[element] = {"app_name": true, "app_type": true, "distracting": true, "focused": true};
+        // Object.keys(data).forEach((element) => {
+        //   vals[element] = {"app_name": true, "app_type": true, "distracting": true, "focused": true};
+        // });
+        Object.keys(initialAppsTemp['Distracting']).forEach((element) => {
+          vals[initialAppsTemp['Distracting'][element]['name']] = {"app_name": true, "app_type": true, "distracting": true, "focused": true};
         });
+        Object.keys(initialAppsTemp['Focused']).forEach((element) => {
+          vals[initialAppsTemp['Focused'][element]['name']] = {"app_name": true, "app_type": true, "distracting": true, "focused": true};
+        });
+        Object.keys(initialAppsTemp['Neutral']).forEach((element) => {
+          vals[initialAppsTemp['Neutral'][element]['name']] = {"app_name": true, "app_type": true, "distracting": true, "focused": true};
+        });
+
         console.log(vals)
-        setFilterApps(vals);
+        dispatch(setFilterApps(vals));
       })
 
     },[currentWorkflow])
     const checkFilter = (app) => {
       return filterApps[app]['app_name'] && filterApps[app]['app_type'] && filterApps[app]['distracting'];
     }
-    const makeDraggableApp = (app) => {
-      return (
-        <Draggable id={app['name']} key={app['name']} visible={checkFilter(app['name'])} style={{zIndex:10}}  app={app} >
-          <div style={{...css.contrastContent,backgroundColor:props.theme.palette.info.main, width:'20vw'}} >
-            <Stack direction='column' spacing={3} >
-          {app['name']}
-          <Divider/>
-          {app['type']}
-          </Stack>
-          </div> 
-          </Draggable>
-  
-      )
-    }
+    // const makeDraggableApp = (app) => {
+    //   return (
+    //     <Draggable id={app['name']} key={app['name']} visible={checkFilter(app['name'])} style={{zIndex:10}}  app={app} >
+    //       <div style={{...css.contrastContent,backgroundColor:props.theme.palette.info.main, width:'20vw'}} >
+    //         <Stack direction='column' spacing={3} >
+    //       {app['name']}
+    //       <Divider/>
+    //       {app['type']}
+    //       </Stack>
+    //       </div> 
+    //       </Draggable>
+    //   )
+    // }
     
 
     useEffect(() => {
@@ -147,9 +159,14 @@ const  AppStatus = (props) => {
     
     const checkFilterText = (text) => {
       var vals = {};
-      Object.keys(filterApps).forEach((index,value) => {
+      // copy the object
+      var tempFilterApps = structuredClone(filterApps);
+      Object.keys(tempFilterApps).forEach((index,value) => {
         // console.log(apps[index]['type'])
-        var temp = filterApps[index] 
+        // copy the object
+        var temp = tempFilterApps[index]
+        
+
         if(text === ''){          
           temp['app_name'] = true;
         } else if (apps[index]['name'].toLowerCase().includes(text)){
@@ -160,7 +177,7 @@ const  AppStatus = (props) => {
         vals[index] = temp;
       })
 
-      setFilterApps(vals);
+      dispatch(setFilterApps(vals));
     }
     const columns = ["Distracting","Other","Focused"]
     return (
@@ -185,9 +202,10 @@ const  AppStatus = (props) => {
       setFilterValue(e.target.value)
       var vals = {};
       console.log(e.target.value==="website")
-      Object.keys(filterApps).forEach((index,value) => {
+      var tempFilterApps = structuredClone(filterApps);
+      Object.keys(tempFilterApps).forEach((index,value) => {
         console.log(apps[index]['type'])
-        var temp = filterApps[index] 
+        var temp = tempFilterApps[index] 
         if(e.target.value === 'all'){          
           temp['app_type'] = true;
         } else if (apps[index]['type'] === e.target.value){
@@ -198,7 +216,7 @@ const  AppStatus = (props) => {
         vals[index] = temp;
       })
       console.log(vals);
-      setFilterApps(vals);
+      dispatch(setFilterApps(vals));
     }}
   >
     <MenuItem value={"all"}>All</MenuItem>
@@ -232,7 +250,7 @@ const  AppStatus = (props) => {
   </>
   : <></>
    }
-   <Select 
+   {/* <Select 
     labelId="distractingOrNotLabel"
     variant='filled'
     id="distractingOrNot"
@@ -243,9 +261,10 @@ const  AppStatus = (props) => {
       setFilterValue(e.target.value)
       var vals = {};
       console.log(e.target.value==="website")
-      Object.keys(filterApps).forEach((index,value) => {
+      var tempFilterApps = structuredClone(filterApps);
+      Object.keys(tempFilterApps).forEach((index,value) => {
         console.log(apps[index]['type'])
-        var temp = filterApps[index]
+        var temp = tempFilterApps[index]
         if(e.target.value === 'all'){
           temp['distracting'] = true;
         }
@@ -265,13 +284,13 @@ const  AppStatus = (props) => {
         vals[index] = temp;
       })
       console.log(vals);
-      setFilterApps(vals);
+      dispatch(setFilterApps(vals));
     }}
   >
     <MenuItem value={"all"}>All</MenuItem>
     <MenuItem value={"distracting"}>Distracting</MenuItem>
     <MenuItem value={"focused"}>Focused</MenuItem>
-  </Select>
+  </Select> */}
   
 
 
