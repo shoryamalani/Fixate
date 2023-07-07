@@ -99,4 +99,7 @@ include/
 scripts/
 @AutomationLog.txt
 *.db
-python_
+
+# dont ask
+python-old
+python-bad

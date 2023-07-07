@@ -12,10 +12,11 @@ module.exports = {
     osxUniversal: { // config options for `@electron/universal`
       x64ArchFiles: '*' // replace with any relevant glob pattern
     },
-    "ignore": [".out","requirements.txt","package_intel_and_arm"],
+    "ignore": [".out","requirements.txt","package_intel_and_arm", "python-old", "python-bad"], // dont ask
     "appBundleId": "com.fixate.macos",
     "extraResource": [
       "./src/python",
+      "./src/py",
     ],
     
     overwrite: true,
