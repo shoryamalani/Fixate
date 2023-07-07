@@ -5,6 +5,7 @@ import { Divider } from '@mui/material';
 import {Avatar} from '@mui/material';
 import {Apps} from '@material-ui/icons';
 import {Web} from '@material-ui/icons';
+import { useSelector } from 'react-redux';
 const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
   if (isDragging) {
     return 'yellow';
@@ -149,7 +150,17 @@ function getStyle(provided, style) {
 function QuoteItem(props) {
   const { app, isDragging, isGroupedOver, provided, style, isClone, index } = props;
     // console.log(app)
+    var filterApps = useSelector(state => state.app.filterApps);
+    const checkFilter = (name) => {
+        if (filterApps[name] === undefined) {
+            return true;
+        }
+        return filterApps[name]['app_name'] && filterApps[name]['app_type'] && filterApps[name]['distracting'];
+    }
+
+
   return (
+    checkFilter(app['name']) &&
     <Container
     //   href={quote.author.url}
       isDragging={isDragging}
