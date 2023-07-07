@@ -70,6 +70,10 @@ def check_if_must_be_closed(app,tabname,closing_app):
         
 
 def search_close_and_log_apps():
+    if sys.platform == "win32":
+        def pythonFolder(folder: str) -> str:
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\py")]
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
@@ -83,7 +87,7 @@ def search_close_and_log_apps():
     # if front_app != None:
         
         #Getting data replaced by JXA and applescript for macos
-        try:
+        # try:
             app = systemDataHandler.get_current_frontmost_app()
             distracting_apps = get_distracting_apps()
             current_app_name = app['app_name']
@@ -147,8 +151,8 @@ def search_close_and_log_apps():
             if sys.platform != "win32":
                 sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
-        except Exception as err:
-            logger.error(err)
+        # except Exception as err:
+        #     logger.error(err)
 
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()

@@ -12,15 +12,15 @@ function getInstallerConfig () {
   console.log('creating windows installer')
   const outPath = path.join('out')
   
-  console.log(path.join(outPath, 'PowerTimeTracking-win32-x64'))
+  console.log(path.join(outPath, 'Fixate-win32-x64'))
 
   return Promise.resolve({
-    appDirectory: path.join('out', 'PowerTimeTracking-win32-x64'),
-    authors: 'PowerTimeTracking Team',
+    appDirectory: path.join('out', 'Fixate-win32-x64'),
+    authors: 'Fixate Team',
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),
-    exe: 'PowerTimeTracking.exe',
-    setupExe: `PowerTimeTrackingAppInstaller-0.9.7.exe`,
+    exe: 'Fixate-win32-x64.exe',
+    setupExe: `fixate-windows-installer-0.9.9.exe`,
     setupIcon: path.join('./src', 'assets', 'icon.ico')
   })
 }
