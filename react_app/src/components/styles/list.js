@@ -53,12 +53,14 @@ const Container = styled.div``;
 /* stylelint-enable */
 
 const InnerQuoteList = React.memo(function InnerQuoteList(props) {
-  return props.quotes.map((quote, index) => (
-    <Draggable key={quote.id} draggableId={quote.id} index={index}>
+    console.log(props)
+  return props.apps.map((app, index) => (
+    <Draggable key={app.name} draggableId={app.name} index={index}>
+        {/* <h1>quote['name']</h1> */}
       {(dragProvided, dragSnapshot) => (
         <QuoteItem
-          key={quote.id}
-          quote={quote}
+          key={app.name}
+          app={app}
           isDragging={dragSnapshot.isDragging}
           isGroupedOver={Boolean(dragSnapshot.combineTargetFor)}
           provided={dragProvided}
@@ -69,21 +71,21 @@ const InnerQuoteList = React.memo(function InnerQuoteList(props) {
 });
 
 function InnerList(props) {
-  const { quotes, dropProvided } = props;
+  const { apps, dropProvided } = props;
   const title = props.title ? <Title>{props.title}</Title> : null;
-
+    console.log(props)
   return (
     <Container>
       {title}
       <DropZone ref={dropProvided.innerRef}>
-        <InnerQuoteList quotes={quotes} />
+        <InnerQuoteList apps={apps} />
         {dropProvided.placeholder}
       </DropZone>
     </Container>
   );
 }
 
-export default function QuoteList(props) {
+export default function AppList(props) {
   const {
     ignoreContainerClipping,
     internalScroll,
@@ -93,7 +95,7 @@ export default function QuoteList(props) {
     listId = 'LIST',
     listType,
     style,
-    quotes,
+    apps,
     title,
     useClone,
   } = props;
@@ -109,7 +111,7 @@ export default function QuoteList(props) {
         useClone
           ? (provided, snapshot, descriptor) => (
               <QuoteItem
-                quote={quotes[descriptor.source.index]}
+                quote={apps[descriptor.source.index]}
                 provided={provided}
                 isDragging={snapshot.isDragging}
                 isClone
@@ -128,10 +130,10 @@ export default function QuoteList(props) {
         >
           {internalScroll ? (
             <ScrollContainer style={scrollContainerStyle}>
-              <InnerList quotes={quotes} title={title} dropProvided={dropProvided} />
+              <InnerList apps={apps} title={title} dropProvided={dropProvided} />
             </ScrollContainer>
           ) : (
-            <InnerList quotes={quotes} title={title} dropProvided={dropProvided} />
+            <InnerList apps={apps} title={title} dropProvided={dropProvided} />
           )}
         </Wrapper>
       )}

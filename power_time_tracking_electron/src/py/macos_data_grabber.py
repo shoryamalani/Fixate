@@ -53,7 +53,6 @@ class macosOperatingSystemDataGrabber:
     
     def __init__(self):
         self.current_app = get_frontmost_app()
-        
     
     def check_interaction_periodic(self):
         start_process_to_deal_with_permissions()
@@ -71,7 +70,7 @@ class macosOperatingSystemDataGrabber:
                 return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown","url":more_data['url']}
             return {"app_name":more_data["app"],"app_title":more_data['title'] if 'title' in more_data else "Unknown"}
         return {"app_name":self.current_app["NSApplicationName"],"app_title":"Unknown"}
-    def get_icon_path(self):
+    def get_icon_path(self)->Image:
         # get app icon
         app = NSWorkspace.sharedWorkspace().runningApplications()
         file = None
@@ -82,7 +81,8 @@ class macosOperatingSystemDataGrabber:
             # compressed image
             image_ = Image.open(io.BytesIO(base64.decodebytes(bytes(file,'utf-8'))))
             # use image_.save(path) to save the image
-            return file
+            return image_
+        return None
 
             
         

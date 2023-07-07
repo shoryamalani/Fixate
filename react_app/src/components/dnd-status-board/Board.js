@@ -11,7 +11,7 @@ const Container = styled.div`
   background-color: ${colors.B100};
   min-height: 100vh;
   /* like display:flex but will allow bleeding over the window width */
-  min-width: 100vw;
+  // min-width: 100vw;
   display: inline-flex;
 `;
 
@@ -24,7 +24,6 @@ const Board = ({
   apps
 }) => {
   const [columns, setColumns] = useState(initial);
-    
   console.log(initial)
   const [ordered, setOrdered] = useState(Object.keys(initial));
 
@@ -86,6 +85,7 @@ const Board = ({
 
   return (
     <>
+    <h1>Drag and Drop Status Board</h1>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="board"
@@ -93,6 +93,7 @@ const Board = ({
           direction="horizontal"
           ignoreContainerClipping={Boolean(containerHeight)}
           isCombineEnabled={isCombineEnabled}
+          style={{ backgroundColor:'transparent' }}
         >
           {(provided) => (
             <Container ref={provided.innerRef} {...provided.droppableProps}>
@@ -101,7 +102,7 @@ const Board = ({
                   key={key}
                   index={index}
                   title={key}
-                  quotes={columns[key]}
+                  apps={columns[key]}
                   isScrollable={withScrollableColumns}
                   isCombineEnabled={isCombineEnabled}
                   useClone={useClone}

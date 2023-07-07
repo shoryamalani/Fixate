@@ -45,3 +45,6 @@ FIREFOX TABS
 https://github.com/luismsgomes/firefox-profile/blob/13a90a79636f0207f273a4126e68cb645ca17982/firefox_profile.py#L88
 you might just have to make a firefox extension :( 
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Your_first_WebExtension
+
+
+DISTRACTING SITES LIST FOUND HERE: https://www.reddit.com/r/BLOCK/comments/3ehiy4/distracting_website_list/

@@ -3,7 +3,7 @@ import styled from '@xstyled/styled-components';
 import { colors } from '@atlaskit/theme';
 import { grid, borderRadius } from '../styles/constants';
 import { Draggable } from 'react-beautiful-dnd';
-import QuoteList from '../styles/list';
+import AppList from '../styles/list';
 import Title from '../styles/title';
 
 const Container = styled.div`
@@ -28,28 +28,37 @@ const Header = styled.div`
 
 const Column = (props) => {
   const title = props.title;
-  const quotes = props.quotes;
+  var apps = []
+  Object.keys(props.apps).forEach((key) => {
+    apps.push(props.apps[key]);
+
+    });
+    console.log(apps)
   const index = props.index;
   return (
     <Draggable draggableId={title} index={index}>
       {(provided, snapshot) => (
         <Container ref={provided.innerRef} {...provided.draggableProps}>
-          <Header isDragging={snapshot.isDragging}>
-            <Title
+          {/* <Header isDragging={snapshot.isDragging}> */}
+            <Header>
+                <h1
+                style={{color:'black'}}>{title}</h1>
+            
+            {/* <Title
               isDragging={snapshot.isDragging}
               {...provided.dragHandleProps}
-              aria-label={`${title} quote list`}
+              aria-label={`${title}`}
             >
               {title}
-            </Title>
+            </Title> */}
           </Header>
-          <QuoteList
+          <AppList
             listId={title}
             listType="QUOTE"
             style={{
               backgroundColor: snapshot.isDragging ? colors.G50 : null,
             }}
-            quotes={quotes}
+            apps={apps}
             internalScroll={props.isScrollable}
             isCombineEnabled={Boolean(props.isCombineEnabled)}
             useClone={Boolean(props.useClone)}

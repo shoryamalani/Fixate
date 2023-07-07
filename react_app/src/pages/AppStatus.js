@@ -28,7 +28,7 @@ const  AppStatus = (props) => {
     Focused: React.useRef(null),
   };
   const workflows = useSelector(state => state.app.workflows);
-  const initialApps = useSelector(state => state.app.initalApps);
+  const initialApps = useSelector(state => state.app.initialApps);
   const currentWorkflow = useSelector(state => state.app.currentWorkflow);
   // const [initialApps, setInitialApps] = useState(null);
   console.log(apps)
@@ -267,16 +267,19 @@ const  AppStatus = (props) => {
     <MenuItem value={"distracting"}>Distracting</MenuItem>
     <MenuItem value={"focused"}>Focused</MenuItem>
   </Select>
+  
 
 
 </Stack>
       </div>
       {/* <div style={css.contrastContent}> */}
       {initialApps && apps &&
-      <Board initial={initialApps} apps={apps} />}
+      <>
+      <Board initial={initialApps} apps={apps} />
+      </>}
       {/* <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
       <Stack direction="row" spacing={4}>
-
+    
 
       {columns.map((id) => (
         // We updated the Droppable component so it would accept an `id`

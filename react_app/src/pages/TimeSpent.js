@@ -43,123 +43,16 @@ function TimeSpent() {
     }).catch(error => {console.log(error)});
     var data = await response.json().catch(error => {console.log(error)});
     // remove the first element from an array
-    data['time'].shift();
-    await setPieChartData({
-      labels: data['time'].map((i) => i[0]), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 0
-        }
-      ]
-    })
-    await setLineChartData({
-      labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
-      datasets: [
-        {
-          label: "Distractions",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
-          borderColor: "yellow",
-          backgroundColor: "yellow",
-          borderWidth: 2,
-          yAxisID: 'A',
-        },
-        {
-          label: "Percent Distracted",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
-          borderColor: "green",
-          backgroundColor: "green",
-          borderWidth: 2,
-          yAxisID: 'B',
-        },
-        
-        
-      ],
-      options: {
-        scales: {
-          A: {
-            type: 'linear',
-            position: 'left'
-          }, 
-          B:{
-            type: 'linear',
-            position: 'right',
-          }
-        }
-      }
-    })
-    console.log(
-      {
-        labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
-        datasets: [
-          {
-            label: "Distractions",
-            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
-            backgroundColor: "yellow",
-            // borderColor: "black",
-            // borderColor: "yellow",
-
-            borderWidth: 2
-          },
-          {
-            label: "Percent Distracted",
-            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
-            // borderColor: "orange",
-            borderColor: "orange",
-            borderWidth: 2
-          },
-          
-        ]
-      }
-    )
-    console.log({
-      labels: data['time'].map((i) => i[0]), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 2
-        }
-      ]
-    })
-    return data;
-  }
-
-  const fetchTimeSpentConstrained = async (time_constraint,taskId=null) => {
-    var data = {}
-    if(taskId){
-      data = {
-        "id": taskId,
-        "time": time_constraint
-      }
-    }else{
-      data = {
-        "time": time_constraint
-      }
-    }
-    const response = await fetch('http://localhost:5005/get_time_log', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(response => response.json()
-    ).then(data => {
-      data['time'].shift();
-      console.log(data)
+    console.log(data)
+    // data['time'].shift();
     setPieChartData({
-      labels: data['time'].map((i) => i[0]), 
+      labels: Object.keys(data['time']).map((i) => i), 
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
+          data: Object.keys(data['time']).map((i) => data['time'][i]/60),
           borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+          backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 0
         }
       ]
@@ -224,20 +117,130 @@ function TimeSpent() {
       element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
     }
     
-    console.log({
-      labels: data['time'].map((i) => i[0]), 
+    // console.log({
+    //   labels: data['time'].map((i) => i[0]), 
+    //   datasets: [
+    //     {
+    //       label: "Time Spent",
+    //       data: data['time'].map((i) => i[1]/60),
+    //       borderColor: "black",
+    //       backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+    //       borderWidth: 2
+    //     }
+    //   ]
+    // })
+    return data;
+  }
+
+  const fetchTimeSpentConstrained = async (time_constraint,taskId=null) => {
+    var data = {}
+    if(taskId){
+      data = {
+        "id": taskId,
+        "time": time_constraint
+      }
+    }else{
+      data = {
+        "time": time_constraint
+      }
+    }
+    const response = await fetch('http://localhost:5005/get_time_log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(response => response.json()
+    ).then(data => {
+      // data['time'].shift();
+      console.log(data)
+    setPieChartData({
+      labels: Object.keys(data['time']).map((i) => i), 
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
+          data: Object.keys(data['time']).map((i) => data['time'][i]/60),
           borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 2
+          backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+          borderWidth: 0
         }
       ]
     })
+    setLineChartData({
+      labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+      datasets: [
+        {
+          label: "Distractions",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+          borderColor: "yellow",
+          backgroundColor: "yellow",
+          borderWidth: 2,
+          yAxisID: 'A',
+        },
+        {
+          label: "Percent Distracted",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+          borderColor: "green",
+          backgroundColor: "green",
+          borderWidth: 2,
+          yAxisID: 'B',
+        },
+        
+        
+      ],
+      options: {
+        scales: {
+          A: {
+            type: 'linear',
+            position: 'left'
+          }, 
+          B:{
+            type: 'linear',
+            position: 'right',
+          }
+        }
+      }
+    })
+    console.log(
+      {
+        labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+        datasets: [
+          {
+            label: "Distractions",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+            borderColor: "black",
+            borderWidth: 2
+          },
+          {
+            label: "Percent Distracted",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+            borderColor: "black",
+            borderWidth: 2
+          },
+          
+        ]
+      }
+    )
+    var element = document.getElementById("pieChart");
+    if(element){
+      element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    }
+    
+    // console.log({
+    //   labels: data['time'].map((i) => i[0]), 
+    //   datasets: [
+    //     {
+    //       label: "Time Spent",
+    //       data: data['time'].map((i) => i[1]/60),
+    //       borderColor: "black",
+    //       backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+    //       borderWidth: 2
+    //     }
+    //   ]
+    // })
     return data;
-    }).catch(error => {console.log(error)});
+    })
+    // .catch(error => {console.log(error)});
     
   }
   const checkFilter = (focusModeId) => {
