@@ -1,26 +1,32 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/python3
+VERSION = "0.9.9"
 import sys
+import os
+if sys.platform == "win32":
+    def pythonFolder(folder: str) -> str:
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\py")]
+
 from flask import Flask,jsonify,request, send_from_directory
-import multiprocessing
 from flask_cors import CORS, cross_origin
 import application as logger_application
 import get_time_spent
 import time
 import signal
-import os
 import json
 from loguru import logger
 from datetime import datetime
 import ppt_api_worker
 import constants
 import ppt_api_worker
+from waitress import serve
+
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
-logger_application.boot_up_checker()
+
 current_notifications = []
-VERSION = "0.9.7"
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 
 def create_app():
@@ -273,8 +279,16 @@ def send_images():
 
 def start_server():
     logger.debug("Starting server")
-    app.run(host='127.0.0.1', port=5005)
+    try:
+        if sys.platform == "win32":
+            serve(app, host='127.0.0.1', port=5005, threads=2)
+        else:
+            app.run(host='127.0.0.1', port=5005)
+    except Exception as e:
+        logger.error(e)
 
 if __name__ == "__main__":
+    import multiprocessing
     multiprocessing.freeze_support()
+    logger_application.boot_up_checker()
     start_server()

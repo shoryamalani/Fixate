@@ -1,3 +1,5 @@
+import sys
+import os
 import win32gui
 import win32con
 import win32api
@@ -8,6 +10,7 @@ import database_worker
 import psutil
 import uiautomation as auto
 import datetime
+import re
 
 #https://stackoverflow.com/questions/25466795/how-to-minimize-a-specific-window-in-python
 #https://stackoverflow.com/questions/10266281/obtain-active-window-using-python
@@ -24,7 +27,21 @@ class windowsOperatingSystemDataGrabber:
         self.title = win32gui.GetWindowText(self.current_app)
         pid = win32process.GetWindowThreadProcessId(self.current_app)
         self.app_name = self.getFileDescription(psutil.Process(pid[-1]).exe())
+        print(psutil.Process(pid[-1]).exe().split("\\")[-1])
+        if self.title.lower() == "c:\windows\system32\cmd.exe":
+            self.app_name = "Command Prompt"
+        if self.app_name == "unknown":
+            windows_exe = psutil.Process(pid[-1]).exe().split("\\")[-1][:-4]
+            if windows_exe != windows_exe.lower():
+                self.app_name = " ".join(re.findall("([A-Z][^A-Z]*)", windows_exe))
+            else:
+                self.app_name = windows_exe
+            
         self.url = ""
+        
+        print("Current app:", self.current_app, "Title:", self.title, "PID:", pid, "App name:", self.app_name, "URL:", self.url)
+        if self.app_name is None:
+            return {"app_name":"Unknown","app_title":"","url":""} 
         if 'Chrome' in self.app_name:
             data = database_worker.get_latest_chrome_url()
             if data:
@@ -44,9 +61,11 @@ class windowsOperatingSystemDataGrabber:
     def getFileDescription(self, windows_exe):
         try:
             language, codepage = win32api.GetFileVersionInfo(windows_exe, '\\VarFileInfo\\Translation')[0]
+            print(language, codepage)
             stringFileInfo = u'\\StringFileInfo\\%04X%04X\\%s' % (language, codepage, "FileDescription")
             description = win32api.GetFileVersionInfo(windows_exe, stringFileInfo)
-        except:
+        except Exception as e:
+            print("This is the big bad error mate:", e)
             description = "unknown"
             
         return description
@@ -55,6 +74,9 @@ def start_mouse_and_keyboard_checker():
     multiprocessing.Process(target=check_periodic).start()
 
 def check_periodic():
+    def pythonFolder(folder: str) -> str:
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\py")]
     saved_curpos = win32gui.GetCursorPos()
     while True:
         curpos = win32gui.GetCursorPos()
