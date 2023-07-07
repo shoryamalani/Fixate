@@ -167,7 +167,10 @@ six==1.16.0
 # toml==0.10.2
 uiautomation
 urllib3==1.26.9
+waitress
+wheel
 Werkzeug==2.1.1
+wmi
 pywin32
 zipp==3.8.0
 zope.event==4.5.0
