@@ -179,14 +179,20 @@ def get_all_apps_statuses():
         parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 0.9.10
     return parsed_apps
 
-def get_all_distracting_apps():
-    parsed_apps = []
-    all_apps = database_worker.get_all_apps_statuses()
-    for app in all_apps:
-        if app[4] == 1:
-            parsed_apps.append(app[1])
-    # logger.debug(parsed_apps)
-    return parsed_apps
+# def get_all_distracting_apps():
+#     parsed_apps = []
+#     all_apps = database_worker.get_all_apps_statuses()
+#     for app in all_apps:
+#         if app[4] == 1:
+#             parsed_apps.append(app[1])
+#     # logger.debug(parsed_apps)
+#     return parsed_apps
+
+def get_current_distracted_and_focused_apps():
+    data = database_worker.get_current_workflow_data()
+    return data['data']['distractions'],data['data']['focused_apps']
+
+
 def save_app_status(applications):
     # logger.debug(applications)
     for key,value in applications.items():
@@ -293,7 +299,7 @@ def get_all_apps_in_workflow(workflow_id):
         workflow_id = database_worker.get_current_workflow_data()['id']
     print(workflow_id)
     workflow_data = database_worker.get_workflow_by_id(workflow_id)[2]
-    workflow_apps = json.loads(workflow_data)['applications']['applications']
+    workflow_apps = json.loads(workflow_data)['applications']
     workflow_mods = json.loads(workflow_data)['modifications']
     all_apps = get_all_apps_statuses() # in proper dictionary format
     final_apps = {}
@@ -329,7 +335,12 @@ def add_workflow_modification(workflow_id,modification):
     return True
 
 def get_current_workflow_data():
-    return database_worker.get_current_workflow_data()
+    data = database_worker.get_current_workflow_data()
+    if 'data' not in data:
+        workflow_data = database_worker.get_workflow_by_id(data['id'])
+        data['data'] = json.loads(workflow_data[2])
+        database_worker.set_current_workflow_data(data)
+    return data
 
 
 

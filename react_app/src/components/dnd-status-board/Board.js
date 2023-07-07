@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import Column from "./Column";
 import reorder, { reorderQuoteMap } from "../reorder";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   background-color: ${colors.B100};
@@ -24,10 +25,29 @@ const Board = ({
   apps
 }) => {
   const [columns, setColumns] = useState(initial);
+  const currentWorkflow = useSelector(state => state.app.currentWorkflow);
+  const allApps = useSelector(state => state.app.apps);
   console.log(initial)
   const [ordered, setOrdered] = useState(Object.keys(initial));
-
+  const add_workflow_modification = async (workflow_id,modification) => {
+    return await fetch('http://localhost:5005/add_workflow_modification',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "workflow_id": workflow_id,
+        "modification": modification,
+      })
+    }).then(
+      response => response.json()
+    ).then( data => {
+    }).catch(error => {
+      alert("Error adding workflow modification")
+    });
+  }
   const onDragEnd = (result) => {
+    console.log(result)
     if (result.combine) {
       if (result.type === "COLUMN") {
         const shallow = [...ordered];
@@ -35,12 +55,13 @@ const Board = ({
         setOrdered(shallow);
         return;
       }
+      
 
       const column = columns[result.source.droppableId];
       const withQuoteRemoved = [...column];
 
       withQuoteRemoved.splice(result.source.index, 1);
-
+      console.log(withQuoteRemoved)
       const orderedColumns = {
         ...columns,
         [result.source.droppableId]: withQuoteRemoved
@@ -73,19 +94,25 @@ const Board = ({
 
       return;
     }
-
+    
     const data = reorderQuoteMap({
       quoteMap: columns,
       source,
       destination
     });
-
+    console.log(allApps)
+    add_workflow_modification(currentWorkflow,{
+      "type":allApps[result.draggableId]['type'],
+      "name":allApps[result.draggableId]['name'],
+      "distracting":true ? result.destination.droppableId === 'Distracting' : false,
+      "focused":true ? result.destination.droppableId === 'Focused' : false,
+    })
     setColumns(data.quoteMap);
   };
 
   return (
     <>
-    <h1>Drag and Drop Status Board</h1>
+    {/* <h1>Drag and Drop Status Board</h1> */}
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
           droppableId="board"

@@ -234,7 +234,8 @@ def get_time(time_period,start_time=None,end_time=None,name=None):
         name = "All Time"
     if data['data'] == {}:
         return {"Total":0},{'total_time_spent':0,"distractions_number":0,"distractions_time_min":0/60},"No Data"
-    times,distractions = proper_time_parse(data,get_all_distracting_apps())
+    distractions, focused_apps = get_current_distracted_and_focused_apps()
+    times,distractions = proper_time_parse(data,distractions,focused_apps)
     return times,distractions,name
 
 
@@ -320,25 +321,32 @@ def get_specific_time(start_time,end_time):
     print(data)
     if data == []:
         return {"Total":0},{'total_time_spent':0,"distractions_number":0,"distractions_time_min":0/60}
-    times,distractions = proper_time_parse(data,get_all_distracting_apps())
-    times = parse_for_display(times)
-    distractions['total_time_spent'] = times[0][1]
-    distractions['distractions_time_min'] = get_distractions_time_in_minutes(times,get_all_distracting_apps())
+    distractions, focused_apps = get_current_distracted_and_focused_apps()
+    times,distractions = proper_time_parse(data,distractions,focused_apps)
+    # times = parse_for_display(times)
+    # distractions['total_time_spent'] = times[0][1]
+    # distractions['distractions_time_min'] = get_distractions_time_in_minutes(times,get_all_distracting_apps())
     return times,distractions
     
 def get_time_from_focus_session(focus_session_id):
     data = database_worker.get_logs_from_focus_session(focus_session_id)
-    times,distractions = proper_time_parse(data,get_all_distracting_apps())
+    distractions, focused_apps = get_current_distracted_and_focused_apps()
+    times,distractions = proper_time_parse(data,distractions,focused_apps)
     times = parse_for_display(times)
     return times,distractions
-def get_all_distracting_apps():
-    parsed_apps = []
-    all_apps = database_worker.get_all_apps_statuses()
-    for app in all_apps:
-        if app[4] == 1:
-            parsed_apps.append(app[1])
-    # logger.debug(parsed_apps)
-    return parsed_apps
+
+def get_current_distracted_and_focused_apps():
+    data = database_worker.get_current_workflow_data()
+    return data['data']['distractions'],data['data']['focused_apps']
+# deprecated
+# def get_all_distracting_apps(): 
+#     parsed_apps = []
+#     all_apps = database_worker.get_all_apps_statuses()
+#     for app in all_apps:
+#         if app[4] == 1:
+#             parsed_apps.append(app[1])
+#     # logger.debug(parsed_apps)
+#     return parsed_apps
 
 def main():
     # data = database_worker.get_all_time_logs()

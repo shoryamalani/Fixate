@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
 import {setApp, setCertainApp, flipDistractingApp, setWorkflows, setAppDistracted,setAppFocused,setAppNeither, setCurrentWorkflow,setInitialApps} from '../features/AppSlice'
-import { Checkbox, Divider, InputLabel, MenuItem, Select, TableContainer, TextField, createTheme } from '@mui/material';
+import { Checkbox, CircularProgress, Divider, InputLabel, MenuItem, Select, TableContainer, TextField, createTheme } from '@mui/material';
 import { FaSearch } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
 
@@ -48,22 +48,32 @@ const  AppStatus = (props) => {
           response => response.json()
         ).then( data => {
           console.log(data)
-          return data['apps']
+          return {'apps':data['apps'],time : data['time']}
         })
 
         
       }
       get_all_apps().then(data => {
-
-        dispatch(setApp(data));
+        console.log(data)
+        dispatch(setApp(data['apps']));
         var vals = {};
         var initialAppsTemp = {
           'Distracting':[],
           'Neutral':[],
           'Focused':[],
         };
-        Object.keys(data).forEach((element) => {
-          element = data[element];
+        Object.keys(data['apps']).forEach((element) => {
+          element = {
+            'distracting':data['apps'][element]['distracting'],
+            'focused':data['apps'][element]['focused'],
+            'name':element,
+            'type':data['apps'][element]['type'],
+            'time':data['time'][0][element] ? data['time'][0][element] : 0,
+            'icon':data['apps'][element]['icon'],
+          }
+          // element = data['apps'][element];
+          // element['time'] = data['time'][0][element['name']]
+
           if(element['distracting'] === true){
             initialAppsTemp['Distracting'].push(element);
           } else if (element['focused'] === true){
@@ -72,6 +82,17 @@ const  AppStatus = (props) => {
             initialAppsTemp['Neutral'].push(element);
           }
         });
+
+        initialAppsTemp['Distracting'].sort((a,b) => (a['time'] < b['time']) ? 1 : -1);
+        initialAppsTemp['Focused'].sort((a,b) => (a['time'] < b['time']) ? 1 : -1);
+        initialAppsTemp['Neutral'].sort((a,b) => (a['time'] < b['time']) ? 1 : -1);
+        // quicksort
+
+
+
+        initialAppsTemp['Distracting'] = initialAppsTemp['Distracting'].slice(0,200);
+        initialAppsTemp['Focused'] = initialAppsTemp['Focused'].slice(0,200);
+        initialAppsTemp['Neutral'] = initialAppsTemp['Neutral'].slice(0,200);
         console.log(initialAppsTemp)
         dispatch(setInitialApps(initialAppsTemp));
         console.log(data)
@@ -100,23 +121,7 @@ const  AppStatus = (props) => {
   
       )
     }
-    const add_workflow_modification = async (workflow_id,modification) => {
-      return await fetch('http://localhost:5005/add_workflow_modification',{
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "workflow_id": workflow_id,
-          "modification": modification,
-        })
-      }).then(
-        response => response.json()
-      ).then( data => {
-      }).catch(error => {
-        alert("Error adding workflow modification")
-      });
-    }
+    
 
     useEffect(() => {
       // Get workflows
@@ -273,10 +278,12 @@ const  AppStatus = (props) => {
 </Stack>
       </div>
       {/* <div style={css.contrastContent}> */}
-      {initialApps && apps &&
+      {initialApps && apps ?
       <>
       <Board initial={initialApps} apps={apps} />
-      </>}
+      </> :
+      <CircularProgress/>
+      }
       {/* <DndContext onDragEnd={handleDragEnd} onDragOver={handleDragOver}>
       <Stack direction="row" spacing={4}>
     
@@ -362,14 +369,7 @@ const  AppStatus = (props) => {
         data['distracting'] = false;
         data['focused'] = false;
       }
-      add_workflow_modification(currentWorkflow,data)
-      for (const [key, value] of Object.entries(refs)) {
-        console.log(key, value);
-        const element = value.current;
-        element.style.backgroundColor = css.contrastContent.backgroundColor;
-        element.style.transform = 'scale(1)';
-        console.log(element)
-      }
+      
 
     }
 

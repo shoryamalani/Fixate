@@ -43,7 +43,8 @@ def toggle_closing_apps():
 @app.route("/check_closing_apps")
 def check_closing_apps():
     if logger_application.is_running_logger() == True:
-        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":logger_application.get_all_distracting_apps()})
+        distractions,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":distractions, "focused_apps":focused_apps})
     else:
         return jsonify({"closing_apps":False,"apps_to_close":[]})
 
@@ -81,8 +82,10 @@ def get_all_time():
 def get_specific_time_log():
     start_time = datetime.strptime(request.json["start_time"], '%a %b %d %Y %H:%M:%S') # 
     end_time = datetime.strptime(request.json["end_time"], '%a %b %d %Y %H:%M:%S')
+    
     times,distractions,name = get_time_spent.get_time('custom',start_time,end_time,"custom")
-    return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":get_time_spent.get_all_distracting_apps()})
+    distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+    return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
     # start_time = request.json["start_time"]
     # print(start_time)
     # # Wed May 10 2023 00:00:00
@@ -97,7 +100,8 @@ def get_specific_time_log():
 def get_time():
     if request.json["time"]:
         times,distractions,name = get_time_spent.get_time(request.json["time"])
-        return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":get_time_spent.get_all_distracting_apps()})
+        distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+        return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
     else:
         times,distractions,name,distractions_status = get_time_spent.get_time_from_focus_session_id(request.json["id"])
         return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions)})
@@ -254,7 +258,7 @@ def get_workflows():
 
 @app.route('/get_all_apps_in_workflow',methods=["POST"])
 def get_all_apps_in_workflow():
-    return jsonify({"apps":logger_application.get_all_apps_in_workflow(request.json["workflow_id"])})
+    return jsonify({"apps":logger_application.get_all_apps_in_workflow(request.json["workflow_id"]),"time":get_time_spent.get_time("this_week")})
 
 @app.route('/add_workflow_modification',methods=["POST"])
 def add_workflow_modification():
