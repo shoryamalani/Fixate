@@ -321,6 +321,14 @@ def get_all_time_logs():
     c.close()
     return data
 
+def get_first_time_log():
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM log ORDER BY time ASC LIMIT 1")
+    data = c.fetchone()
+    c.close()
+    return data
+
 def get_all_applications():
     """
     Returns all the applications
@@ -347,13 +355,13 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+    # logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
     c.execute(f"SELECT * FROM log WHERE time >= '{start_time}' AND time < '{end_time}'")
-    logger.debug(c)
-    logger.debug(type(c))
+    # logger.debug(c)
+    # logger.debug(type(c))
     data = c.fetchall()
     conn.close()
     return data
@@ -803,12 +811,69 @@ def check_icon_by_name(name,type):
     else:
         return data[0]
 
-def set_icon(name,type,icon_data):
+def set_icon(name,bundleId,type,icon_data):
     """
     Sets an icon
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("INSERT INTO icons (name,type,data,has_icon) VALUES (?,?,?,?)",(name,type,json.dumps(icon_data),True))
+    c.execute("INSERT INTO icons (name,bundleId,type,data,has_icon) VALUES (?,?,?,?,?)",(name,bundleId,type,json.dumps(icon_data),True))
     conn.commit()
     conn.close()
+
+def check_if_website_icon_in_database(website_name):
+    """
+    Checks if a website icon is in the database
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE name = ? AND type = ?",[website_name,"website"])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return False
+    else:
+        return True
+
+def get_all_applications_and_websites_with_icons():
+    """
+    Gets all the applications with icons
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE has_icon = ?",[True])
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def get_all_icons_with_paths():
+    """
+    Gets all the icons with paths
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE has_icon = ?",[True])
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def add_memoized_hour(start_time,end_time,data):
+    """
+    Adds a memoized hour
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO memoized_data (start_time,end_time,duration,data) VALUES (?,?,?,?)",(start_time,end_time,60,json.dumps(data)))
+    conn.commit()
+    conn.close()
+
+def get_memoized_hours_between_times(start_time,end_time):
+    """
+    Gets the memoized hours between times
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM memoized_data WHERE start_time >= ? AND end_time <= ? AND duration = ?",(start_time,end_time,60))
+    data = c.fetchall()
+    conn.close()
+    return data

@@ -1,10 +1,13 @@
 import React from 'react';
 import styled from '@xstyled/styled-components';
 import { borderRadius, grid } from './constants';
-
+import { Divider } from '@mui/material';
+import {Avatar} from '@mui/material';
+import {Apps} from '@material-ui/icons';
+import {Web} from '@material-ui/icons';
 const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
   if (isDragging) {
-    return authorColors.soft;
+    return 'yellow';
   }
 
   if (isGroupedOver) {
@@ -15,7 +18,7 @@ const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
 };
 
 const getBorderColor = (isDragging, authorColors) =>
-  isDragging ? authorColors.hard : 'transparent';
+  isDragging ? 'blue' : 'transparent';
 
 const imageSize = 40;
 
@@ -61,7 +64,7 @@ const Container = styled.a`
 
   &:focus {
     outline: none;
-    border-color: ${(props) => props.colors.hard};
+    border-color: black;
     box-shadow: none;
   }
 
@@ -69,21 +72,21 @@ const Container = styled.a`
   display: flex;
 `;
 
-const Avatar = styled.img`
-  width: ${imageSize}px;
-  height: ${imageSize}px;
-  border-radius: 50%;
-  margin-right: ${grid}px;
-  flex-shrink: 0;
-  flex-grow: 0;
-`;
+// const Avatar = styled.img`
+//   width: ${imageSize}px;
+//   height: ${imageSize}px;
+//   border-radius: 50%;
+//   margin-right: ${grid}px;
+//   flex-shrink: 0;
+//   flex-grow: 0;
+// `;
 
 const Content = styled.div`
   /* flex child */
   flex-grow: 1;
   /*
     Needed to wrap text in ie11
-    https://stackoverflow.com/questions/35111090/why-ie11-doesnt-wrap-the-text-in-flexbox
+    webs://stackoverflow.com/questions/35111090/why-ie11-doesnt-wrap-the-text-in-flexbox
   */
   flex-basis: 100%;
   /* flex parent */
@@ -144,36 +147,46 @@ function getStyle(provided, style) {
 // things we should be doing in the selector as we do not know if consumers
 // will be using PureComponent
 function QuoteItem(props) {
-  const { quote, isDragging, isGroupedOver, provided, style, isClone, index } = props;
-
+  const { app, isDragging, isGroupedOver, provided, style, isClone, index } = props;
+    console.log(app)
   return (
     <Container
-      href={quote.author.url}
+    //   href={quote.author.url}
       isDragging={isDragging}
       isGroupedOver={isGroupedOver}
       isClone={isClone}
-      colors={quote.author.colors}
+    //   colors={quote.author.colors}
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       style={getStyle(provided, style)}
       data-is-dragging={isDragging}
-      data-testid={quote.id}
+      data-testid={app.name}
       data-index={index}
-      aria-label={`${quote.author.name} quote ${quote.content}`}
+      aria-label={`${app.name}`}
     >
-      <Avatar src={quote.author.avatarUrl} alt={quote.author.name} />
-      {isClone ? <CloneBadge>Clone</CloneBadge> : null}
+        {app.icon ? 
+            <Avatar sizes={256} src={'/images?path='+app.icon} />
+            : app.type === 'website' ?
+            <Web/>
+            : <Apps/> 
+            
+        }
+      {/* <Avatar /> */}
       <Content>
-        <BlockQuote>{quote.content}</BlockQuote>
-        <Footer>
+        {/* <BlockQuote>{quote.content}</BlockQuote> */}
+        <h3>{app.name}</h3>
+        <Divider/>
+        <h3>{app.type}</h3>
+        {/* <Footer>
           <Author colors={quote.author.colors}>{quote.author.name}</Author>
           <QuoteId>
             id:
             {quote.id}
           </QuoteId>
-        </Footer>
+        </Footer> */}
       </Content>
+
     </Container>
   );
 }

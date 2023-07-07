@@ -1,0 +1,2 @@
+Make workflows and different focus types (some defaults would be good)
+Add a blinking light at the top of the screen when working on a focus mode.

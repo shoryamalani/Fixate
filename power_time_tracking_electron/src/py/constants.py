@@ -5,10 +5,12 @@ if sys.platform == "win32":
     OLD_DATABASE_LOCATION = f"{os.path.expanduser( '~' )}/PowerTimeTracking"
     DATABASE_LOCATION = f"{os.path.expanduser( '~' )}/.Fixate"
     LOGGER_LOCATION = f"{os.path.expanduser( '~' )}/.Fixate/logs/log.log"
+    ICON_LOCATION = f"{os.path.expanduser( '~' )}/.Fixate/icons"
 else:
     OLD_DATABASE_LOCATION = f"{os.getenv('HOME')}/.PowerTimeTracking"
     DATABASE_LOCATION = f"{os.getenv('HOME')}/.Fixate"
     LOGGER_LOCATION = f"{os.getenv('HOME')}/.Fixate/logs/log.log"
+    ICON_LOCATION = f"{os.getenv('HOME')}/.Fixate/icons"
 
 WORKFLOW_LOCATION = "."
 

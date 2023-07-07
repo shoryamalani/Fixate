@@ -17,6 +17,8 @@ import shutil
 import re
 import math
 import ppt_api_worker
+import grab_and_save_icon
+from PIL import Image
 if sys.platform == "darwin":
     from macos_data_grabber import macosOperatingSystemDataGrabber
     systemDataHandler = macosOperatingSystemDataGrabber()
@@ -70,6 +72,7 @@ def check_if_must_be_closed(app,tabname,closing_app):
 def search_close_and_log_apps():
     last_app = ""
     apps = database_worker.get_all_applications()
+    apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
     apps_in_name_form = [app[1] for app in apps]
     last_thirty_mins_distracting = 0
     whole_time = 0
@@ -87,15 +90,6 @@ def search_close_and_log_apps():
             tabname = app['url'] if 'url' in app else None
             title = app['title'] if 'title' in app else "Unknown"
             active = True
-            #Being replaced by JXA
-            # if current_app_name in BROWSERS:
-                
-            #     try:
-            #         future = browser_tab_name(current_app_name)
-            #         tabname = future.result()
-            #         logger.debug(type(tabname))
-            #         logger.debug(tabname)
-            #         # tabname = browser_tab_name(current_app_name)
             if tabname:
                 short_tab = make_url_to_base(tabname)
                 if short_tab not in apps_in_name_form:
@@ -108,11 +102,21 @@ def search_close_and_log_apps():
                     LAST_FEW_SECONDS.append(True)
                 if len(LAST_FEW_SECONDS) > 10:
                     LAST_FEW_SECONDS = []
-            #     except Exception as err:
-            #         logger.debug(err)
-            #         tabname = None
-            #         logger.debug("not found")
-            # else:
+
+                if short_tab not in apps_and_websites_with_icons:
+                    path:os.path = grab_and_save_icon.save_website_icon(short_tab)
+                    if path:
+                        database_worker.set_icon(short_tab,short_tab,"website",{"path":path,"type":"website"})
+                        apps_and_websites_with_icons.append(short_tab)
+            else:
+                if current_app_name not in apps_and_websites_with_icons:
+                    image:Image = systemDataHandler.get_icon_path()
+                    if image:
+                        path = grab_and_save_icon.save_app_icon(image,current_app_name)
+                        if path:
+                            database_worker.set_icon(current_app_name,current_app_name,"app",{"path":path,"type":"app"})
+                            apps_and_websites_with_icons.append(current_app_name)
+
             if app["app_name"] not in apps_in_name_form:
                 if app["app_name"] not in UNRECORDED_APPS:
                     database_worker.add_application_to_db(app["app_name"],"app",0,0)
@@ -305,6 +309,12 @@ def get_all_apps_in_workflow(workflow_id):
         if value['name'] not in final_apps:
             final_apps[value['name']] = value
     final_apps.pop("",None)
+    icons = database_worker.get_all_icons_with_paths()
+
+    for icon in icons:
+        if icon[1] in final_apps:
+            final_apps[icon[1]]['icon'] = json.loads(icon[5])['path']
+
     # print(final_apps)
     return final_apps
 
@@ -361,6 +371,8 @@ def boot_up_checker():
             os.mkdir(constants.DATABASE_LOCATION)
         elif not os.path.exists(constants.DATABASE_LOCATION + "/"+constants.DATABASE_NAME):   
             create_time_database()
+        if not os.path.exists(constants.ICON_LOCATION):
+            os.mkdir(constants.ICON_LOCATION)
         
         database_created = check_if_database_created()
         if not database_created:

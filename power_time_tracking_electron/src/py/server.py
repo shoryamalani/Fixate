@@ -1,6 +1,6 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/python3
 import sys
-from flask import Flask,jsonify,request
+from flask import Flask,jsonify,request, send_from_directory
 import multiprocessing
 from flask_cors import CORS, cross_origin
 import application as logger_application
@@ -79,17 +79,19 @@ def get_all_time():
 
 @app.route('/get_specific_time_log',methods=["GET","POST"])
 def get_specific_time_log():
-    start_time = request.json["start_time"]
-    print(start_time)
-    # Wed May 10 2023 00:00:00
+    start_time = datetime.strptime(request.json["start_time"], '%a %b %d %Y %H:%M:%S') # 
+    end_time = datetime.strptime(request.json["end_time"], '%a %b %d %Y %H:%M:%S')
+    times,distractions,name = get_time_spent.get_time('custom',start_time,end_time,"custom")
+    return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":get_time_spent.get_all_distracting_apps()})
+    # start_time = request.json["start_time"]
+    # print(start_time)
+    # # Wed May 10 2023 00:00:00
 
-    # &a %b %d %Y %H:%M:%S
-    start_time = datetime.strptime(start_time, '%a %b %d %Y %H:%M:%S') # 
-    end_time = request.json["end_time"]
-    print(end_time)
-    end_time = datetime.strptime(end_time, '%a %b %d %Y %H:%M:%S')
-    times,distractions = get_time_spent.get_specific_time(start_time,end_time)
-    return jsonify({"time":times,"distractions":distractions})
+    # # &a %b %d %Y %H:%M:%S
+    # end_time = request.json["end_time"]
+    # print(end_time)
+    # times,distractions = get_time_spent.get_specific_time(start_time,end_time)
+    # return jsonify({"time":times,"distractions":distractions})
 
 @app.route("/get_time_log",methods=["GET","POST"])
 def get_time():
@@ -260,6 +262,10 @@ def add_workflow_modification():
     print(type(request.json['modification']))
     return jsonify({"success":logger_application.add_workflow_modification(request.json["workflow_id"],request.json["modification"])})
 
+@app.route('/images')
+def send_images():
+    path = request.args.get('path')
+    return send_from_directory(os.path.dirname(path), os.path.basename(path))
 
 def start_server():
     logger.debug("Starting server")

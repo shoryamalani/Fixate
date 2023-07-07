@@ -7,7 +7,7 @@ export const appSlice= createSlice({
     },
     currentWorkflow: null,
     workflows: {},
-    initialApps: {}
+    initialApps: null
   },
   reducers: {
     
