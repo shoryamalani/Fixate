@@ -148,7 +148,7 @@ function getStyle(provided, style) {
 // will be using PureComponent
 function QuoteItem(props) {
   const { app, isDragging, isGroupedOver, provided, style, isClone, index } = props;
-    console.log(app)
+    // console.log(app)
   return (
     <Container
     //   href={quote.author.url}

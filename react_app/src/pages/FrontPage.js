@@ -35,88 +35,96 @@ function FrontPage() {
       body: JSON.stringify(data)
     }).then(response => response.json()
     ).then(data => {
-      data['time'].shift();
       console.log(data)
-    setPieChartData({
-      labels: data['time'].map((i) => i[0]), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 0
-        }
-      ]
-    })
-    setLineChartData({
-      labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
-      datasets: [
-        {
-          label: "Distractions",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
-          borderColor: "yellow",
-          backgroundColor: "yellow",
-          borderWidth: 2,
-          yAxisID: 'A',
-        },
-        {
-          label: "Percent Distracted",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
-          borderColor: "green",
-          backgroundColor: "green",
-          borderWidth: 2,
-          yAxisID: 'B',
-        },
-        
-        
-      ],
-      options: {
-        scales: {
-          A: {
-            type: 'linear',
-            position: 'left'
-          }, 
-          B:{
-            type: 'linear',
-            position: 'right',
+      setPieChartData({
+        labels: Object.keys(data['time']).map((i) => i), 
+        datasets: [
+          {
+            label: "Time Spent",
+            data: Object.keys(data['time']).map((i) => data['time'][i]/60),
+            borderColor: "black",
+            backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+            borderWidth: 0
           }
-        }
-      }
-    })
-    console.log(
-      {
+        ]
+      })
+      setLineChartData({
         labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
         datasets: [
           {
             label: "Distractions",
             data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
-            borderColor: "black",
-            borderWidth: 2
+            borderColor: "yellow",
+            backgroundColor: "yellow",
+            borderWidth: 2,
+            yAxisID: 'A',
           },
           {
             label: "Percent Distracted",
-            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
-            borderColor: "black",
-            borderWidth: 2
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "red",
+            backgroundColor: "red",
+            borderWidth: 2,
+            yAxisID: 'B',
           },
+          {
+            label: "Percent Focused",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "green",
+            backgroundColor: "green",
+            borderWidth: 2,
+            yAxisID: 'B',
+
+          }
           
-        ]
-      }
-    )
-    
-    console.log({
-      labels: data['time'].map((i) => i[0]), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 2
+          
+        ],
+        options: {
+          scales: {
+            A: {
+              type: 'linear',
+              position: 'left'
+            }, 
+            B:{
+              type: 'linear',
+              position: 'right',
+            }
+          }
         }
-      ]
-    })
+      })
+    // console.log(
+    //   {
+    //     labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+    //     datasets: [
+    //       {
+    //         label: "Distractions",
+    //         data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+    //         borderColor: "black",
+    //         borderWidth: 2
+    //       },
+    //       {
+    //         label: "Percent Distracted",
+    //         data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+    //         borderColor: "black",
+    //         borderWidth: 2
+    //       },
+          
+    //     ]
+    //   }
+    // )
+    
+    // console.log({
+    //   labels: data['time'].map((i) => i[0]), 
+    //   datasets: [
+    //     {
+    //       label: "Time Spent",
+    //       data: data['time'].map((i) => i[1]/60),
+    //       borderColor: "black",
+    //       backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+    //       borderWidth: 2
+    //     }
+    //   ]
+    // })
     return data;
     }).catch(error => {console.log(error)});
     

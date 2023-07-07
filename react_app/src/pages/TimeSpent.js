@@ -70,13 +70,21 @@ function TimeSpent() {
         },
         {
           label: "Percent Distracted",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "red",
+          backgroundColor: "red",
+          borderWidth: 2,
+          yAxisID: 'B',
+        },
+        {
+          label: "Percent Focused",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
           borderColor: "green",
           backgroundColor: "green",
           borderWidth: 2,
           yAxisID: 'B',
-        },
-        
+
+        }
         
       ],
       options: {
@@ -99,15 +107,28 @@ function TimeSpent() {
           {
             label: "Distractions",
             data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
-            borderColor: "black",
-            borderWidth: 2
+            borderColor: "yellow",
+            backgroundColor: "yellow",
+            borderWidth: 2,
+            yAxisID: 'A',
           },
           {
             label: "Percent Distracted",
-            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
-            borderColor: "black",
-            borderWidth: 2
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "red",
+            backgroundColor: "red",
+            borderWidth: 2,
+            yAxisID: 'B',
           },
+          {
+            label: "Percent Focused",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "green",
+            backgroundColor: "green",
+            borderWidth: 2,
+            yAxisID: 'B',
+  
+          }
           
         ]
       }
@@ -179,14 +200,20 @@ function TimeSpent() {
         },
         {
           label: "Percent Distracted",
-          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "red",
+          backgroundColor: "red",
+          borderWidth: 2,
+          yAxisID: 'B',
+        },
+        {
+          label: "Percent Focused",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
           borderColor: "green",
           backgroundColor: "green",
           borderWidth: 2,
           yAxisID: 'B',
-        },
-        
-        
+        }
       ],
       options: {
         scales: {

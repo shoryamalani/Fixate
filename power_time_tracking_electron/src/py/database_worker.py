@@ -247,8 +247,8 @@ def update_to_database_version_1_12():
     print(distractions_and_focus)
     conn.commit()
     conn.close()
-    add_workflow("work",make_workflow_data("work",make_workflow_data("work",distractions_and_focus)))
-    add_workflow("custom",make_workflow_data("custom",make_workflow_data("custom",{})))
+    add_workflow("work",make_workflow_data("work",distractions_and_focus))
+    add_workflow("custom",make_workflow_data("custom",{}))
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("UPDATE database_and_application_version SET database_version = '1.12' WHERE id=1")
@@ -783,9 +783,45 @@ def add_workflow(name,data):
     """
     conn = connect_to_db()
     c = conn.cursor()
+    data = reload_workflow_data(data)
     c.execute("INSERT INTO workflows (name,data) VALUES (?,?)",(name,json.dumps(data)))
     conn.commit()
     conn.close()
+
+def set_current_workflow_data(data):
+    """
+    Sets the current workflow
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE user SET data = ? WHERE id=3",[json.dumps(data)])
+    conn.commit()
+    conn.close()
+
+
+def reload_workflow_data(data):
+    """
+    takes the data and creates the distractions and focused apps lists
+    """
+    distractions = []
+    focused_apps = []
+    for name,app in data['applications'].items():
+        if app['distracting']:
+            distractions.append(app['name'])
+        if app['focused']:
+            focused_apps.append(app['name'])
+    for name,app in data['modifications'].items():
+        if app['distracting']:
+            distractions.append(app['name'])
+            if app['name'] in focused_apps:
+                focused_apps.remove(app['name'])
+        if app['focused']:
+            focused_apps.append(app['name'])
+            if app['name'] in distractions:
+                distractions.remove(app['name'])
+    data['distractions'] = distractions
+    data['focused_apps'] = focused_apps
+    return data
 
 def update_workflow(id,data):
     """
@@ -793,9 +829,13 @@ def update_workflow(id,data):
     """
     conn = connect_to_db()
     c = conn.cursor()
+    data = reload_workflow_data(data)
     c.execute("UPDATE workflows SET data = ? WHERE id = ?",(json.dumps(data),id))
     conn.commit()
     conn.close()
+    if get_current_workflow_data()['id'] == id:
+        set_current_workflow_data({"id":id,"data":data})
+
 
 def check_icon_by_name(name,type):
     """
