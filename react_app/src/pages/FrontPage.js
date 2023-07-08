@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
 import { useSelector,useDispatch } from 'react-redux';
-import {setLogging,setClosingApps,setFocusMode} from '../features/LoggerSlice';
+import {setLogging,setClosingApps,setFocusMode,setWhitelist,setWorkflow} from '../features/LoggerSlice';
 import { Grid, Input, LinearProgress, duration } from '@mui/material';
 import { UserProfileCard } from '../components/UserProfileCard';
 import { Line, Pie } from 'react-chartjs-2';
@@ -15,6 +15,8 @@ function FrontPage() {
   const dispatch = useDispatch();
   const [pieChartData, setPieChartData] = useState(null);
   const [lineChartData, setLineChartData] = useState(null);
+  const whitelist = useSelector(state => state.logger.whitelist);
+  const workflow = useSelector(state => state.logger.workflow); 
   const fetchTimeSpentConstrained = async (time_constraint,taskId=null) => {
     var data = {}
     if(taskId){
@@ -149,6 +151,13 @@ function FrontPage() {
         } else {
           dispatch(setFocusMode({status:false}))
         }
+        if (data['whitelist'] !== undefined) {
+          dispatch(setWhitelist(data['whitelist']))
+        }
+        if (data['workflow'] !== undefined) {
+          dispatch(setWorkflow(data['workflow']['id']))
+          console.log(data['workflow'])
+        }
         // if (data['closing_apps'] == true && data['logger_running_status'] == true) {
         //   document.getElementById("closing_app_status").innerText = "Closing apps is enabled"
         //   document.getElementById("toggle_closing_apps").classList = ["float-child-element button-error"]
@@ -191,6 +200,12 @@ function FrontPage() {
     }
     fetch(`http://127.0.0.1:5005/toggle_closing_apps`)
   }
+  function toggle_white_list(){
+    if(!closingApps){
+      start_logger()
+    }
+    fetch(`http://127.0.0.1:5005/toggle_white_list`)
+  }
   function stopFocusMode(){
     fetch(`http://127.0.0.1:5005/stop_focus_mode`, {
       method: 'POST',
@@ -200,9 +215,37 @@ function FrontPage() {
       body: JSON.stringify({
         "id": currentFocusMode['id']
       })
+      
 
     }).catch(error => {console.log(error)})
   }
+
+  // const  setWorkflow =  => (workflow_id) =>{
+  //   fetch(`http://127.0.0.1:5005/set_workflow`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       "workflow_id": workflow_id
+  //     })
+  //   }).catch(error => {console.log(error)})
+  // }
+  function set_new_workflow(workflow_id){
+    fetch(`http://127.0.0.1:5005/set_workflow`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "workflow_id": workflow_id
+      })})
+      .then(response => response.json()).then(data => {
+        console.log("SETTING WORKFLOW")
+        console.log(data);} ).catch(error => {});
+    
+  }
+
   return (
     <div style={css.mainContent}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
@@ -248,14 +291,28 @@ function FrontPage() {
         }
 
         <>
+        <div style={css.contrastContent}>
+          <Stack direction="column" spacing={3} style={css.body}>
+    <h1 style={css.h1}>Workflows</h1>
+
+    <div style={css.contrastContent}>
+    <Stack direction="row" spacing={3} style={css.body}>
+    <Button style={{margin:5}} variant='contained' color={workflow === 1 ? 'success': 'error'} onClick={()=>{set_new_workflow(1)}}><span>Work</span></Button>
+      <Button style={{margin:5}} variant='contained' color={workflow === 2 ? 'success': 'error'} onClick={()=>{set_new_workflow(2)}}><span>Custom</span></Button> 
+      </Stack>
+      </div>
+      </Stack>
+    </div>
     {currentFocusMode['status'] === false ?
     <>
+   
     <h2 style={css.h1}>Server Controls</h2>
-      
+    
     <Stack direction="row" spacing={3} style={css.body}>
       <div style={css.contrastContent}>
-      <Button style={{margin:5}} variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Server</span></Button>
-      <Button style={{margin:5}} variant='contained' color={closingApps ? 'success': 'error'} onClick={toggle_blocking}><span>{closingApps ? 'Stop': 'Start'} blocking</span></Button>
+      <Button style={{margin:5}} variant='contained' color={logging ? 'error': 'success'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Server</span></Button>
+      <Button style={{margin:5}} variant='contained' color={closingApps ? 'error': 'success'} onClick={toggle_blocking}><span>{closingApps ? 'Stop': 'Start'} blocking</span></Button>
+      <Button style={{margin:5}} variant='contained' color={whitelist ? 'error': 'success'} onClick={toggle_white_list}><span>{whitelist ? 'Stop': 'Start'} focused apps only</span></Button>
       {/* <Button variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>Start Server</span></Button> */}
       <Button style={{margin:5}} variant='contained' color='error' onClick={restart_server}><span>Restart Server</span></Button>
       </div>
@@ -266,7 +323,7 @@ function FrontPage() {
       <div style={css.contrastContent}>
     <Stack direction="column" spacing={3} style={css.body}>
     <h1 style={css.h1}>Focus Mode</h1>
-    <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/>
+    {/* <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/> */}
         {/* stop focus mode button */}
         <p>There is {currentFocusMode["Time Remaining"]} on the clock for the focus mode: {currentFocusMode["Name"]}</p>
         <p>{currentFocusMode["Duration"]} minute focus mode </p>
@@ -274,7 +331,9 @@ function FrontPage() {
     </Stack>
         </div>
     </>
+
     }
+
     <div style={css.contrastContent}>
     <p>
       When the server is running, it will automatically start logging data about what applications you are using. <br></br>
