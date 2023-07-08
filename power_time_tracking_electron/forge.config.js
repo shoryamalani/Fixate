@@ -5,6 +5,7 @@ const archName = process.arch === 'arm64' ? 'arm64' : 'x64';
 // get the product path and name
 const productName = require('./package.json').productName;
 const productPath = path.join(__dirname, 'out', `${productName}-darwin-${archName}`, `${productName}.app`);
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 
 module.exports = {
   packagerConfig: {
@@ -12,7 +13,7 @@ module.exports = {
     osxUniversal: { // config options for `@electron/universal`
       x64ArchFiles: '*' // replace with any relevant glob pattern
     },
-    "ignore": [".out","requirements.txt","package_intel_and_arm", "python-old", "python-bad"], // dont ask
+    "ignore": [".out","requirements.txt","package_intel_and_arm"],
     "appBundleId": "com.fixate.macos",
     "extraResource": [
       "./src/python",
@@ -76,7 +77,14 @@ module.exports = {
   makers: [{
       name: "@electron-forge/maker-squirrel",
       config: {
-        name: "Fixate"
+        name: "Fixate",
+        extraFiles: [
+          {
+            from: ffmpegPath,
+            to: 'resources\app',
+            filter: ['*/'],
+          },
+        ],
       }
     },
     {
