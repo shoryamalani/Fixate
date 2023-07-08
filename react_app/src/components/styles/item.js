@@ -178,7 +178,7 @@ function QuoteItem(props) {
       aria-label={`${app.name}`}
     >
         {app.icon ? 
-            <Avatar sizes={256} src={'/images?path='+app.icon} />
+            <Avatar sizes={256} src={'http://127.0.0.1:5005/images?path='+app.icon} />
             : app.type === 'website' ?
             <Web/>
             : <Apps/> 

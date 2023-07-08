@@ -232,8 +232,8 @@ function UserProfileCard() {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{friend['name'][0]}</Avatar>{friend['name']}</TableCell>
-                <TableCell align="right"> {friend['data']['live'] != null ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
-                <TableCell align="right">{<CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>}</TableCell>
+                <TableCell align="right"> {friend['data'] != null && friend['data']['live'] ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
+                <TableCell align="right">{friend['data'] != null && friend['data']['live'] ? <CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>: null}</TableCell>
               </TableRow>
             ))}
         </TableBody>
