@@ -4,6 +4,7 @@ async function getCurrentTab() {
     let [tab] = await chrome.tabs.query(queryOptions);
     return tab;
 }
+var dataPostInterval = null;
 async function postData() {
     let tab = await getCurrentTab();
     let url = tab.url;
@@ -26,15 +27,18 @@ async function postData() {
 }
 // setInterval(() => postData(), 300);
 chrome.runtime.onInstalled.addListener(({ reason }) => {
-    chrome.alarms.create("periodic", { periodInMinutes: 1 / 180 });
+    chrome.alarms.create("periodic", { periodInMinutes: 1 });
 });
 
 chrome.runtime.onStartup.addListener(({ reason }) => {
-    chrome.alarms.create("periodic", { periodInMinutes: 1 / 180 });
+    chrome.alarms.create("periodic", { periodInMinutes: 1 });
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === "periodic") {
-        postData();
+        if (dataPostInterval != null) {
+            clearInterval(dataPostInterval);
+        }
+        dataPostInterval = setInterval(() => postData(), 300);
     }    
 });

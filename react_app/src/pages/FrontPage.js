@@ -306,15 +306,15 @@ function FrontPage() {
     {currentFocusMode['status'] === false ?
     <>
    
-    <h2 style={css.h1}>Server Controls</h2>
+    <h2 style={css.h1}>Logger Controls</h2>
     
     <Stack direction="row" spacing={3} style={css.body}>
       <div style={css.contrastContent}>
-      <Button style={{margin:5}} variant='contained' color={logging ? 'error': 'success'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Server</span></Button>
+      <Button style={{margin:5}} variant='contained' color={logging ? 'error': 'success'} onClick={logging ? stop_logger : start_logger}><span>{logging ? 'Stop': 'Start'} Logger</span></Button>
       <Button style={{margin:5}} variant='contained' color={closingApps ? 'error': 'success'} onClick={toggle_blocking}><span>{closingApps ? 'Stop': 'Start'} blocking</span></Button>
       <Button style={{margin:5}} variant='contained' color={whitelist ? 'error': 'success'} onClick={toggle_white_list}><span>{whitelist ? 'Stop': 'Start'} focused apps only</span></Button>
       {/* <Button variant='contained' color={logging ? 'success': 'error'} onClick={logging ? stop_logger : start_logger}><span>Start Server</span></Button> */}
-      <Button style={{margin:5}} variant='contained' color='error' onClick={restart_server}><span>Restart Server</span></Button>
+      <Button style={{margin:5}} variant='contained' color='error' onClick={restart_server}><span>Restart Logger</span></Button>
       </div>
     </Stack>
     </>
