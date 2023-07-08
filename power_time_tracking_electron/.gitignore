@@ -99,7 +99,4 @@ include/
 scripts/
 @AutomationLog.txt
 *.db
-
-# dont ask
-python-old
-python-bad
+package-lock.json

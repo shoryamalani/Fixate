@@ -28,6 +28,7 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "apexcharts": "^3.41.0",
     "dotenv": "^16.3.1",
     "electron-log": "^4.4.8",
@@ -50,5 +51,4 @@
     "electron-winstaller": "^5.0.0"
   },
   "overrides": {}
-
 }

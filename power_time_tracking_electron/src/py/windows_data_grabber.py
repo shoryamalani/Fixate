@@ -3,6 +3,7 @@ import os
 import win32gui
 import win32con
 import win32api
+import win32ui
 import win32process
 import multiprocessing
 from time import sleep
@@ -11,6 +12,8 @@ import psutil
 import uiautomation as auto
 import datetime
 import re
+from PIL import Image
+import constants
 
 #https://stackoverflow.com/questions/25466795/how-to-minimize-a-specific-window-in-python
 #https://stackoverflow.com/questions/10266281/obtain-active-window-using-python
@@ -69,6 +72,33 @@ class windowsOperatingSystemDataGrabber:
             description = "unknown"
             
         return description
+    
+    def get_icon_path(self)->Image:
+        pid = win32process.GetWindowThreadProcessId(self.current_app)
+        app_path = psutil.Process(pid[-1]).exe()
+        print("icon",app_path)
+
+        ico_x = win32api.GetSystemMetrics(win32con.SM_CXICON)
+
+        large, small = win32gui.ExtractIconEx(app_path,0)
+        win32gui.DestroyIcon(small[0])
+
+        hdc = win32ui.CreateDCFromHandle( win32gui.GetDC(0) )
+        hbmp = win32ui.CreateBitmap()
+        hbmp.CreateCompatibleBitmap(hdc, ico_x, ico_x)
+        hdc = hdc.CreateCompatibleDC()
+
+        hdc.SelectObject( hbmp )
+        hdc.DrawIcon( (0,0), large[0] )
+        win32gui.DestroyIcon(large[0])
+
+        
+        hbmp.SaveBitmapFile( hdc, constants.ICON_LOCATION + "\Icontemp.bmp")
+
+        im = Image.open(constants.ICON_LOCATION + "\Icontemp.bmp")
+
+        return im
+        
 
 def start_mouse_and_keyboard_checker():
     multiprocessing.Process(target=check_periodic).start()
