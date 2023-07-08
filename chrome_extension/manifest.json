@@ -1,9 +1,9 @@
 {
-    "name": "PowerTimeTracking Chrome Logging",
+    "name": "Fixate Chrome Logging",
     "version": "0.2.0",
-    "description": "Logs current tab url for use with PowerTimeTracking",
+    "description": "Logs current tab url for use with Fixate",
     "manifest_version": 3,
-    "author": "PowerTimeTracking Team",
+    "author": "Fixate Team",
     "icons": {
         "128": "icon_128.png"
     },
