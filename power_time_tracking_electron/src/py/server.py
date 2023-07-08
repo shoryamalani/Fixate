@@ -19,7 +19,7 @@ from datetime import datetime
 import ppt_api_worker
 import constants
 import ppt_api_worker
-from waitress import serve
+
 
 app = Flask(__name__)
 CORS(app)
@@ -281,6 +281,7 @@ def start_server():
     logger.debug("Starting server")
     try:
         if sys.platform == "win32":
+            from waitress import serve
             serve(app, host='127.0.0.1', port=5005, threads=2)
         else:
             app.run(host='127.0.0.1', port=5005)
