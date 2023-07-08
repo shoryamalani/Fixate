@@ -98,5 +98,5 @@ lib/
 include/
 scripts/
 @AutomationLog.txt
-*.bat
 *.db
+package-lock.json

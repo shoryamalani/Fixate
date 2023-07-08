@@ -17,6 +17,8 @@ import { ThemeProvider } from 'styled-components';
 import CssBaseline from '@mui/material/CssBaseline';
 import { setLeaderboardData } from '../features/UserSlice';
 import {SingleLeaderboard}  from '../components/Leaderboard';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Refresh } from '@mui/icons-material';
 const Leaderboards = () => {
     let leaderboardData = useSelector(state => state.user.leaderboardData);
     let dispatch = useDispatch();
@@ -62,13 +64,14 @@ const Leaderboards = () => {
     }   , [leaderboardData, dispatch])
 
     return (
-        <>
+        <div style={css.mainContent}>
             <div style={css.contrastContent}>
                 <Stack direction="column" spacing={2}>
                 <h1>Leaderboards</h1>
-                <Button variant="contained" color="primary" onClick={() => { window.location.reload() }}>Refresh Leaderboard Data</Button>
+                <Button variant="contained" color='success' onClick={() => { window.location.reload() }}><Refresh></Refresh></Button>
                 </Stack>
             </div>
+            <Grid2 container spacing={2}>
             <div style={css.contrastContent}>
                 { leaderboardData != null && leaderboardData['daily'] != null ?
                 <SingleLeaderboard title='Daily' leaderboardData={leaderboardData['daily']} />
@@ -88,9 +91,10 @@ const Leaderboards = () => {
                 : <h2>The Monthly Leaderboard is not currently available </h2>
             }
             </div>
+            </Grid2>
 
 
-        </>
+        </div>
     )
 }
 

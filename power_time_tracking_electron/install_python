@@ -1,0 +1,4 @@
+wget https://github.com/indygreg/python-build-standalone/releases/download/20220318/cpython-3.9.11+20220318-x86_64-apple-darwin-install_only.tar.gz
+tar -xzvf cpython-3.9.11+20220318-x86_64-apple-darwin-install_only.tar.gz
+rm -r src/python
+mv python src/

@@ -277,7 +277,7 @@ function SingleLeaderboard(props) {
                     <TableCell align="right" id={row.id} value={row.total_time_spent}>{row.total_time_spent.toFixed(2) }</TableCell>
                     <TableCell align="right">{row.time_between_distractions != null ? row.time_between_distractions.toFixed(2): 'Unknown'}</TableCell>
                     <TableCell align="right">{row.distractions_per_hour != null ? row.distractions_per_hour.toFixed(2): 'Unknown'}</TableCell>
-                    <TableCell align="right"><CircularProgressWithLabel value={row.percent_time_focused}></CircularProgressWithLabel></TableCell>
+                    <TableCell align="right"><CircularProgressWithLabel color={row.percent_time_focused>80 ?'success':'failure'} value={row.percent_time_focused}></CircularProgressWithLabel></TableCell>
                   </TableRow>
                 );
               })}

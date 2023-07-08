@@ -4,41 +4,51 @@ export const appSlice= createSlice({
   name: 'app',
   initialState: {
     apps:{
-      1:{
-        app_name: 'app1',
-        app_status: 'running',
-      },
-    }
+    },
+    currentWorkflow: null,
+    workflows: {},
+    initialApps: null,
+    filterApps: {},
   },
   reducers: {
     
     setApp: (state,action) => {
       console.log('set apps')
       console.log(action.payload)
-      // fetch('http://localhost:5005/get_app_status').then(response => response.json()).then(data =>{
-      //   console.log(data)
-      //   state.apps = data['applications']
-      // }).catch(error => {});
       state.apps = action.payload
     },
     setCertainApp:(state,action) =>{
       state.apps[action.payload['appNum']] = action.payload['newApp'];
     },
-    flipDistractingApp:(state,action) =>{
-      console.log(action.payload)
-     if (state.apps[action.payload]['distracting']===1){
-        state.apps[action.payload]['distracting'] = 0;
-     } 
-      else{
-        state.apps[action.payload]['distracting'] = 1;
-      }
-      
-  
+    setAppDistracted:(state,action) =>{
+      state.apps[action.payload]['distracting'] = true;
+      state.apps[action.payload]['focused'] = false;
+    },
+    setWorkflows: (state,action) => {
+      state.workflows = action.payload
+    },
+    setCurrentWorkflow: (state,action) => {
+      state.currentWorkflow = action.payload
+    },
+    setAppFocused:(state,action) =>{
+      state.apps[action.payload]['focused'] = true;
+      state.apps[action.payload]['distracting'] = false;
+    },
+    setAppNeither:(state,action) =>{
+      state.apps[action.payload]['focused'] = false;
+      state.apps[action.payload]['distracting'] = false;
+    },
+    setInitialApps: (state,action) => {
+      state.initialApps = action.payload
+    },
+    setFilterApps: (state,action) => {
+      state.filterApps = action.payload
     }
+
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setApp,setCertainApp,flipDistractingApp } = appSlice.actions
+export const { setApp,setCertainApp,setAppDistracted,setAppFocused,setAppNeither,setWorkflows,setCurrentWorkflow,setInitialApps,setFilterApps } = appSlice.actions
 
 export default appSlice.reducer

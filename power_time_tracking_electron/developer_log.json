@@ -1,0 +1,197 @@
+{
+  "logFormatVersion": 1,
+  "jobId": "c4216a96-65ec-4440-9311-7ab78d327d8b",
+  "status": "Invalid",
+  "statusSummary": "Archive contains critical validation errors",
+  "statusCode": 4000,
+  "archiveFilename": "Fixate-arm64-0.9.8.pkg",
+  "uploadDate": "2023-06-28T06:02:52.555Z",
+  "sha256": "e5e8ea486ec5586932c5d5316ccfdc55ba9c0759f87d1d0f6bad6bd1156ec0b3",
+  "ticketContents": null,
+  "issues": [
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/MacOS/Fixate",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/MacOS/Fixate",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/MacOS/Fixate",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (GPU).app/Contents/MacOS/Fixate Helper (GPU)",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (GPU).app/Contents/MacOS/Fixate Helper (GPU)",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (GPU).app/Contents/MacOS/Fixate Helper (GPU)",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/ReactiveObjC.framework/Versions/A/ReactiveObjC",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/ReactiveObjC.framework/Versions/A/ReactiveObjC",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Squirrel.framework/Versions/A/Squirrel",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Squirrel.framework/Versions/A/Squirrel",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper.app/Contents/MacOS/Fixate Helper",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper.app/Contents/MacOS/Fixate Helper",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper.app/Contents/MacOS/Fixate Helper",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Mantle.framework/Versions/A/Mantle",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Mantle.framework/Versions/A/Mantle",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Renderer).app/Contents/MacOS/Fixate Helper (Renderer)",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Renderer).app/Contents/MacOS/Fixate Helper (Renderer)",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Renderer).app/Contents/MacOS/Fixate Helper (Renderer)",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Plugin).app/Contents/MacOS/Fixate Helper (Plugin)",
+      "message": "The signature of the binary is invalid.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087735",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Plugin).app/Contents/MacOS/Fixate Helper (Plugin)",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.8.pkg/Fixate-arm64-0.9.8.pkg Contents/Payload/Applications/Fixate.app/Contents/Frameworks/Fixate Helper (Plugin).app/Contents/MacOS/Fixate Helper (Plugin)",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "arm64"
+    }
+  ]
+}

@@ -6,8 +6,8 @@ import css from '../Style'
 import dayjs from 'dayjs';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-import {Pie} from 'react-chartjs-2';
-import Chart from 'chart.js/auto';
+import {Line, Pie} from 'react-chartjs-2';
+import Chart, { scales } from 'chart.js/auto';
 import 'react-calendar/dist/Calendar.css';
 import { Colors } from 'chart.js/auto';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
@@ -17,9 +17,9 @@ import {CircularProgressWithLabel} from '../components/CircularProgressBar';
 import { useLocation, useSearchParams } from 'react-router-dom';
 
 function TimeSpent() {
-  
   const [customDayValue, setCustomDayValue] = React.useState(new Date());
   const [pieChartData, setPieChartData] = React.useState(null);
+  const [lineChartData, setLineChartData] = React.useState(null);
   const location = useLocation();
   console.log(location.state)
   if (!location.state) {
@@ -43,31 +43,113 @@ function TimeSpent() {
     }).catch(error => {console.log(error)});
     var data = await response.json().catch(error => {console.log(error)});
     // remove the first element from an array
-    data['time'].shift();
-    await setPieChartData({
-      labels: data['time'].map((i) => i[0]), 
+    console.log(data)
+    // data['time'].shift();
+    setPieChartData({
+      labels: Object.keys(data['time']).map((i) => i), 
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
+          data: Object.keys(data['time']).map((i) => data['time'][i]/60),
           borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+          backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 0
         }
       ]
     })
-    console.log({
-      labels: data['time'].map((i) => i[0]), 
+    setLineChartData({
+      labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
       datasets: [
         {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 2
+          label: "Distractions",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+          borderColor: "yellow",
+          backgroundColor: "yellow",
+          borderWidth: 2,
+          yAxisID: 'A',
+        },
+        {
+          label: "Percent Distracted",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "red",
+          backgroundColor: "red",
+          borderWidth: 2,
+          yAxisID: 'B',
+        },
+        {
+          label: "Percent Focused",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "green",
+          backgroundColor: "green",
+          borderWidth: 2,
+          yAxisID: 'B',
+
         }
-      ]
+        
+      ],
+      options: {
+        scales: {
+          A: {
+            type: 'linear',
+            position: 'left'
+          }, 
+          B:{
+            type: 'linear',
+            position: 'right',
+          }
+        }
+      }
     })
+    console.log(
+      {
+        labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+        datasets: [
+          {
+            label: "Distractions",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+            borderColor: "yellow",
+            backgroundColor: "yellow",
+            borderWidth: 2,
+            yAxisID: 'A',
+          },
+          {
+            label: "Percent Distracted",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "red",
+            backgroundColor: "red",
+            borderWidth: 2,
+            yAxisID: 'B',
+          },
+          {
+            label: "Percent Focused",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+            borderColor: "green",
+            backgroundColor: "green",
+            borderWidth: 2,
+            yAxisID: 'B',
+  
+          }
+          
+        ]
+      }
+    )
+    var element = document.getElementById("pieChart");
+    if(element){
+      element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+    }
+    
+    // console.log({
+    //   labels: data['time'].map((i) => i[0]), 
+    //   datasets: [
+    //     {
+    //       label: "Time Spent",
+    //       data: data['time'].map((i) => i[1]/60),
+    //       borderColor: "black",
+    //       backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+    //       borderWidth: 2
+    //     }
+    //   ]
+    // })
     return data;
   }
 
@@ -91,38 +173,101 @@ function TimeSpent() {
       body: JSON.stringify(data)
     }).then(response => response.json()
     ).then(data => {
-      data['time'].shift();
+      // data['time'].shift();
+      console.log(data)
     setPieChartData({
-      labels: data['time'].map((i) => i[0]), 
+      labels: Object.keys(data['time']).map((i) => i), 
       datasets: [
         {
           label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
+          data: Object.keys(data['time']).map((i) => data['time'][i]/60),
           borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+          backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
           borderWidth: 0
         }
       ]
     })
+    setLineChartData({
+      labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+      datasets: [
+        {
+          label: "Distractions",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+          borderColor: "yellow",
+          backgroundColor: "yellow",
+          borderWidth: 2,
+          yAxisID: 'A',
+        },
+        {
+          label: "Percent Distracted",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "red",
+          backgroundColor: "red",
+          borderWidth: 2,
+          yAxisID: 'B',
+        },
+        {
+          label: "Percent Focused",
+          data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['focused']/(data['distractions']['distracted_percentage_over_time'][i]['neutral_time']+data['distractions']['distracted_percentage_over_time'][i]['distracted']+data['distractions']['distracted_percentage_over_time'][i]['focused']))),
+          borderColor: "green",
+          backgroundColor: "green",
+          borderWidth: 2,
+          yAxisID: 'B',
+        }
+      ],
+      options: {
+        scales: {
+          A: {
+            type: 'linear',
+            position: 'left'
+          }, 
+          B:{
+            type: 'linear',
+            position: 'right',
+          }
+        }
+      }
+    })
+    console.log(
+      {
+        labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
+        datasets: [
+          {
+            label: "Distractions",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => data['distractions']['distracted_percentage_over_time'][i]['distractions']),
+            borderColor: "black",
+            borderWidth: 2
+          },
+          {
+            label: "Percent Distracted",
+            data: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => 100*(data['distractions']['distracted_percentage_over_time'][i]['distracted']/(data['distractions']['distracted_percentage_over_time'][i]['not_distracted']+data['distractions']['distracted_percentage_over_time'][i]['distracted']))),
+            borderColor: "black",
+            borderWidth: 2
+          },
+          
+        ]
+      }
+    )
     var element = document.getElementById("pieChart");
     if(element){
       element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
     }
     
-    console.log({
-      labels: data['time'].map((i) => i[0]), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: data['time'].map((i) => i[1]/60),
-          borderColor: "black",
-          backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 2
-        }
-      ]
-    })
+    // console.log({
+    //   labels: data['time'].map((i) => i[0]), 
+    //   datasets: [
+    //     {
+    //       label: "Time Spent",
+    //       data: data['time'].map((i) => i[1]/60),
+    //       borderColor: "black",
+    //       backgroundColor:data['time'].map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+    //       borderWidth: 2
+    //     }
+    //   ]
+    // })
     return data;
-    }).catch(error => {console.log(error)});
+    })
+    // .catch(error => {console.log(error)});
     
   }
   const checkFilter = (focusModeId) => {
@@ -166,12 +311,23 @@ function TimeSpent() {
 
   },[dispatch])
   return (
-    <div>
+    <div style={{
+      // flex: 1,
+      // maxWidth:'80vw',
+      color:'#d9eaff',
+      // flexDirection: 'column',
+      alignItems: 'center',
+      textAlign: 'center',
+      justify:'center',
+      alignSelf:'center',
+      maxWidth:'100vw'}}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
       <h1 style={css.h1}>Time Spent</h1>
-      <div style={css.contrastContent}>
-    <Stack direction="row" spacing={1}>
+      <Stack direction='row'>
+      <Stack direction='column' spacing={1} style={{minWidth:'30%'}}>
+      <div style={{...css.contrastContent,maxHeight:'8em'}}>
+    <Stack direction="row" spacing={1} style={{maxWidth:'100%'}}>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_30_minutes")}} >Last 30 minutes</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
@@ -198,8 +354,9 @@ function TimeSpent() {
           </Stack>
           </div>
         </div>
+          
     {pieChartData && 
-        <div style={css.contrastContent}>
+        <div style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', aspectRatio:1}} >
         <Pie data={pieChartData}
         id = "pieChart"
         options={{
@@ -214,12 +371,28 @@ function TimeSpent() {
           
         }} /></div>
         }
+        
 
+</Stack>
     
-      <div style={css.contrastContent}>
-        <Stack direction="column" spacing={1} >
+      <div style={{...css.contrastContent,height: '100%'}}>
+        <Stack direction="column" spacing={1}  >
+        {lineChartData &&
+        <div style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', aspectRatio:1}} >
+        <Line data={lineChartData}
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: "Distractions Over Time",
+            }
+          }
+          
+        }} />
+        </div>
+        }
       <h1 style={css.h1}>Old Focus Modes</h1>
-      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'50vw' }}>
         <Table >
         <TableHead>
           <TableRow>
@@ -251,6 +424,7 @@ function TimeSpent() {
       </TableContainer>
         </Stack>
       </div>
+      </Stack>
         </div>
         
     // </div>

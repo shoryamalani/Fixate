@@ -20,13 +20,21 @@ const theme = createTheme({
 	palette: {
 		mode: 'dark',
 		secondary: {
-			main: '#f44336',
+			// main: '#f44336',
+			main: '#FFC300',
 		},
 		info: {
-			main: '#2196f3',
+			// main: '#FFC300',
+			main: '#3e694d'
 		},
 		failure: {
-			main: '#f44336',
+			main: '#d1495b',
+		},
+		success: {
+			main: '#679436',
+		},
+		error: {
+			main: '#8f2d56',
 		}
 	},
 
@@ -54,16 +62,16 @@ return (
 		  </NavLink>
           </NavMenu>
         </Nav> */}
-	<div style={css.mainContent}>
+	{/* <div style={css.mainContent}> */}
 	<Routes>
 		<Route path='*' index element={<FrontPage />} />
 		<Route path='/timeSpent' element={<TimeSpent/>} />
 		<Route path='/focusModes' element={<FocusModes/>} />
-		<Route path="/appStatus" element={<AppStatus/>}/>
+		<Route path="/appStatus" element={<AppStatus theme={theme}/>}/>
 		<Route path="/leaderboards" element={<Leaderboards/>}/>
 		<Route path="/liveFocusMode" element={<LiveFocusMode/>}/>
 	</Routes>
-	</div>
+	{/* </div> */}
 	<Navbar />
 	</Router>
 	</div>

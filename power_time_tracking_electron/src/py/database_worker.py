@@ -228,6 +228,77 @@ def update_to_database_version_1_11():
     conn.close()
     set_live_focus_mode_data({})
 
+def update_to_database_version_1_12():
+    """
+    Updates the database to version 1.12
+    """
+    # add a table for all the workflows while deleting the old workflows table
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("DROP TABLE workflows")
+
+    workflows_table_string = create_table_command("workflows",[["id","INTEGER PRIMARY KEY"],["name","text"],["data","json"]])
+    c.execute(workflows_table_string)
+    c.execute("INSERT INTO user (id,name,data) VALUES (?,?,?)",(3,"current_workflow",json.dumps({
+        "id":1,
+    })))
+    distractions_and_focus = make_data_from_default_distraction_list()
+    distractions_and_focus = add_focus_data_to_list(distractions_and_focus)
+    print(distractions_and_focus)
+    conn.commit()
+    conn.close()
+    add_workflow("work",make_workflow_data("work",distractions_and_focus))
+    add_workflow("custom",make_workflow_data("custom",{}))
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE database_and_application_version SET database_version = '1.12' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_13():
+    """
+    Updates the database to version 1.13
+    """
+    # add a table for all icons
+    conn = connect_to_db()
+    c = conn.cursor()
+    icons_table_string = create_table_command("icons",[["id","INTEGER PRIMARY KEY"],["name","text"],["bundleId","text"],['type','text'],['has_icon','boolean'],["data","json"]])
+    c.execute(icons_table_string)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.13' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+
+def make_data_from_default_distraction_list(current_distractions={}):
+    import distracting_apps
+    distractions_data = current_distractions
+    for app in distracting_apps.distracting_apps.split("\n"):
+        distractions_data[app] = {"name":app,"type":'application',"distracting":True,'focused':False,"custom_time_out":0}
+    for website in distracting_apps.distracting_sites.split("\n"):
+        distractions_data[website] = {"name":website,"type":'website',"distracting":True,'focused':False,"custom_time_out":0}
+    return distractions_data
+
+def add_focus_data_to_list(current_application_statuses):
+    import focus_sites_and_apps
+    app_data = current_application_statuses
+    for app in focus_sites_and_apps.General_focus_apps.split("\n"):
+        app_data[app] = {"name":app,"type":'app',"distracting":False,'focused':True,"custom_time_out":0}
+    for website in focus_sites_and_apps.General_focus_sites.split("\n"):
+        app_data[website] = {"name":website,"type":'website',"distracting":False,'focused':True,"custom_time_out":0}
+    return app_data
+
+
+
+def make_workflow_data(name,distractions_data):
+    data = {
+        "name":name,
+        "applications":distractions_data,
+        "modifications":{},
+        "distractions":[],
+        "focused_apps":[],
+    }
+    return data
+
 def get_time_in_format():
     return datetime.datetime.now().strftime(get_time_format())
 
@@ -247,6 +318,14 @@ def get_all_time_logs():
     logger.debug(type(c))
     logger.debug(c)
     data = c.fetchall()
+    c.close()
+    return data
+
+def get_first_time_log():
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM log ORDER BY time ASC LIMIT 1")
+    data = c.fetchone()
     c.close()
     return data
 
@@ -276,13 +355,13 @@ def get_logs_between_times(start_time,end_time):
     """
     Returns the logs between two times
     """
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+    # logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
     conn = connect_to_db()
     c = conn.cursor()
     # c.execute(f"SELECT * FROM log WHERE time BETWEEN convert({full_time_format},{start_time}) AND convert({full_time_format},{end_time})")
     c.execute(f"SELECT * FROM log WHERE time >= '{start_time}' AND time < '{end_time}'")
-    logger.debug(c)
-    logger.debug(type(c))
+    # logger.debug(c)
+    # logger.debug(type(c))
     data = c.fetchall()
     conn.close()
     return data
@@ -657,3 +736,184 @@ def get_live_focus_mode_data():
     if get_time_from_format(final_data['time']) < datetime.datetime.now() - datetime.timedelta(seconds=10):
         return None
     return final_data['data']
+
+# Workflow functions
+def get_workflows():
+    """
+    Gets the workflows
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM workflows")
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def get_current_workflow_data():
+    """
+    Gets the current workflow
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    # just get id 1 in users table
+    c.execute("SELECT * FROM user WHERE id=3")
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return None
+    if type(data[2]) == str:
+        return json.loads(data[2]) # this should be in the format of {"id":workflow_id,"last_data":workflow_data}
+    else:
+        return data[2]
+
+def get_workflow_by_id(id):
+    """
+    Gets a workflow by id
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM workflows WHERE id = ?",[id])
+    data = c.fetchone()
+    conn.close()
+    return data
+
+def add_workflow(name,data):
+    """
+    Adds a workflow
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    data = reload_workflow_data(data)
+    c.execute("INSERT INTO workflows (name,data) VALUES (?,?)",(name,json.dumps(data)))
+    conn.commit()
+    conn.close()
+
+def set_current_workflow_data(data):
+    """
+    Sets the current workflow
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE user SET data = ? WHERE id=3",[json.dumps(data)])
+    conn.commit()
+    conn.close()
+
+
+def reload_workflow_data(data):
+    """
+    takes the data and creates the distractions and focused apps lists
+    """
+    distractions = []
+    focused_apps = []
+    for name,app in data['applications'].items():
+        if app['distracting']:
+            distractions.append(app['name'])
+        if app['focused']:
+            focused_apps.append(app['name'])
+    for name,app in data['modifications'].items():
+        if app['distracting']:
+            distractions.append(app['name'])
+            if app['name'] in focused_apps:
+                focused_apps.remove(app['name'])
+        if app['focused']:
+            focused_apps.append(app['name'])
+            if app['name'] in distractions:
+                distractions.remove(app['name'])
+    data['distractions'] = distractions
+    data['focused_apps'] = focused_apps
+    return data
+
+def update_workflow(id,data):
+    """
+    Updates a workflow
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    data = reload_workflow_data(data)
+    c.execute("UPDATE workflows SET data = ? WHERE id = ?",(json.dumps(data),id))
+    conn.commit()
+    conn.close()
+    if get_current_workflow_data()['id'] == id:
+        set_current_workflow_data({"id":id,"data":data})
+
+
+def check_icon_by_name(name,type):
+    """
+    Checks if an icon exists by name
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT has_icon FROM icons WHERE name = ? AND type = ?",[name,type])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return False
+    else:
+        return data[0]
+
+def set_icon(name,bundleId,type,icon_data):
+    """
+    Sets an icon
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO icons (name,bundleId,type,data,has_icon) VALUES (?,?,?,?,?)",(name,bundleId,type,json.dumps(icon_data),True))
+    conn.commit()
+    conn.close()
+
+def check_if_website_icon_in_database(website_name):
+    """
+    Checks if a website icon is in the database
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE name = ? AND type = ?",[website_name,"website"])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return False
+    else:
+        return True
+
+def get_all_applications_and_websites_with_icons():
+    """
+    Gets all the applications with icons
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE has_icon = ?",[True])
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def get_all_icons_with_paths():
+    """
+    Gets all the icons with paths
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM icons WHERE has_icon = ?",[True])
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def add_memoized_hour(start_time,end_time,data):
+    """
+    Adds a memoized hour
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO memoized_data (start_time,end_time,duration,data) VALUES (?,?,?,?)",(start_time,end_time,60,json.dumps(data)))
+    conn.commit()
+    conn.close()
+
+def get_memoized_hours_between_times(start_time,end_time):
+    """
+    Gets the memoized hours between times
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM memoized_data WHERE start_time >= ? AND end_time <= ? AND duration = ?",(start_time,end_time,60))
+    data = c.fetchall()
+    conn.close()
+    return data

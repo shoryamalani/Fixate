@@ -19,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { setUserData,setLiveFocusModeData, setLiveFocusModeCachedData } from '../features/UserSlice';
 import { notInitialized } from 'react-redux/es/utils/useSyncExternalStore';
 import { Line } from 'react-chartjs-2';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 function LiveFocusMode(){
     const userData = useSelector(state => state.user.userData);
@@ -72,6 +73,7 @@ function LiveFocusMode(){
             if (data['status'] === 'success') {
                 console.log(data)
                 dispatch(setLiveFocusModeData(data));
+                getUserData();
             }
         }).catch(error => { console.log(error)});
     }
@@ -88,6 +90,8 @@ function LiveFocusMode(){
             })
         }).then(response => response.json()).then(data => {
             console.log(data)
+            getUserData();
+            getLiveModeData();
         }).catch(error => { console.log(error) });
     }
     function createLiveFocusMode(){
@@ -219,14 +223,90 @@ function LiveFocusMode(){
 
 
     return (
-        <div >
+        <div style={css.mainContent}>
             <h1>Live Focus Mode</h1>
+        {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true ?
+    <>
+        <Stack direction='column'>
+    <div style={css.contrastContent}>
+            {/* Leaderboard spot */}
+            <Stack direction={'column'} spacing={3}>
+            <h2>Leaderboard</h2>
+            <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+        <Table >
+        <TableHead>
+            <TableRow>
+                <TableCell>Friend Display Name</TableCell>
+                <TableCell align="right">Percent Focused</TableCell>
+            </TableRow>
+        </TableHead>
+        <TableBody>
+            {leaderboardList.map((member) => (
+                <TableRow
+                    key={member.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                    <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{member.name[0]}</Avatar> {member.name}</TableCell>
+                    <TableCell align="right">{<CircularProgressWithLabel color={Math.round(member.percent_focused)>=80 ? 'success':'failure'} value={member.percent_focused}></CircularProgressWithLabel>}</TableCell>
+                </TableRow>
+            ))}
+        </TableBody>
+        </Table>
+        </TableContainer>
+        </Stack>
+        </div>
             <div style={css.contrastContent}>
+            <Stack direction={'column'} spacing={3}>
+            <h2>Live Focus Mode Data</h2>
+            <Grid2 container spacing={2}>
+            {
+                liveFocusModeCachedData['data']['members'].map((member) => (
+                    <div>
+                        <p>{liveFocusModeCachedData['data']['member_names'][member]} has been distracted for {(liveFocusModeCachedData['data']['data']['seconds'][member]['unfocused']/60).toFixed(1)} minutes while being focused for {(liveFocusModeCachedData['data']['data']['seconds'][member]['focused']/60).toFixed(1)} minutes</p>
+                        {/* Chart js line chart */}
+                        <div style={{width:'100%', height:'50vh'}}>
+                            <Line  style={{width:'100%', height:'20vh'}}options={{
+                                    responsive: true,
+                                        plugins: {
+                                        legend: {
+                                        position: 'top',
+                                        },
+                                        title: {
+                                        display: true,
+                                        text:liveFocusModeCachedData['data']['member_names'][member] + ' Focus Percentage',
+                                        },
+                                    },
+                            }} data={{
+                                labels:userChartData['labels'][member],
+                                datasets: [{
+                                    label: 'Focus Percentage',
+                                    data: member in userChartData ? userChartData[member] : [],
+                                    fill: true,
+                                    borderColor: 'rgb(75, 192, 192)',
+                                    backgroundColor: liveFocusModeCachedData['data']['data']['time_data'][parseInt(member)] ? 'rgb(0,255,0)' : 'rgb(255, 0, 0)',
+
+                                }]
+                            }}></Line>
+                        </div>
+                    </div>
+                ))
+            }                
+            </Grid2>
+            </Stack>
+    </div>
+        </Stack>
+    </>
+    :
+    <h2>Data not found</h2>
+    }
+    <div style={css.contrastContent}>
         {userData != null && liveFocusModeData != null ?
          liveFocusModeData['data'] != null && liveFocusModeData['data']['owner_id'] == String(userData['user_id']) ? 
             userData['user_data']['server_data']['friends_data'] === undefined ? <h2>No Friends added</h2>:
             <>
+            
             <Stack direction={'column'} spacing={3}>
+            <h2>Invite Friends</h2>
             <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
         <Table >
         <TableHead>
@@ -302,73 +382,6 @@ function LiveFocusMode(){
     <h2>Loading</h2>}
     
         </div>
-        {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true ?
-    <>
-    <div style={css.contrastContent}>
-        <Stack direction='column'>
-            {/* Leaderboard spot */}
-            <h2>Leaderboard</h2>
-            <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
-        <Table >
-        <TableHead>
-            <TableRow>
-                <TableCell>Friend Display Name</TableCell>
-                <TableCell align="right">Percent Focused</TableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            {leaderboardList.map((member) => (
-                <TableRow
-                    key={member.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                    <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{member.name[0]}</Avatar> {member.name}</TableCell>
-                    <TableCell align="right">{<CircularProgressWithLabel value={member.percent_focused}></CircularProgressWithLabel>}</TableCell>
-                </TableRow>
-            ))}
-        </TableBody>
-        </Table>
-        </TableContainer>
-
-            <h2>Live Focus Mode Data</h2>
-            {
-                liveFocusModeCachedData['data']['members'].map((member) => (
-                    <div>
-                        <h3>{liveFocusModeCachedData['data']['member_names'][member]} has been distracted for {(liveFocusModeCachedData['data']['data']['seconds'][member]['unfocused']/60).toFixed(1)} minutes while being focused for {(liveFocusModeCachedData['data']['data']['seconds'][member]['focused']/60).toFixed(1)} minutes</h3>
-                        {/* Chart js line chart */}
-                        <div style={{width:'100%', height:'50vh'}}>
-                            <Line  style={{width:'100%', height:'20vh'}}options={{
-                                    responsive: true,
-                                        plugins: {
-                                        legend: {
-                                        position: 'top',
-                                        },
-                                        title: {
-                                        display: true,
-                                        text:liveFocusModeCachedData['data']['member_names'][member] + ' Focus Percentage',
-                                        },
-                                    },
-                            }} data={{
-                                labels:userChartData['labels'][member],
-                                datasets: [{
-                                    label: 'Focus Percentage',
-                                    data: member in userChartData ? userChartData[member] : [],
-                                    fill: true,
-                                    borderColor: 'rgb(75, 192, 192)',
-                                    backgroundColor: liveFocusModeCachedData['data']['data']['time_data'][parseInt(member)] ? 'rgb(0,255,0)' : 'rgb(255, 0, 0)',
-
-                                }]
-                            }}></Line>
-                        </div>
-                    </div>
-                ))
-            }                
-        </Stack>
-    </div>
-    </>
-    :
-    <h2>Data not found</h2>
-    }
         </div>
     )
 }

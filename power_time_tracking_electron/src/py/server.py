@@ -1,26 +1,38 @@
-#!/Applications/PowerTimeTracking.app/Contents/Resources/app/src/python/bin/python3
+#!/Applications/Fixate.app/Contents/Resources/python/bin/python3
+VERSION = "0.9.10"
 import sys
-from flask import Flask,jsonify,request
+import os
+if sys.platform == "win32":
+    def pythonFolder(folder: str) -> str:
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\py")]
+
+from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
 import application as logger_application
 import get_time_spent
 import time
 import signal
-import os
 import json
 from loguru import logger
 from datetime import datetime
 import ppt_api_worker
 import constants
 import ppt_api_worker
+
+
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
-logger_application.boot_up_checker()
+whitelist = False
+
 current_notifications = []
-VERSION = "0.9.7"
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+
+def create_app():
+    return app
+
 @app.route("/start_logger")
 def start_logger():
     if logger_application.boot_up_checker():
@@ -35,11 +47,17 @@ def toggle_closing_apps():
     global closing_apps
     closing_apps = not closing_apps
     return jsonify(success=True)
+
+@app.route("/toggle_white_list")
+def toggle_white_list():
+    global whitelist
+    whitelist = not whitelist
+    return jsonify(success=True)
 @app.route("/check_closing_apps")
 def check_closing_apps():
     if logger_application.is_running_logger() == True:
-        
-        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":logger_application.get_all_distracting_apps()})
+        distractions,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"whitelist":whitelist,"apps_to_close":distractions, "focused_apps":focused_apps})
     else:
         return jsonify({"closing_apps":False,"apps_to_close":[]})
 
@@ -49,8 +67,8 @@ def logger_status():
     # resp.headers["Access-Control-Allow-Origin"] = "*"
     # return resp
     in_focus_mode = logger_application.get_focus_mode_status()
-
-    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode})
+    workflow = logger_application.get_current_workflow_data()
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow})
 @app.route("/is_running")
 def is_running():
     return jsonify({"success":True})
@@ -75,23 +93,28 @@ def get_all_time():
 
 @app.route('/get_specific_time_log',methods=["GET","POST"])
 def get_specific_time_log():
-    start_time = request.json["start_time"]
-    print(start_time)
-    # Wed May 10 2023 00:00:00
+    start_time = datetime.strptime(request.json["start_time"], '%a %b %d %Y %H:%M:%S') # 
+    end_time = datetime.strptime(request.json["end_time"], '%a %b %d %Y %H:%M:%S')
+    
+    times,distractions,name = get_time_spent.get_time('custom',start_time,end_time,"custom")
+    distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+    return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
+    # start_time = request.json["start_time"]
+    # print(start_time)
+    # # Wed May 10 2023 00:00:00
 
-    # &a %b %d %Y %H:%M:%S
-    start_time = datetime.strptime(start_time, '%a %b %d %Y %H:%M:%S') # 
-    end_time = request.json["end_time"]
-    print(end_time)
-    end_time = datetime.strptime(end_time, '%a %b %d %Y %H:%M:%S')
-    times,distractions = get_time_spent.get_specific_time(start_time,end_time)
-    return jsonify({"time":times,"distractions":distractions})
+    # # &a %b %d %Y %H:%M:%S
+    # end_time = request.json["end_time"]
+    # print(end_time)
+    # times,distractions = get_time_spent.get_specific_time(start_time,end_time)
+    # return jsonify({"time":times,"distractions":distractions})
 
 @app.route("/get_time_log",methods=["GET","POST"])
 def get_time():
     if request.json["time"]:
         times,distractions,name = get_time_spent.get_time(request.json["time"])
-        return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":get_time_spent.get_all_distracting_apps()})
+        distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
+        return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
     else:
         times,distractions,name,distractions_status = get_time_spent.get_time_from_focus_session_id(request.json["id"])
         return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions)})
@@ -110,9 +133,17 @@ def get_version():
 
 @app.route('/kill_server', methods=['GET'])
 def kill_server():
+    if "darwin" in sys.platform:
+        os.kill(os.getpid(), signal.SIGTERM)
+    logger_application.stop_logger()
+    logger_application.boot_up_checker()
+
+
+@app.route('/restart_server_macos', methods=['GET'])
+def restart_server_macos():
     logger_application.stop_logger()
     os.kill(os.getpid(), signal.SIGTERM)
-
+    return jsonify({"success":True})
 @app.route('/stop_showing_task', methods=['POST'])
 def stop_showing_task():
     return jsonify({"success":logger_application.stop_showing_task(request.json["id"])})
@@ -232,6 +263,45 @@ def leave_live_focus_mode():
 def get_cached_live_focus_mode_data():
     return jsonify({"data":ppt_api_worker.get_cached_live_focus_mode_data(), 'status': 'success'})
 
-if __name__ == "__main__":
+# workflows
+@app.route('/get_workflows', methods=['GET'])
+def get_workflows():
+    workflow_data = logger_application.get_current_workflow_data()
+    return jsonify({"workflows":logger_application.get_workflows(),"current_workflow":workflow_data['id']})
+
+@app.route('/get_all_apps_in_workflow',methods=["POST"])
+def get_all_apps_in_workflow():
+    return jsonify({"apps":logger_application.get_all_apps_in_workflow(request.json["workflow_id"]),"time":get_time_spent.get_time("this_week")})
+
+@app.route('/add_workflow_modification',methods=["POST"])
+def add_workflow_modification():
+    print(request.json['modification'])
+    print(type(request.json['modification']))
+    return jsonify({"success":logger_application.add_workflow_modification(request.json["workflow_id"],request.json["modification"])})
+
+@app.route('/set_workflow',methods=["POST"])
+def set_workflow():
+    logger.debug(request.json)
+    return jsonify({"success":logger_application.set_current_workflow(request.json["workflow_id"])})
+
+@app.route('/images')
+def send_images():
+    path = request.args.get('path')
+    return send_from_directory(os.path.dirname(path), os.path.basename(path))
+
+def start_server():
     logger.debug("Starting server")
-    app.run(host='127.0.0.1', port=5005)
+    try:
+        if sys.platform == "win32":
+            from waitress import serve
+            serve(app, host='127.0.0.1', port=5005, threads=2)
+        else:
+            app.run(host='127.0.0.1', port=5005)
+    except Exception as e:
+        logger.error(e)
+
+if __name__ == "__main__":
+    import multiprocessing
+    multiprocessing.freeze_support()
+    logger_application.boot_up_checker()
+    start_server()

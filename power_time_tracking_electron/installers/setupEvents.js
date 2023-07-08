@@ -37,7 +37,12 @@ switch (squirrelEvent) {
    
  case '--squirrel-install':
     async function setup() {
-      const setup_windows = spawn('cmd.exe', ['/c', '%LocalAppData%/PowerTimeTracking/app-0.9.6/resources/app/installers/windows-setup.bat']);
+      const setup_windows = spawn('cmd.exe', 
+      ['/c', '%LocalAppData%/Fixate/app-0.9.10/resources/app/installers/windows-setup.bat'], {
+         detached: true,
+         stdio: 'ignore'
+      }).unref();
+   
       setup_windows.stdout.on('data', (data) => {
          log.info(`bat stdout: ${data}`);
       });
@@ -45,7 +50,13 @@ switch (squirrelEvent) {
          log.error(`dir stderr: ${data}`);
       });
     }
-    setup();
+    if(process.platform == 'win32'){
+      setup();
+    }
+      // for mac
+   if(process.platform == 'darwin'){
+      fetch("http://127.0.0.1:5005/restart_server_macos");
+   }
     
     
     

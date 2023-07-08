@@ -1,23 +1,26 @@
 {
-  "name": "PowerTimeTracking",
-  "productName": "PowerTimeTracking",
-  "version": "0.9.7",
+  "name": "Fixate",
+  "productName": "Fixate",
+  "version": "0.9.10",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
+  "rep": "https://github.com/shoryamalani/Fixate",
   "scripts": {
     "start": "electron-forge start DEBUGMENU=1",
     "package": "electron-forge package",
     "package-int": "electron-forge package --arch=x64",
     "package-arm": "electron-forge package --arch=arm64",
+    "package-universal": "electron-forge package --arch=universal --platform=darwin",
     "package-win": "electron-forge package --platform=win32",
     "create-installer-win": "node ./installers/windows/createinstaller.js",
     "make": "electron-forge make",
     "make-arm": "electron-forge make --arch=arm64",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "publish": "electron-forge publish --arch=arm64 --target @electron-forge/publisher-github --dry-run"
   },
   "keywords": [],
   "author": {
-    "name": "PowerTimeTracking Team",
+    "name": "Fixate Team",
     "email": "shoryamal@gmail.com"
   },
   "license": "MIT",
@@ -25,11 +28,14 @@
     "forge": "./forge.config.js"
   },
   "dependencies": {
-    "apexcharts": "^3.35.3",
-    "dotenv": "^16.0.3",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "apexcharts": "^3.41.0",
+    "dotenv": "^16.3.1",
     "electron-log": "^4.4.8",
-    "node-fetch": "^2.6.7",
-    "purecss": "^2.1.0"
+    "glob": "^10.3.0",
+    "node-fetch": "^2.6.11",
+    "purecss": "^2.2.0",
+    "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",
@@ -38,20 +44,11 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "@electron-forge/publisher-github": "^6.0.0-beta.63",
+    "@electron/notarize": "^2.0.0",
+    "@electron/universal": "1.4.1",
     "electron": "^20.1.0",
-    "electron-notarize": "^1.2.1",
     "electron-winstaller": "^5.0.0"
   },
-  "build": {
-    "extraResources": [
-      "py",
-      {
-        "from": "python",
-        "to": "python",
-        "filter": [
-          "**/*"
-        ]
-      }
-    ]
-  }
+  "overrides": {}
 }

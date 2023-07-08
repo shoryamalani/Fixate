@@ -1,5 +1,11 @@
  //handle setupevents as quickly as possible
  const setupEvents = require('../installers/setupEvents')
+ require('update-electron-app')({
+  repo: 'shoryamalani/Fixate',
+  logger: require('electron-log'),
+
+
+})
  if (setupEvents.handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     return;
@@ -104,7 +110,7 @@ async function setUpTray() {
       contextMenu.items[1].visible = false;
       }, visible: logging},
   ])
-  tray.setToolTip('Power Time Tracking Application Helper')
+  tray.setToolTip('Fixate Application Helper')
   tray.setContextMenu(contextMenu)
 }
 class HTTPResponseError extends Error {
@@ -204,7 +210,14 @@ function createWindow() {
     }else{
       win.loadURL('http://localhost:3000'); // dev
       // win.loadFile('../react_app/build/index.html'); // prod
+      // win.webContents.session.webRequest.onBeforeRequest({urls: ["*://*/*.png","*://*/*.jpg","*://*/*.jpeg","*://*/*.gif"]}, (details, callback) => {
+      // // get from file system
+      // callback({path: details.url.replace("http://localhost:3000","")});
+      // });
       win.webContents.session.setProxy({mode:"direct","proxyRules":"http://127.0.0.1:5005"});
+      // get images from local
+      
+
     }
     // try{
     //     PythonShell.run(path.join(app.getAppPath(), 'py/server.py'),null,function(err){

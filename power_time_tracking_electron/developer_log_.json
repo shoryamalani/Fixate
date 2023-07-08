@@ -1,0 +1,61 @@
+{
+  "logFormatVersion": 1,
+  "jobId": "fed30d28-8dd8-4e5b-b4ab-cc85e2ad45f9",
+  "status": "Invalid",
+  "statusSummary": "Archive contains critical validation errors",
+  "statusCode": 4000,
+  "archiveFilename": "Fixate-universal-0.9.9.pkg",
+  "uploadDate": "2023-07-03T19:23:35.149Z",
+  "sha256": "8ebfee458340610359ce40a6ad13c328eff4ec75352aab2b9e04882664608dcf",
+  "ticketContents": null,
+  "issues": [
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/src/python/bin/python3.9",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/src/python/bin/python3.9",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/src/python/bin/python3.9",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/bin/python3.9",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/bin/python3.9",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-universal-0.9.9.pkg/Fixate-universal-0.9.9.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/bin/python3.9",
+      "message": "The executable does not have the hardened runtime enabled.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "architecture": "x86_64"
+    }
+  ]
+}
