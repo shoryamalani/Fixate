@@ -215,7 +215,7 @@ def get_all_apps_statuses():
 #     return parsed_apps
 
 def get_current_distracted_and_focused_apps():
-    data = database_worker.get_current_workflow_data()
+    data = get_current_workflow_data()
     return data['data']['distractions'],data['data']['focused_apps']
 
 
