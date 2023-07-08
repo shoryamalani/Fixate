@@ -129,16 +129,7 @@ const QuoteId = styled.small`
   text-align: right;
 `;
 
-function getStyle(provided, style) {
-  if (!style) {
-    return provided.draggableProps.style;
-  }
 
-  return {
-    ...provided.draggableProps.style,
-    ...style,
-  };
-}
 
 // Previously this extended React.Component
 // That was a good thing, because using React.PureComponent can hide
@@ -157,20 +148,30 @@ function QuoteItem(props) {
         }
         return filterApps[name]['app_name'] && filterApps[name]['app_type'] && filterApps[name]['distracting'];
     }
-
+    function getStyle(provided, style) {
+      if (!style) {
+        return provided.draggableProps.style;
+      }
+    
+      return {
+        ...provided.draggableProps.style,
+        ...style,
+      };
+    }
 
   return (
-    checkFilter(app['name']) &&
+    
     <Container
     //   href={quote.author.url}
       isDragging={isDragging}
       isGroupedOver={isGroupedOver}
       isClone={isClone}
+    
     //   colors={quote.author.colors}
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      style={getStyle(provided, style)}
+      style={{ ...getStyle(provided, style,app.name) ,visibility: checkFilter(app.name) ? 'visible' : 'hidden',height: checkFilter(app.name) ? '100%' : '0%'}}
       data-is-dragging={isDragging}
       data-testid={app.name}
       data-index={index}

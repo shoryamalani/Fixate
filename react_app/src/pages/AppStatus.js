@@ -31,11 +31,12 @@ const  AppStatus = (props) => {
   const workflows = useSelector(state => state.app.workflows);
   const initialApps = useSelector(state => state.app.initialApps);
   const currentWorkflow = useSelector(state => state.app.currentWorkflow);
+  const [updatingWorkflow,setUpdatingWorkflow] = useState(null);
   // const [initialApps, setInitialApps] = useState(null);
   console.log(apps)
   console.log(props.theme)
   const dispatch = useDispatch();
-    useEffect(() => {
+  useEffect(() => {
       const get_all_apps = async () => {
         return await fetch('http://localhost:5005/get_all_apps_in_workflow',{
           method: 'POST',
@@ -51,8 +52,6 @@ const  AppStatus = (props) => {
           console.log(data)
           return {'apps':data['apps'],time : data['time']}
         })
-
-        
       }
       get_all_apps().then(data => {
         console.log(data)
@@ -116,7 +115,7 @@ const  AppStatus = (props) => {
         dispatch(setFilterApps(vals));
       })
 
-    },[currentWorkflow])
+    },[updatingWorkflow])
     const checkFilter = (app) => {
       return filterApps[app]['app_name'] && filterApps[app]['app_type'] && filterApps[app]['distracting'];
     }
@@ -224,7 +223,7 @@ const  AppStatus = (props) => {
     <MenuItem value={"app"}>App</MenuItem>
   </Select>
   {/* <InputLabel id="distractingOrNotLabel">Distracting</InputLabel> */}
-  { workflows ?
+  {/* { workflows ?
   <>
 
 
@@ -238,6 +237,7 @@ const  AppStatus = (props) => {
     onChange={(e)=>{
       console.log(e.target.value)
       dispatch(setCurrentWorkflow(e.target.value));
+      setUpdatingWorkflow(e.target.value);
     }}
   >
     
@@ -249,7 +249,7 @@ const  AppStatus = (props) => {
   </Select>
   </>
   : <></>
-   }
+   } */}
    {/* <Select 
     labelId="distractingOrNotLabel"
     variant='filled'

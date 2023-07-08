@@ -1,5 +1,5 @@
 // @flow
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@xstyled/styled-components";
 import { colors } from "@atlaskit/theme";
 import PropTypes from "prop-types";
@@ -29,6 +29,12 @@ const Board = ({
   const allApps = useSelector(state => state.app.apps);
   console.log(initial)
   const [ordered, setOrdered] = useState(Object.keys(initial));
+  const filterApps = useSelector(state => state.app.filterApps);
+
+  useEffect(() => {
+    
+  }, [filterApps]);
+  
   const add_workflow_modification = async (workflow_id,modification) => {
     return await fetch('http://localhost:5005/add_workflow_modification',{
       method: 'POST',

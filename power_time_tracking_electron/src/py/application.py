@@ -34,6 +34,7 @@ elif sys.platform == "win32":
 global FOCUS_MODE
 FOCUS_MODE = False
 
+
 global LAST_FEW_SECONDS
 LAST_FEW_SECONDS = []
 
@@ -52,10 +53,16 @@ def get_distracting_apps():
 def check_if_must_be_closed(app,tabname,closing_app):
     try:
         # closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
+
         will_close = closing_app["closing_apps"]
+        whitelist = closing_app["whitelist"]
+        if whitelist:
+            will_close = False
         apps_to_close = closing_app["apps_to_close"]
+        apps_to_keep = closing_app["focused_apps"]
     except:
         will_close = False
+        whitelist = False
 
     if will_close == True:
         if tabname:
@@ -66,14 +73,29 @@ def check_if_must_be_closed(app,tabname,closing_app):
         if app['app_name'] in apps_to_close:
             systemDataHandler.hide_current_frontmost_app()
             return True
+    if whitelist:
+        if tabname:
+            for url in apps_to_keep:
+                if url in tabname:
+                    return True
+        else:
+            systemDataHandler.hide_current_frontmost_app()
+            return True
+        if app['app_name'] in apps_to_keep or app['app_name'] == "Fixate":
+            return True
+        else:
+            systemDataHandler.hide_current_frontmost_app()
+            return True
+        
+
         
         
 
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.9\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\py")]
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
@@ -208,6 +230,12 @@ def is_running_logger():
         return True
     return False
 
+def set_current_workflow(workflow_id):
+    data = database_worker.get_workflow_by_id(int(workflow_id))
+    database_worker.set_current_workflow_data({"id":data[0],"data":json.loads(data[2])})
+    logger.debug("Set current workflow to",data[1])
+    return True
+
 def add_daily_task(task_name,task_estimate_duration,task_repeating):
     info = {
         "estimate_duration":task_estimate_duration,
@@ -263,12 +291,14 @@ def get_all_focus_sessions():
 def start_focus_mode(duration,name):
     global FOCUS_MODE
     FOCUS_MODE = True
-    data = database_worker.start_focus_mode(name,duration,json.dumps(get_all_distracting_apps()))
+    distractions, focused_apps = get_current_distracted_and_focused_apps()
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"focused_apps":focused_apps}))
     return data
 def start_focus_mode_with_task(duration,name,task_id):
     global FOCUS_MODE
     FOCUS_MODE = True
-    data = database_worker.start_focus_mode(name,duration,json.dumps(get_all_distracting_apps()),json.dumps({"task_id":task_id}))
+    distractions, focused_apps = get_current_distracted_and_focused_apps()
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"task_id":task_id,"focused_apps":focused_apps}))
     task_data = database_worker.get_task_by_id(task_id)
     task_info = json.loads(task_data[2])
     task_info['ids_of_focus_modes'].append(data)

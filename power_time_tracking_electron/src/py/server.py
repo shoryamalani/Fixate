@@ -25,6 +25,7 @@ app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 closing_apps = False
+whitelist = False
 
 current_notifications = []
 logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
@@ -46,11 +47,17 @@ def toggle_closing_apps():
     global closing_apps
     closing_apps = not closing_apps
     return jsonify(success=True)
+
+@app.route("/toggle_white_list")
+def toggle_white_list():
+    global whitelist
+    whitelist = not whitelist
+    return jsonify(success=True)
 @app.route("/check_closing_apps")
 def check_closing_apps():
     if logger_application.is_running_logger() == True:
         distractions,focused_apps = logger_application.get_current_distracted_and_focused_apps()
-        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"apps_to_close":distractions, "focused_apps":focused_apps})
+        return jsonify({"closing_apps":closing_apps or logger_application.FOCUS_MODE,"whitelist":whitelist,"apps_to_close":distractions, "focused_apps":focused_apps})
     else:
         return jsonify({"closing_apps":False,"apps_to_close":[]})
 
@@ -60,8 +67,8 @@ def logger_status():
     # resp.headers["Access-Control-Allow-Origin"] = "*"
     # return resp
     in_focus_mode = logger_application.get_focus_mode_status()
-
-    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode})
+    workflow = logger_application.get_current_workflow_data()
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow})
 @app.route("/is_running")
 def is_running():
     return jsonify({"success":True})
@@ -271,6 +278,11 @@ def add_workflow_modification():
     print(request.json['modification'])
     print(type(request.json['modification']))
     return jsonify({"success":logger_application.add_workflow_modification(request.json["workflow_id"],request.json["modification"])})
+
+@app.route('/set_workflow',methods=["POST"])
+def set_workflow():
+    logger.debug(request.json)
+    return jsonify({"success":logger_application.set_current_workflow(request.json["workflow_id"])})
 
 @app.route('/images')
 def send_images():
