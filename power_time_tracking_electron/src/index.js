@@ -164,7 +164,7 @@ function copyToStartup() {
   if(app.isPackaged) {
     source = path.join(resourcesPath,"app","installers", "run-server.bat");
   }else{
-    source = path.join(__dirname, "installers", "run-server.bat");
+    source = path.join(__dirname,"..", "installers", "run-server.bat");
   }
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup");
   fs.copyFileSync(source, target);
