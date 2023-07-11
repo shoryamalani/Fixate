@@ -109,7 +109,7 @@ def search_close_and_log_apps():
     # if front_app != None:
         
         #Getting data replaced by JXA and applescript for macos
-        # try:
+        try:
             app = systemDataHandler.get_current_frontmost_app()
             distracting_apps = get_distracting_apps()
             current_app_name = app['app_name']
@@ -173,8 +173,8 @@ def search_close_and_log_apps():
             if sys.platform != "win32":
                 sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
-        # except Exception as err:
-        #     logger.error(err)
+        except Exception as err:
+            logger.error(err)
 
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()
