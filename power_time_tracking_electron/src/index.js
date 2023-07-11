@@ -173,6 +173,7 @@ function copyToStartup() {
 
 function runServer() {
   // run windows batch file
+  const child_process = require("child_process");
   const bat = child_process.spawn("cmd.exe", ["/c", path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat")], {
     detached: true,
     stdio: "ignore",
