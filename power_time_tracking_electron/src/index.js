@@ -288,6 +288,9 @@ function getServerVersion(){
   .then(data => {
     console.log(data.version);
     return data.version;
+  }).catch(err => {
+    console.log(err);
+    return '';
   });
 }
 
