@@ -161,9 +161,9 @@ async function start_server(){
 function copyToStartup() {
   var source = ""
   if(app.isPackaged) {
-    path.join(resourcesPath,"app","installers", "run-server.bat");
+    source = path.join(resourcesPath,"app","installers", "run-server.bat");
   }else{
-    path.join(__dirname, "installers", "run-server.bat");
+    source = path.join(__dirname, "installers", "run-server.bat");
   }
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup", "run-server.bat");
   fs.copyFileSync(source, target);
@@ -292,7 +292,7 @@ function getServerVersion(){
     console.log(data.version);
     return data.version;
   }).catch(err => {
-    console.log(err);
+    // console.log(err);
     return '';
   });
 }
