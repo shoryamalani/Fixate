@@ -29,3 +29,7 @@ Home screen changes
 - notifications module
 
 - loading animations all over the place
+
+- hardcore mode
+    - cant stop the focus
+    - closes things that are open but not focused

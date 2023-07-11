@@ -133,10 +133,10 @@ def get_version():
 
 @app.route('/kill_server', methods=['GET'])
 def kill_server():
-    if "darwin" in sys.platform:
-        os.kill(os.getpid(), signal.SIGTERM)
-    logger_application.stop_logger()
-    logger_application.boot_up_checker()
+    # if "darwin" in sys.platform:
+    os.kill(os.getpid(), signal.SIGTERM)
+    # logger_application.stop_logger()
+    # logger_application.boot_up_checker()
 
 
 @app.route('/restart_server_macos', methods=['GET'])
@@ -287,6 +287,13 @@ def add_workflow_modification():
 def set_workflow():
     logger.debug(request.json)
     return jsonify({"success":logger_application.set_current_workflow(request.json["workflow_id"])})
+
+
+@app.route("/get_ring_data",methods=["GET"])
+def get_rings():
+    return jsonify({"rings":logger_application.get_rings()})
+
+
 
 @app.route('/images')
 def send_images():
