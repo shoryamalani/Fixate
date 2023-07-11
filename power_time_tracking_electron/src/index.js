@@ -180,7 +180,10 @@ function runServer() {
 }
 
 function killServer(){
-  fetch('http://127.0.0.1:5005/kill_server')
+  fetch('http://127.0.0.1:5005/kill_server').catch(err => {
+    return ;
+  });
+  return ;
 }
 
 // function findServer() {
