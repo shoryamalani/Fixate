@@ -917,3 +917,25 @@ def get_memoized_hours_between_times(start_time,end_time):
     data = c.fetchall()
     conn.close()
     return data
+
+def get_all_focus_sessions_for_today():
+    """
+    Gets all the focus sessions for today
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM focus_sessions WHERE time >= date('now', '-1 days') AND time <  date('now')")
+    data = c.fetchall()
+    conn.close()
+    return data
+
+def get_todays_tasks():
+    """
+    Gets todays tasks
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM tasks WHERE day >= date('now', '-1 days') AND day <  date('now')")
+    data = c.fetchall()
+    conn.close()
+    return data

@@ -288,17 +288,18 @@ def get_all_focus_sessions():
         })
     return final_focus_sessions
 
-def start_focus_mode(duration,name):
+def start_focus_mode(duration,name,type):
     global FOCUS_MODE
     FOCUS_MODE = True
     distractions, focused_apps = get_current_distracted_and_focused_apps()
-    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"focused_apps":focused_apps}))
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"focused_apps":focused_apps,"type":type}))
     return data
-def start_focus_mode_with_task(duration,name,task_id):
+
+def start_focus_mode_with_task(duration,name,type,task_id):
     global FOCUS_MODE
     FOCUS_MODE = True
     distractions, focused_apps = get_current_distracted_and_focused_apps()
-    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"task_id":task_id,"focused_apps":focused_apps}))
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"task_id":task_id,"focused_apps":focused_apps,"distracting_apps":distractions,"type":type}))
     task_data = database_worker.get_task_by_id(task_id)
     task_info = json.loads(task_data[2])
     task_info['ids_of_focus_modes'].append(data)
@@ -513,7 +514,7 @@ def get_focus_mode_status():
                 if (end_time < datetime.datetime.now()):
                     stop_focus_mode(latest_focus_mode[0])
                     return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
-                return {"status":True, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0]}
+                return {"status":True,"type":json.loads(latest_focus_mode[6])["type"] if latest_focus_mode[6] else None, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0], "focused_apps":json.loads(latest_focus_mode[6])["focused_apps"] if latest_focus_mode[6] else None, "distracting_apps": latest_focus_mode[3]}
             else:
                 return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None} 
         else:

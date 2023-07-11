@@ -45,7 +45,7 @@ class windowsOperatingSystemDataGrabber:
         print("Current app:", self.current_app, "Title:", self.title, "PID:", pid, "App name:", self.app_name, "URL:", self.url)
         if self.app_name is None:
             return {"app_name":"Unknown","app_title":"","url":""} 
-        if 'Chrome' in self.app_name:
+        if 'Chrome' in self.app_name or 'Edge' in self.app_name or 'Opera' in self.app_name or 'Brave' in self.app_name:
             data = database_worker.get_latest_chrome_url()
             if data:
                 if datetime.datetime.now() - database_worker.get_time_from_format(data[1]) < datetime.timedelta(seconds=3):

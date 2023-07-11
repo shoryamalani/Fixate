@@ -207,7 +207,7 @@ function UserProfileCard() {
     </Stack>
     </div>
     {/* { userData['user_data'] != undefined && */}
-    { userData != null && userData['user_data']['server_data']['friends_data'] != null &&
+    
     <div style={css.contrastContent}>
         <Stack>
     <Container>
@@ -224,8 +224,8 @@ function UserProfileCard() {
         </TableHead>
 
         <TableBody>
-        
-          {userData['user_data']['server_data']['friends_data'].map((friend) => (
+        { userData != null && userData['user_data']['server_data']['friends_data'] != null && 
+          userData['user_data']['server_data']['friends_data'].map((friend) => (
             <TableRow
               key={friend['id']}
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
@@ -235,7 +235,8 @@ function UserProfileCard() {
                 <TableCell align="right"> {friend['data'] != null && friend['data']['live'] ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
                 <TableCell align="right">{friend['data'] != null && friend['data']['live'] ? <CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>: null}</TableCell>
               </TableRow>
-            ))}
+            ))
+        }
         </TableBody>
 
         </Table>
@@ -244,7 +245,7 @@ function UserProfileCard() {
     </Container>
     </Stack>
     </div>
-    }
+   
     </Stack>
     {/* } */}
       

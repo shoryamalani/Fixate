@@ -3,13 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
-    currentTasks: {
-        "1": {
-            "name": "test",
-            "duration": 10,
-            "distracting": 1,
-        }
-    },
+    currentTasks: null,
   },
   reducers: {
     setCurrentTasks: (state,action) => {
