@@ -378,6 +378,12 @@ def get_current_workflow_data():
     return data
 
 
+def get_rings():
+    # data = database_worker.get_rings()
+    focus_sessions = database_worker.get_all_focus_sessions_for_today()
+    tasks_for_today = database_worker.get_todays_tasks()
+    total_wanted_time_spent = 0
+
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
