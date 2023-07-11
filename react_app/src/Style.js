@@ -2,7 +2,7 @@
 const css = {
     h1: {
         color: 'white',
-        fontFamily: 'Epilogue',
+        fontFamily: 'Manrope',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -15,7 +15,7 @@ const css = {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        fontFamily: 'Epilogue',
+        fontFamily: 'Manrope',
 
     },
     mainContent:{
@@ -56,7 +56,7 @@ const css = {
         color: 'white',
         // font
         // fontFamily: 'Times New Roman',
-        fontFamily: 'Epilogue',
+        fontFamily: 'Manrope',
         // color: '#001011'
     }
 

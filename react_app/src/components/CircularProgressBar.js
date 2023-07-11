@@ -6,8 +6,9 @@ import Typography from '@mui/material/Typography';
 
 function CircularProgressWithLabel(props) {
     return (
-      <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-        <CircularProgress variant="determinate" {...props} />
+      <Box sx={{  position: 'relative', display: 'inline-flex' }}>
+        <CircularProgress
+         variant="determinate" {...props} />
         <Box
           sx={{
             top: 0,

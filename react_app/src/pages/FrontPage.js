@@ -8,6 +8,8 @@ import { Grid, Input, LinearProgress, duration } from '@mui/material';
 import { UserProfileCard } from '../components/UserProfileCard';
 import { Line, Pie } from 'react-chartjs-2';
 import { Refresh } from '@mui/icons-material';
+import { DailyTasks } from '../components/DailyTasks';
+import { ProgressBars } from '../components/ProgressBars';
 function FrontPage() {
   const logging = useSelector(state => state.logger.logging);
   const closingApps = useSelector(state => state.logger.closingApps);
@@ -136,6 +138,7 @@ function FrontPage() {
   useEffect(() => {
   setInterval(function () {
       fetch('http://127.0.0.1:5005/logger_status').then(response => response.json()).then(data => {
+        console.log(data)
         if (data['logger_running_status'] === true) {
           dispatch(setLogging(true))
         } else {
@@ -323,7 +326,7 @@ function FrontPage() {
       <div style={css.contrastContent}>
     <Stack direction="column" spacing={3} style={css.body}>
     <h1 style={css.h1}>Focus Mode</h1>
-    {/* <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/> */}
+    <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/>
         {/* stop focus mode button */}
         <p>There is {currentFocusMode["Time Remaining"]} on the clock for the focus mode: {currentFocusMode["Name"]}</p>
         <p>{currentFocusMode["Duration"]} minute focus mode </p>
@@ -344,11 +347,21 @@ function FrontPage() {
     </div>
     </>
     </Stack>
-    <div style={css.contrastContent}>
-      {/* This is a user profile box where users can set their display name and find a share button for friends */}
-      <UserProfileCard></UserProfileCard>
-
+    {/* {Tasks in general} */}
+    <Stack direction="column" spacing={3} style={css.body}>
+    <h1 style={css.h1}>Progress Orbits</h1>
+    <div style={{...css.contrastContent,width:'40vw'}}>
+      <ProgressBars></ProgressBars>
     </div>
+
+    <h1 style={css.h1}>Tasks</h1>
+    <div style={css.contrastContent}>
+      <DailyTasks> </DailyTasks>
+    </div>
+    </Stack>
+
+
+
     </Stack>
     </div>
   )

@@ -15,6 +15,7 @@ import { blue, orange } from '@mui/material/colors';
 import Leaderboards from './pages/Leaderboards';
 import { CssBaseline, colors } from '@mui/material';
 import LiveFocusMode from './pages/LiveFocusMode';
+import UserProfilePage from './pages/UserProfilePage';
 // import { Text } from 'react';
 const theme = createTheme({
 	palette: {
@@ -70,6 +71,7 @@ return (
 		<Route path="/appStatus" element={<AppStatus theme={theme}/>}/>
 		<Route path="/leaderboards" element={<Leaderboards/>}/>
 		<Route path="/liveFocusMode" element={<LiveFocusMode/>}/>
+		<Route path="/userProfile" element={<UserProfilePage></UserProfilePage>}/>
 	</Routes>
 	{/* </div> */}
 	<Navbar />

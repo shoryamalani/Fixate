@@ -1,4 +1,4 @@
-#!/Applications/Fixate.app/Contents/Resources/python/bin/python3
+#!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
 VERSION = "0.9.10"
 import sys
 import os
@@ -153,11 +153,15 @@ def complete_task():
     
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
-    if closing_apps == False:
-        toggle_closing_apps()
-    if request.json["task_id"]!=None:
-        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json["task_id"])}),200
-    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
+    if request.json["type"] == "distracting":
+        global closing_apps
+        closing_apps = True
+    if request.json["type"] == "focused":
+        global whitelist
+        whitelist = True
+    if "task_id" in request.json:
+        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json['type'],request.json["task_id"])}),200
+    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"],request.json['type'])}),200
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
 def stop_focus_mode():

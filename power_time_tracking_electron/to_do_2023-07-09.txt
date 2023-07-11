@@ -1,0 +1,31 @@
+Home screen changes
+
+- move user profile to its own page
+
+- show a list of all of the tasks from today
+    - This should show completed tasks as green
+    - tasks should be able to be associated with a workflow
+
+
+
+- completion rings based on the number of focused minutes and the number of tasks completed
+    - 80% of wanted focused minutes
+    - 80% of tasks completed or if less than 5 tasks task number - 1
+    - Wrote down tasks for the day
+
+    - tweetable or postable
+
+
+- underneath it should show a list of tasks from the past days that were not completed
+
+- add more workflows
+
+- Add dont kill the bunny
+
+- possibly private leaderboards
+
+- better search on app status page
+
+- notifications module
+
+- loading animations all over the place
