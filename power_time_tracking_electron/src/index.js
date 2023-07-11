@@ -31,6 +31,8 @@ const fetch = require('node-fetch');
 // const { time } = require('console');
 // const { start } = require('repl');
 const { Menu, Tray } = require('electron')
+
+
 const resolvePath = (file) => path.join(__dirname, file);
 let tray = null
 
@@ -155,6 +157,32 @@ async function start_server(){
   });
 }
 
+// copy run-server.bat to shell startup folder
+function copyToStartup() {
+  var source = ""
+  if(app.isPackaged) {
+    path.join(resourcesPath,"app","installers", "run-server.bat");
+  }else{
+    path.join(__dirname, "installers", "run-server.bat");
+  }
+  const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup", "run-server.bat");
+  fs.copyFileSync(source, target);
+}
+
+
+function runServer() {
+  // run windows batch file
+  const bat = child_process.spawn("cmd.exe", ["/c", "run-server.bat"], {
+    detached: true,
+    stdio: "ignore",
+  });
+  bat.unref();
+}
+
+function killServer(){
+  fetch('http://127.0.0.1:5005/kill_server')
+}
+
 // function findServer() {
 //   const possibilities = [
 //     // In packaged app
@@ -236,12 +264,31 @@ function createWindow() {
     if(!app.isPackaged){
       win.openDevTools();
     }
+    // windows platform server startup
+    if(process.platform == 'win32'){
+      console.log(VERSION)
+      if (getServerVersion() != VERSION){
+        killServer();
+      copyToStartup();
+      runServer();
+      }
+    }
+
     startServer();
 
 
     // and load the index.html of the app.
     
     
+}
+
+function getServerVersion(){
+  fetch('http://127.0.0.1:5005/get_version')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.version);
+    return data.version;
+  });
 }
 
 app.whenReady().then(createWindow);
