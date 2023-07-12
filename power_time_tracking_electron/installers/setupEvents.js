@@ -38,7 +38,7 @@ switch (squirrelEvent) {
  case '--squirrel-install':
    //  async function setup() {
    //    const setup_windows = spawn('cmd.exe', 
-   //    ['/c', '%LocalAppData%/Fixate/app-0.9.10/resources/app/installers/windows-setup.bat'], {
+   //    ['/c', '%LocalAppData%/Fixate/app-0.9.11/resources/app/installers/windows-setup.bat'], {
    //       detached: true,
    //       stdio: 'ignore'
    //    }).unref();
