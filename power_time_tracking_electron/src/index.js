@@ -297,12 +297,17 @@ function createWindow() {
       win.openDevTools();
     }
     // windows platform server startup
+    log.debug(process.platform);
     if(process.platform == 'win32'){
       console.log(VERSION)
       if (getServerVersion() != VERSION){
+        log.debug("Updating server");
         deleteServer();
+        log.debug('deleted server')
         killServer();
-      copyToStartup();
+        log.debug('killed server')
+        copyToStartup();
+        log.debug('copied to startup')
       // runServer();
       }
     }
