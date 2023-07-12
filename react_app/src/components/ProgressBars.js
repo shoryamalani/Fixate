@@ -108,7 +108,7 @@ const  ProgressOrbits = () => {
         {createRing({value:100*ringsData['tasks_total']/3, label : 'Planning', rgb:colors['writing_tasks'], color_1:colors['writing_tasks'][0], color_2:colors['writing_tasks'][1]})}
         </Stack>
         <Stack direction='row' spacing={1}>
-            {createRing({value:125*ringsData['total_time_spent']/ringsData['total_wanted_time_spent'], label : 'Focus', color_1:colors['focused_minutes'][0], color_2:colors['focused_minutes'][1]})}
+            {createRing({value:ringsData['total_wanted_time_spent'] != 0 ? 125*ringsData['total_time_spent']/ringsData['total_wanted_time_spent'] :100*ringsData['total_time_spent']/30 , label : 'Focus', color_1:colors['focused_minutes'][0], color_2:colors['focused_minutes'][1]})}
             {createRing({value:100*ringsData['tasks_completed']/(ringsData['tasks_total']-1), label : 'Tasks', color_1:colors['completed_tasks'][0] , color_2:colors['completed_tasks'][1]})}
             </Stack>
         </Stack>
