@@ -32,9 +32,11 @@
     "apexcharts": "^3.41.0",
     "dotenv": "^16.3.1",
     "electron-log": "^4.4.8",
+    "electron-squirrel-startup": "^1.0.0",
     "glob": "^10.3.0",
     "node-fetch": "^2.6.11",
     "purecss": "^2.2.0",
+    "squirrel": "^1.0.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
