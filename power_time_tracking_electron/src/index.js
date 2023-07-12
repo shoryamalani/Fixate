@@ -34,9 +34,11 @@ const fetch = require('node-fetch');
 const { Menu, Tray } = require('electron')
 
 
+
+
 const resolvePath = (file) => path.join(__dirname, file);
 let tray = null
-
+let tray_color = 'white';
 app.whenReady().then(() => {
   tray = new Tray(resolvePath('assets/tray.png'))
   setUpTray();
@@ -86,12 +88,21 @@ async function setUpTray() {
           if(data.in_focus_mode.status == true){
             tray.setTitle(data.in_focus_mode['Name'] + ' ' + data.in_focus_mode['Time Remaining'])
             logging = true;
+            if (tray_color == 'white'){
+              tray.setImage(resolvePath('assets/tray_blue.png'));
+              tray_color = 'blue';
+            } else if (tray_color == 'blue'){
+              tray.setImage(resolvePath('assets/tray.png'));
+              tray_color = 'white';
+            }
           }else{
             tray.setTitle('Logging')
+            tray.setImage(resolvePath('assets/tray.png'));
             logging = true;
           }
         }else{
           tray.setTitle('Not Logging')
+          tray.setImage(resolvePath('assets/tray.png'));
           logging = false;
         }
     }
@@ -141,7 +152,7 @@ async function startServer(){
             }
             console.log("server is running");
           } else {
-            throw new HTTPResponseError(response);
+            throw ~new HTTPResponseError(response);
 
         }
     }
@@ -273,20 +284,30 @@ function createWindow() {
     if(process.platform == 'win32'){
       console.log(VERSION)
       if (getServerVersion() != VERSION){
+        deleteServer();
         killServer();
       copyToStartup();
       runServer();
       }
     }
-
-    startServer();
+    if (process.platform == 'darwin'){
+      startServer();
+    }
 
 
     // and load the index.html of the app.
     
     
 }
-
+function deleteServer(){
+  fs.unlink(path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat"), (err) => {
+    if (err) {
+      console.error(err)
+      return
+    }
+  }
+  )
+}
 function getServerVersion(){
   fetch('http://127.0.0.1:5005/get_version')
   .then(response => response.json())
