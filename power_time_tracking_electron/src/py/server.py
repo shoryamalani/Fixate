@@ -68,7 +68,7 @@ def logger_status():
     # return resp
     in_focus_mode = logger_application.get_focus_mode_status()
     workflow = logger_application.get_current_workflow_data()
-    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow})
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow,"rings":logger_application.get_rings()})
 @app.route("/is_running")
 def is_running():
     return jsonify({"success":True})
@@ -116,8 +116,8 @@ def get_time():
         distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
         return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
     else:
-        times,distractions,name,distractions_status = get_time_spent.get_time_from_focus_session_id(request.json["id"])
-        return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions)})
+        times,distractions,name,distractions_status,focused_apps = get_time_spent.get_time_from_focus_session_id(request.json["id"])
+        return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions),"focused_apps":focused_apps})
 
 @app.route("/get_app_status")
 def get_app_status():
