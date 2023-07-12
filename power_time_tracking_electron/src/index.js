@@ -186,6 +186,7 @@ function copyToStartup() {
   }else{
     source = path.join(__dirname,"..", "installers", "run-server.bat");
   }
+  log.debug("source")
   log.debug(source);
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat");
   fs.copyFile(source, target,(err) => {
