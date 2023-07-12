@@ -167,6 +167,14 @@ function TimeSpent() {
         "time": time_constraint
       }
     }
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+    
+    function rgbToHex(r, g, b) {
+      return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
     const response = await fetch('http://localhost:5005/get_time_log', {
       method: 'POST',
       headers: {
@@ -177,18 +185,48 @@ function TimeSpent() {
     ).then(data => {
       // data['time'].shift();
       console.log(data)
-    setPieChartData({
-      labels: Object.keys(data['time']).map((i) => i), 
-      datasets: [
-        {
-          label: "Time Spent",
-          data: Object.keys(data['time']).map((i) => data['time'][i]/60),
-          borderColor: "black",
-          backgroundColor:Object.keys(data['time']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
-          borderWidth: 0
+      var final_data = []
+      var distracting_apps = []
+      var neutral_apps = []
+      var focused_apps = []
+      for (var key in data['time']) {
+        // console.log(key)
+        // console.log(data['relevant_distractions'])
+        if(data['relevant_distractions'].includes(key)){
+          // generate a random red
+          distracting_apps.push([key,data['time'][key],rgbToHex(Math.floor(Math.random() * 100) + 150,Math.floor(Math.random() * 100),Math.floor(Math.random() * 100))])
+        }else if (data['focused_apps'].includes(key)){
+          // generate a random green
+          focused_apps.push([key,data['time'][key],rgbToHex(Math.floor(Math.random() * 100),Math.floor(Math.random() * 100) + 150,Math.floor(Math.random() * 100))])
+        } else {
+          neutral_apps.push([key,data['time'][key],rgbToHex(Math.floor(Math.random() * 100),Math.floor(Math.random() * 100),Math.floor(Math.random() * 100) + 150)])
         }
-      ]
-    })
+      }
+      distracting_apps.sort((a,b) => b[1]-a[1])
+      focused_apps.sort((a,b) => b[1]-a[1])
+      neutral_apps.sort((a,b) => b[1]-a[1])
+      for (var key in focused_apps) {
+        final_data.push(focused_apps[key])
+      }
+      for (var key in distracting_apps) {
+        final_data.push(distracting_apps[key])
+      }
+      for (var key in neutral_apps) {
+        final_data.push(neutral_apps[key])
+      }
+      console.log(final_data)
+      setPieChartData({
+        labels: final_data.map((i) => i[0]), 
+        datasets: [
+          {
+            label: "Time Spent",
+            data: final_data.map((i) => i[1]/60),
+            borderColor: "black",
+            backgroundColor:final_data.map((i) => i[2]),
+            borderWidth: 0
+          }
+        ]
+      })
     var all_lookaway_apps = []
       for (var key in data['distractions']['lookaway_apps']) {
         all_lookaway_apps.push([key,data['distractions']['lookaway_apps'][key]])

@@ -39,7 +39,7 @@ const Navbar = () => {
               <LeaderboardIcon></LeaderboardIcon>Leader boards
             </Button>
             <Button color='info' variant="contained" style={{margin:'1em'}} onClick={() => navigate('/liveFocusMode')}>
-              <StreamIcon></StreamIcon>Live Focus Mode
+              <StreamIcon></StreamIcon>Live Focus
             </Button>
           </NavMenu>
         </Nav>
