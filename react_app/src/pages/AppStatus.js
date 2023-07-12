@@ -64,7 +64,9 @@ const  AppStatus = (props) => {
           'Neutral':[],
           'Focused':[],
         };
+
         Object.keys(data['apps']).forEach((element) => {
+         if(data['time'][0][element] || data['apps'][element]['icon']){ 
           element = {
             'distracting':data['apps'][element]['distracting'],
             'focused':data['apps'][element]['focused'],
@@ -82,6 +84,7 @@ const  AppStatus = (props) => {
             initialAppsTemp['Focused'].push(element);
           } else {
             initialAppsTemp['Neutral'].push(element);
+          }
           }
         });
 
