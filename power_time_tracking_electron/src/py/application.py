@@ -167,7 +167,7 @@ def search_close_and_log_apps():
                 active = False
                 LAST_FEW_SECONDS.pop()
             database_worker.log_current_app(current_app_name,tabname,active,title)
-            print(LAST_FEW_SECONDS)
+            # print(LAST_FEW_SECONDS)
             check_if_server_must_be_updated() 
             # logger.debug(current_app_name)
             if sys.platform != "win32":
@@ -236,10 +236,9 @@ def set_current_workflow(workflow_id):
     logger.debug("Set current workflow to",data[1])
     return True
 
-def add_daily_task(task_name,task_estimate_duration,task_repeating):
+def add_daily_task(task_name,task_estimate_duration):
     info = {
         "estimate_duration":task_estimate_duration,
-        "repeating":task_repeating,
         "ids_of_focus_modes":[],
         "complete":False,
         "time_completed":0,
@@ -272,6 +271,12 @@ def complete_task(task_id):
     data = database_worker.get_task_by_id(task_id)
     info = json.loads(data[2])
     info['complete'] = True
+    database_worker.update_daily_task_info(task_id,json.dumps(info))
+    return True
+def uncomplete_task(task_id):
+    data = database_worker.get_task_by_id(task_id)
+    info = json.loads(data[2])
+    info['complete'] = False
     database_worker.update_daily_task_info(task_id,json.dumps(info))
     return True
 
@@ -362,9 +367,9 @@ def get_all_apps_in_workflow(workflow_id):
 def add_workflow_modification(workflow_id,modification):
     workflow_data = database_worker.get_workflow_by_id(workflow_id)[2]
     data = json.loads(workflow_data)
-    print(type(data))
-    print(data['modifications'])
-    print(modification)
+    # print(type(data))
+    # print(data['modifications'])
+    # print(modification)
     data['modifications'][modification['name']] = modification
     database_worker.update_workflow(workflow_id,data)
     return True
@@ -383,7 +388,20 @@ def get_rings():
     focus_sessions = database_worker.get_all_focus_sessions_for_today()
     tasks_for_today = database_worker.get_todays_tasks()
     total_wanted_time_spent = 0
-
+    tasks_completed = 0
+    for task in tasks_for_today:
+        total_wanted_time_spent += json.loads(task[2])['estimate_duration']
+        if json.loads(task[2])['complete']:
+            tasks_completed += 1
+    total_time_spent = 0
+    for session in focus_sessions:
+        if session[3]:
+            total_time_spent += (database_worker.get_time_from_format(session[3])- database_worker.get_time_from_format(session[1])).total_seconds()/60
+    return {"total_time_spent":total_time_spent,"total_wanted_time_spent":total_wanted_time_spent,"tasks_completed":tasks_completed,"tasks_total":len(tasks_for_today)}
+def check_chrome_extension_installed():
+    if database_worker.get_latest_chrome_url() == "NOT A URL":
+        return False
+    return True
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder

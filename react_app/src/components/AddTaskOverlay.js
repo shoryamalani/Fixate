@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, TextField } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 
 
@@ -59,6 +60,13 @@ const AddTaskOverlay = (props) => {
         fullWidth
         variant="standard"
         />
+        <Grid2 container style={{justifyContent:'center'}} spacing={2}>
+        <Button variant='contained' style={{'margin':'1em'}} onClick={()=>{setFocusModeName("Writing an essay");setDuration(60)}}>Writing an Essay</Button> 
+        <Button variant='contained' style={{'margin':'1em'}} onClick={()=>{setFocusModeName("Studying for a test");setDuration(60)}}>Studying for a test</Button>
+        <Button variant='contained' style={{'margin':'1em'}} onClick={()=>{setFocusModeName("Doing SAT/ACT Prep");setDuration(45)}}>Doing SAT/ACT Prep</Button>
+        <Button variant='contained' style={{'margin':'1em'}} onClick={()=>{setFocusModeName("Reading a Book");setDuration(30)}}>Reading a Book</Button>
+        </Grid2>
+
 
       {
         showTimeRequirements &&
@@ -76,6 +84,12 @@ const AddTaskOverlay = (props) => {
         fullWidth
         variant="standard"
       />
+      <Grid2 container direction='row' style={{justifyContent:'center'}} spacing={2}>
+        <Button style={{'margin':'1em'}} variant='contained' onClick={()=>setDuration(15)}>15</Button>
+        <Button style={{'margin':'1em'}} variant='contained' onClick={()=>setDuration(30)}>30</Button>
+        <Button style={{'margin':'1em'}} variant='contained' onClick={()=>setDuration(45)}>45</Button>
+        <Button style={{'margin':'1em'}} variant='contained' onClick={()=>setDuration(60)}>60</Button>
+    </Grid2>
     </DialogContent>
 
     <DialogActions>

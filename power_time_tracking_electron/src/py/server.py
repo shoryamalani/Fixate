@@ -150,7 +150,11 @@ def stop_showing_task():
 @app.route('/complete_task', methods=['POST'])
 def complete_task():
     return jsonify({"success":logger_application.complete_task(request.json["id"])})
-    
+
+@app.route('/uncomplete_task', methods=['POST'])
+def uncomplete_task():
+    return jsonify({"success":logger_application.uncomplete_task(request.json["id"])})
+
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
     if request.json["type"] == "distracting":
@@ -169,7 +173,7 @@ def stop_focus_mode():
 
 @app.route("/add_daily_task",methods=["POST"])
 def add_daily_task():
-    return jsonify({"success":logger_application.add_daily_task(request.json["name"],request.json["task_estimate_time"],request.json["task_repeating"])})
+    return jsonify({"success":logger_application.add_daily_task(request.json["name"],request.json["task_estimate_time"])})
 
 @app.route("/get_daily_tasks",methods=["GET"])
 def get_daily_tasks():
@@ -230,7 +234,7 @@ def get_friend_data_now():
 @app.route("/dump_chrome_data",methods=["POST"])
 @cross_origin()
 def dump_chrome_url():
-    print(request.json)
+    # print(request.json)
     logger_application.save_chrome_url(request.json["url"])
     return "Success", 200
 
@@ -293,7 +297,11 @@ def set_workflow():
 def get_rings():
     return jsonify({"rings":logger_application.get_rings()})
 
-
+@app.route("/check_chrome_extension_installed",methods=["GET"])
+def check_chrome_extension_installed():
+    if sys.platform == "win32":
+        return jsonify({"status":logger_application.check_chrome_extension_installed()})
+    return jsonify({"status":True})
 
 @app.route('/images')
 def send_images():

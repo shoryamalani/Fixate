@@ -11,7 +11,13 @@ export const appSlice= createSlice({
     filterApps: {},
   },
   reducers: {
-    
+    clearWorkflowData: (state,action) => {
+      state.apps = {};
+      state.currentWorkflow = null;
+      state.workflows = {};
+      state.initialApps = null;
+      state.filterApps = {};
+    }, 
     setApp: (state,action) => {
       console.log('set apps')
       console.log(action.payload)
@@ -49,6 +55,6 @@ export const appSlice= createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setApp,setCertainApp,setAppDistracted,setAppFocused,setAppNeither,setWorkflows,setCurrentWorkflow,setInitialApps,setFilterApps } = appSlice.actions
+export const { setApp,setCertainApp,setAppDistracted,setAppFocused,setAppNeither,setWorkflows,setCurrentWorkflow,setInitialApps,setFilterApps,clearWorkflowData } = appSlice.actions
 
 export default appSlice.reducer

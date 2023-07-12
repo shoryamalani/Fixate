@@ -10,6 +10,7 @@ export const loggerSlice = createSlice({
     },
     whitelist: false,
     workflow: null,
+    showGetChromeExtension: false,
   },
   reducers: {
     setClosingApps: (state,action) => {
@@ -26,12 +27,15 @@ export const loggerSlice = createSlice({
     },
     setWorkflow: (state,action) => {
       state.workflow = action.payload;
-    }
+    },
+    setShowGetChromeExtension: (state,action) => {
+      state.showGetChromeExtension = action.payload;
+    },
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLogging, setClosingApps,setFocusMode,setWhitelist,setWorkflow } = loggerSlice.actions
+export const { setLogging, setClosingApps,setFocusMode,setWhitelist,setWorkflow,setShowGetChromeExtension } = loggerSlice.actions
 
 export default loggerSlice.reducer

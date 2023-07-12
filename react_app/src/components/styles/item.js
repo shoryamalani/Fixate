@@ -171,20 +171,16 @@ function QuoteItem(props) {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      style={{ ...getStyle(provided, style,app.name) ,visibility: checkFilter(app.name) ? 'visible' : 'hidden',height: checkFilter(app.name) ? '100%' : '0%'}}
+      style={{ ...getStyle(provided, style,app.name) ,height: checkFilter(app.name) ? '100%' : '0%'}}
       data-is-dragging={isDragging}
       data-testid={app.name}
       data-index={index}
       aria-label={`${app.name}`}
-    >
-        {app.icon ? 
-            <Avatar sizes={256} src={'http://127.0.0.1:5005/images?path='+app.icon} />
-            : app.type === 'website' ?
-            <Web/>
-            : <Apps/> 
+    >{checkFilter(app.name) ?
+      <>
+        {app.icon ? <Avatar sizes={256} src={'http://127.0.0.1:5005/images?path='+app.icon} />: app.type === 'website' ? <Web/>: <Apps/> }
             
-        }
-      {/* <Avatar /> */}
+        
       <Content>
         {/* <BlockQuote>{quote.content}</BlockQuote> */}
         <h3>{app.name}</h3>
@@ -198,7 +194,9 @@ function QuoteItem(props) {
           </QuoteId>
         </Footer> */}
       </Content>
-
+      </>
+      : <></>
+      }
     </Container>
   );
 }

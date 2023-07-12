@@ -10,7 +10,7 @@ import { blue } from '@mui/material/colors';
 // import { Icon } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { AspectRatio, Refresh } from '@mui/icons-material';
-import { setCurrentTasks } from '../features/TasksSlice';
+import { setCurrentTasks, setOldTasks, setTodaysTasks } from '../features/TasksSlice';
 import SmartTaskList from './SmartTaskList';
 import { color, maxHeight, maxWidth } from '@xstyled/styled-components';
 import { useNavigate } from 'react-router-dom';
@@ -18,8 +18,11 @@ import StartFocusModeOverlay from './StartFocusModeOverlay';
 import AddTaskOverlay from './AddTaskOverlay';
 // import AddIcon from '@mui/icons-material/Add';
 
-const  DailyTasks = () => {
+const  DailyTasks = (props) => {
+    const {showAllTasks} = props;
     const currentTasks = useSelector(state => state.tasks.currentTasks);
+    const todaysTasks = useSelector(state => state.tasks.todaysTasks);
+    const oldTasks = useSelector(state => state.tasks.oldTasks);
     const dispatch = useDispatch()
     const navigate = useNavigate();
     const [overlayOpen, setOverlayOpen] = useState(false);
@@ -29,7 +32,21 @@ const  DailyTasks = () => {
         fetch('http://localhost:5005/get_daily_tasks').then(response => response.json()).then(data => {
             console.log(data)
             data = data['tasks']
+            var tempTodaysTasks = [];
+            var tempOldTasks = 0;
             if (data != null) {
+                for (var task in data) {
+                    var date_created = new Date(data[task]['date_created'])
+                    var date_4am_today = new Date();
+                    date_4am_today.setHours(4,0,0,0);
+                    if (date_created < date_4am_today) {
+                        tempOldTasks += 1;
+                    } else {
+                        tempTodaysTasks.push(data[task])
+                    }
+                }
+                dispatch(setTodaysTasks(tempTodaysTasks));
+                dispatch(setOldTasks(tempOldTasks));
                 dispatch(setCurrentTasks(data));
             }
         }).catch(error => { console.log(error)});
@@ -49,6 +66,23 @@ const  DailyTasks = () => {
     const setCompleted = async (id) => {
         console.log("Set completed for task: " + id)
         fetch('http://localhost:5005/complete_task', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "id": id
+        })
+        }).then(response => response.json()).then(data => {
+            getTaskData();
+        }).catch(error => {
+        console.log(error);
+        alert('Error')
+        });
+    }
+    const setNotCompleted = async (id) => {
+        console.log("Set completed for task: " + id)
+        fetch('http://localhost:5005/uncomplete_task', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -128,20 +162,19 @@ const  DailyTasks = () => {
         if(data.type === 'cancel'){
             return;
         }
-        addTaskBackend(data.name,data.duration,data.type)
+        addTaskBackend(data.name,data.duration)
 
     }
 
-    const addTaskBackend = async (name,duration,type) => {
-        fetch('http://localhost:5005/add_task', {
+    const addTaskBackend = async (name,duration) => {
+        fetch('http://localhost:5005/add_daily_task', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
             },
         body: JSON.stringify({
             "name": name,
-            "duration": duration,
-            "type": type
+            "task_estimate_time": duration,
             })
         }).then(response => response.json()).then(data => {
             console.log(data)
@@ -159,28 +192,32 @@ const  DailyTasks = () => {
         <>
         <StartFocusModeOverlay open={overlayOpen} handleClose={handleStartFocusModeFromOverlay} focusModeData={currentFocusModeData} ></StartFocusModeOverlay>
         <AddTaskOverlay open={showAddFocusOverlay} handleClose={handleAddFocusModeFromOverlay}></AddTaskOverlay>
-        <Stack direction="column" spacing={2} style={css.contrastContent}>
+        <Stack direction="column" spacing={2} >
         
         
 
-        <div style={css.contrastContent}>
-            <Stack direction="column" spacing={2} style={{...css.contrastContent}}>
+        <div >
+            <Stack direction="column" spacing={2}>
             <h2>Todays Tasks</h2>
             <Stack direction='row' spacing={2} style={{justifyContent:'center'}}>
             <Button variant='contained' color='success' style={{maxWidth:'3em'}} > <AddIcon onClick={()=>{setShowAddFocusOverlay(true)}}  color='white'/></Button>
-            <Button variant='contained' color='success' onClick={() => getTaskData()} style={{aspectRatio:1,maxHeight:'2vw',maxWidth:'2vw'} }>
+            <Button variant='contained' color='success' onClick={() => getTaskData()}>
                 <Refresh style={css.refreshIcon}/>
             </Button>
             </Stack>
             <SmartTaskList 
-                tasks={currentTasks}  
+                tasks={showAllTasks ? currentTasks : todaysTasks}  
                 setCompletedFunction={setCompleted}
                 deleteTaskFunction={deleteTask}
                 seeFocusModesFunction={seeFocusModesForFunction}
                 startFocusModeForTaskFunction={startFocusModeForTask}
+                setNotCompletedFunction={setNotCompleted}
                 checkFilterFunction={()=>true} />
+                {!showAllTasks && <Button variant='contained' color='success' onClick={()=>{navigate('/focusModes')}}>See All Tasks</Button>}
+
                 </Stack>
             </div>
+
         </Stack>
             </>
     )

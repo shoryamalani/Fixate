@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 
 const css = {
     h1: {
@@ -58,6 +59,9 @@ const css = {
         // fontFamily: 'Times New Roman',
         fontFamily: 'Manrope',
         // color: '#001011'
+    },
+    button :{
+        margin: '1em',
     }
 
 

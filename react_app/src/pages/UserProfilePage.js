@@ -5,8 +5,10 @@ import css from '../Style';
 const UserProfilePage = () => {
     
     return (
-        <div style={css.contrastContent}>
+        <div style={css.mainContent}>
+            <div style={css.contrastContent}>
         <UserProfileCard></UserProfileCard>
+        </div>
         </div>
     )
 }

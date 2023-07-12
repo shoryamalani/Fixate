@@ -7,11 +7,12 @@ import { CheckBoxIcon } from '@mui/icons-material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckIcon from '@mui/icons-material/Check';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import CloseIcon from '@mui/icons-material/Close';
 import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite';
 const  SmartTaskList = (props) => {
-    const { tasks, seeFocusModesFunction, setCompletedFunction, deleteTaskFunction, startFocusModeForTaskFunction, checkFilterFunction } = props;
+    const { tasks, seeFocusModesFunction,setNotCompletedFunction, setCompletedFunction, deleteTaskFunction, startFocusModeForTaskFunction, checkFilterFunction } = props;
     return (
-        <TableContainer component={Paper} style={{ minWidth: 350, maxWidth:'inherit', maxHeight:'60vh' }}>
+        <TableContainer component={Paper} style={{ maxWidth:'inherit' }}>
         <Table >
         <TableHead>
           <TableRow>
@@ -31,7 +32,7 @@ const  SmartTaskList = (props) => {
           {Object.keys(tasks).map((task) => (
             <TableRow
               key={tasks[task].id}
-              style={{visibility: checkFilterFunction(tasks[task].id) ? 'visible':'collapse'}}
+              style={{visibility: checkFilterFunction(tasks[task].id) ? 'visible':'collapse', backgroundColor: tasks[task]['complete'] ? 'green':'inherit'}}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
@@ -53,9 +54,17 @@ const  SmartTaskList = (props) => {
               <TableCell align="right"><Button variant='contained'  onClick={()=>{seeFocusModesFunction(tasks[task]['ids_of_focus_modes'])}}>See Focus Modes</Button></TableCell>
               {/* <TableCell align="right"><Button variant='contained' onClick={()=>{startFocusModeForTaskFunction(tasks[task]['name'],tasks[task]['id'])}}>Start Focus Mode</Button></TableCell> */}
               <TableCell align="right">
+                {
+                !tasks[task]['complete'] ?
                 <Button variant='contained' color='success' onClick={()=>{setCompletedFunction(tasks[task]['id'])}}>
                     <CheckIcon></CheckIcon>
                 </Button>
+                :
+                <Button variant='contained' color='failure' onClick={()=>{setNotCompletedFunction(tasks[task]['id'])}}>
+                    <CloseIcon></CloseIcon>
+                  </Button>
+
+                }
                 <Button variant='contained' color='failure' onClick={()=>{deleteTaskFunction(tasks[task]['id'])}} >
                     <DeleteIcon></DeleteIcon>
                 </Button>
