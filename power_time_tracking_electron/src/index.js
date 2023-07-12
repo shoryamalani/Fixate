@@ -1,11 +1,13 @@
  //handle setupevents as quickly as possible
  const setupEvents = require('../installers/setupEvents')
+ try{
  require('update-electron-app')({
   repo: 'shoryamalani/Fixate',
   logger: require('electron-log'),
-
-
 })
+ }catch{
+    console.log("update failed");
+ }
  if (setupEvents.handleSquirrelEvent()) {
     // squirrel event handled and app will exit in 1000ms, so don't do anything else
     return;
