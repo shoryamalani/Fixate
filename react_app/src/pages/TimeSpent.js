@@ -6,7 +6,7 @@ import css from '../Style'
 import dayjs from 'dayjs';
 import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
-import {Line, Pie} from 'react-chartjs-2';
+import {Bar, Line, Pie} from 'react-chartjs-2';
 import Chart, { scales } from 'chart.js/auto';
 import 'react-calendar/dist/Calendar.css';
 import { Colors } from 'chart.js/auto';
@@ -15,10 +15,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFocusModes } from '../features/FocusModesSlice';
 import {CircularProgressWithLabel} from '../components/CircularProgressBar';
 import { useLocation, useSearchParams } from 'react-router-dom';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 
 function TimeSpent() {
   const [customDayValue, setCustomDayValue] = React.useState(new Date());
   const [pieChartData, setPieChartData] = React.useState(null);
+  const [barChartData, setBarChartData] = React.useState(null);
   const [lineChartData, setLineChartData] = React.useState(null);
   const location = useLocation();
   console.log(location.state)
@@ -187,6 +189,31 @@ function TimeSpent() {
         }
       ]
     })
+    var all_lookaway_apps = []
+      for (var key in data['distractions']['lookaway_apps']) {
+        all_lookaway_apps.push([key,data['distractions']['lookaway_apps'][key]])
+      }
+    all_lookaway_apps.sort((a,b) => b[1]-a[1])
+      setBarChartData({
+        labels: all_lookaway_apps.map((i) => i[0]).slice(0,5),
+        // labels: Object.keys(data['distractions']['lookaway_apps']).map((i) => i),
+        datasets: [
+          {
+            label: "Apps",
+            data: all_lookaway_apps.map((i) => i[1]).slice(0,5),
+            borderColor: "black",
+            backgroundColor:Object.keys(data['distractions']['lookaway_apps']).map((i) => ('#'+(0x1000000+Math.random()*0xffffff).toString(16).substr(1,6)).toUpperCase()),
+            borderWidth: 0
+          }
+        ],
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      })
     setLineChartData({
       labels: Object.keys(data['distractions']['distracted_percentage_over_time']).map((i) => i),
       datasets: [
@@ -320,14 +347,15 @@ function TimeSpent() {
       textAlign: 'center',
       justify:'center',
       alignSelf:'center',
-      maxWidth:'100vw'}}>
+      maxWidth:'100vw'
+      }}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
       <h1 style={css.h1}>Time Spent</h1>
       <Stack direction='row'>
       <Stack direction='column' spacing={1} style={{minWidth:'30%'}}>
-      <div style={{...css.contrastContent,maxHeight:'8em'}}>
-    <Stack direction="row" spacing={1} style={{maxWidth:'100%'}}>
+      <div style={{...css.contrastContent,flex:0,height:'fit-content',display:'table'}}>
+    <Grid2 direction="row" spacing={2}>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_30_minutes")}} >Last 30 minutes</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
@@ -335,7 +363,7 @@ function TimeSpent() {
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
       <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
-    </Stack>
+    </Grid2>
     </div>
     <div style={{backgroundColor:'black',borderRadius:'2em'}}>
         <div style={css.contrastContent}>
@@ -375,10 +403,10 @@ function TimeSpent() {
 
 </Stack>
     
-      <div style={{...css.contrastContent,height: '100%'}}>
+      <div style={{...css.contrastContent,flex:0}}>
         <Stack direction="column" spacing={1}  >
         {lineChartData &&
-        <div style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', aspectRatio:1}} >
+        <div style={{...css.contrastContent,margin: '0em',flex:0,padding:0,minWidth:'30%', aspectRatio:1}} >
         <Line data={lineChartData}
         options={{
           plugins: {
@@ -391,8 +419,22 @@ function TimeSpent() {
         }} />
         </div>
         }
-      <h1 style={css.h1}>Old Focus Modes</h1>
-      <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'50vw' }}>
+        {barChartData &&
+        <div style={{...css.contrastContent,margin: '0em',flex:0,padding:0,minWidth:'30%', aspectRatio:1}} >
+        <Bar data={barChartData}
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: "Top 5 Distractions",
+            }
+          }
+        }} />
+        </div>
+        }
+
+      <h1 >Old Focus Modes</h1>
+      <TableContainer component={Paper} style={{ minWidth: 650,maxHeight:'50vw' }}>
         <Table >
         <TableHead>
           <TableRow>

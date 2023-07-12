@@ -125,6 +125,11 @@ def proper_time_parse(data,distractions=[],focused_apps=[]): # this should now b
     distractions_total = 0
     longest_time_without_distraction = 0
     distractions_time = 0
+    lookaways = 0
+    lookaway_apps = {
+
+    }
+    previous = None
     for hour in all_stitched_data:
         for datum in hour['data']:
             url_or_app = datum[0]
@@ -144,6 +149,12 @@ def proper_time_parse(data,distractions=[],focused_apps=[]): # this should now b
             if url_or_app in distractions:
                 if datum[1] > longest_time_without_distraction:
                     longest_time_without_distraction = datum[1]
+                if previous not in distractions:
+                    lookaways += 1
+                    if url_or_app in lookaway_apps:
+                        lookaway_apps[url_or_app] += 1
+                    else:
+                        lookaway_apps[url_or_app] = 1
                 distractions_total += 1
                 distractions_time += datum[1]
                 distracted_percentage_over_time[entry]["distractions"] += 1
@@ -152,8 +163,9 @@ def proper_time_parse(data,distractions=[],focused_apps=[]): # this should now b
                 distracted_percentage_over_time[entry]["neutral_time"] += datum[1]
             elif url_or_app in focused_apps:
                 distracted_percentage_over_time[entry]["focused"] += datum[1]
+            previous = url_or_app
             time += datum[1]
-    return all_times,{"total_time_spent":time,"distractions_number":distractions_total,"distractions_per_minute":(time/distractions_total if distractions_total > 0 else 0)/60,"longest_time_without_distraction_min":longest_time_without_distraction/60,"distractions_time_total":distractions_time/60,"distracted_percentage_over_time":distracted_percentage_over_time}
+    return all_times,{"total_time_spent":time,"distractions_number":distractions_total,"distractions_per_minute":(time/distractions_total if distractions_total > 0 else 0)/60,"longest_time_without_distraction_min":longest_time_without_distraction/60,"distractions_time_total":distractions_time/60,"distracted_percentage_over_time":distracted_percentage_over_time,"lookaways":lookaways,"lookaway_apps":lookaway_apps}
                 
 def get_all_time():
     data = database_worker.get_all_time_logs()

@@ -15,6 +15,7 @@ import Droppable from '../components/DroppableColumn';
 import { ThemeProvider } from 'styled-components';
 import CssBaseline from '@mui/material/CssBaseline';
 import Board from '../components/dnd-status-board/Board';
+import { Refresh } from '@mui/icons-material';
 
 const  AppStatus = (props) => {
   // const [allApps, setAllApps] = useState(null);
@@ -188,6 +189,7 @@ const  AppStatus = (props) => {
       <h1 style={css.h1}>App Status</h1>
   <div style={css.contrastContent}>
     <Stack direction="row" spacing={3}>
+    <Button variant="contained" color='success' onClick={() => { window.location.reload() }}><Refresh></Refresh></Button>
       <TextField   label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select

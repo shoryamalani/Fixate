@@ -144,7 +144,7 @@ def update_to_database_version_1_6():
     current_url_table = create_table_command("current_url",[["id","INTEGER PRIMARY KEY"],["time","DATETIME"],["url","text"]])
     c.execute(current_url_table)
     conn.commit()
-    insert_current_url = make_write_to_db([(["1",get_time_in_format(),""])] ,"current_url",["id","time","url"])
+    insert_current_url = make_write_to_db([(["1",get_time_in_format(),"NOT A URL"])] ,"current_url",["id","time","url"])
     c.execute(insert_current_url)
     create_user_table = create_table_command("user",[["id","INTEGER PRIMARY KEY"],["name","text"],["data","json"]])
     c.execute(create_user_table)
@@ -924,7 +924,12 @@ def get_all_focus_sessions_for_today():
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("SELECT * FROM focus_sessions WHERE time >= date('now', '-1 days') AND time <  date('now')")
+    time = datetime.datetime.now()
+    time = time.replace(hour=4,minute=0,second=0)
+    if datetime.datetime.now() < time:
+        time = time - datetime.timedelta(days=1)
+    c.execute(f"SELECT * FROM focus_sessions WHERE time >= '{time.strftime(get_time_format())}'")
+    # c.execute(f"SELECT * FROM focus_sessions WHERE time  >= strftime('%Y-%m-%d 04:00:00','now')")
     data = c.fetchall()
     conn.close()
     return data
@@ -935,7 +940,11 @@ def get_todays_tasks():
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("SELECT * FROM tasks WHERE day >= date('now', '-1 days') AND day <  date('now')")
+    time = datetime.datetime.now()
+    time = time.replace(hour=4,minute=0,second=0)
+    if datetime.datetime.now() < time:
+        time = time - datetime.timedelta(days=1)
+    c.execute(f"SELECT * FROM tasks WHERE day >= '{time.strftime(get_time_format())}' AND active = 1")
     data = c.fetchall()
     conn.close()
     return data

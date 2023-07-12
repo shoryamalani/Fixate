@@ -38,7 +38,7 @@ class windowsOperatingSystemDataGrabber:
             if windows_exe != windows_exe.lower():
                 self.app_name = " ".join(re.findall("([A-Z][^A-Z]*)", windows_exe))
             else:
-                self.app_name = windows_exe
+                self.app_name = windows_exe.capitalize()
             
         self.url = ""
         
