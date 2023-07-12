@@ -186,10 +186,11 @@ def parse_for_display(times):
 
 def get_time_from_focus_session_id(id):
     data = database_worker.get_focus_session_by_id(id)
+    focused_apps = json.loads(data[5])['focused_apps'] if 'focused_apps' in json.loads(data[5]) else [] 
     start_time = database_worker.get_time_from_format(data[1])
     end_time = database_worker.get_time_from_format(data[3]) if data[3] else database_worker.get_time_from_format(data[1]) + datetime.timedelta(minutes=data[2])
     times,distractions,name = get_time('custom',start_time,end_time)
-    return times,data[4],data[5] if data[5] else f"Focus Session {id}",distractions
+    return times,data[4],data[5] if data[5] else f"Focus Session {id}",distractions,focused_apps
     # logs = smart_get_time(start_time,end_time)
     # times,distractions= proper_time_parse(logs,data[4])
     # return times,data[4], data[5] if data[5] else f"Focus Session {id}",distractions
