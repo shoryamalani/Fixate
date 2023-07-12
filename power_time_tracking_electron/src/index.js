@@ -1,7 +1,7 @@
  //handle setupevents as quickly as possible
  const log = require('electron-log');
  try{
- const setupEvents = require('../installers/setupEvents')
+//  const setupEvents = require('../installers/setupEvents')
  try{
    require('update-electron-app')({
      repo: 'shoryamalani/Fixate',
@@ -10,10 +10,10 @@
   }catch{
     log.debug("Could not update app");
   }
-  if (setupEvents.handleSquirrelEvent()) {
-    // squirrel event handled and app will exit in 1000ms, so don't do anything else
-    return;
-  }
+  // if (setupEvents.handleSquirrelEvent()) {
+  //   // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  //   return;
+  // }
 }
 catch{
   log.debug("Could not handle squirrel event");
@@ -188,23 +188,24 @@ function copyToStartup() {
   }
   log.debug(source);
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat");
-  fs.copyFileSync(source, target).catch
-  (err => {
-    console.error(err)
-    log.debug(err);
-    return
+  fs.copyFileSync(source, target,(err) => {
+    if (err) {
+      log.debug(err)
+      return
+    }
+    const child_process = require("child_process");
+    const bat = child_process.spawn("cmd.exe", ["/c", path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat")], {
+      detached: true,
+      stdio: "ignore",
+    });
+    bat.unref();
   });
 }
 
 
 function runServer() {
   // run windows batch file
-  const child_process = require("child_process");
-  const bat = child_process.spawn("cmd.exe", ["/c", path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat")], {
-    detached: true,
-    stdio: "ignore",
-  });
-  bat.unref();
+  
 }
 
 function killServer(){
@@ -302,7 +303,7 @@ function createWindow() {
         deleteServer();
         killServer();
       copyToStartup();
-      runServer();
+      // runServer();
       }
     }
     if (process.platform == 'darwin'){
