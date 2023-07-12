@@ -35,7 +35,8 @@ var VERSION = app.getVersion();
 const util = require("util");
 // const execFile = util.promisify(child_process.execFile);
 const fetch = require('node-fetch');
-const { resourcesPath } = require('electron-util');
+// import resourcesPath
+const resourcesPath = app.isPackaged ? process.resourcesPath : __dirname;
 // const fs = require("fs");
 // const { Server } = require('http');
 // const { time } = require('console');
