@@ -188,7 +188,7 @@ function copyToStartup() {
   }
   log.debug(source);
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat");
-  fs.copyFileSync(source, target,(err) => {
+  fs.copyFile(source, target,(err) => {
     if (err) {
       log.debug(err)
       return
@@ -325,7 +325,7 @@ function deleteServer(){
   )
 }
 function getServerVersion(){
-  fetch('http://127.0.0.1:5005/get_version')
+  return fetch('http://127.0.0.1:5005/get_version')
   .then(response => response.json())
   .then(data => {
     console.log(data.version);
@@ -334,6 +334,7 @@ function getServerVersion(){
     // console.log(err);
     return '';
   });
+  
 }
 
 app.whenReady().then(createWindow);
