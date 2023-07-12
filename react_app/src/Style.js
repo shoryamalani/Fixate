@@ -51,7 +51,7 @@ const css = {
         // center content
         justifyContent: 'center',
         display: 'flex',
-        padding: '2em',
+        padding: '1.5em',
         margin: '1em',
         borderRadius: '3em',
         color: 'white',

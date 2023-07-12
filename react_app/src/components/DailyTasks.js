@@ -17,6 +17,89 @@ import { useNavigate } from 'react-router-dom';
 import StartFocusModeOverlay from './StartFocusModeOverlay';
 import AddTaskOverlay from './AddTaskOverlay';
 // import AddIcon from '@mui/icons-material/Add';
+var _DATE_FORMAT_REGXES = {
+    'Y': new RegExp('^-?[0-9]+'),
+    'd': new RegExp('^[0-9]{1,2}'),
+    'm': new RegExp('^[0-9]{1,2}'),
+    'H': new RegExp('^[0-9]{1,2}'),
+    'M': new RegExp('^[0-9]{1,2}'),
+    'S': new RegExp('^[0-9]{1,2}'), 
+}
+
+/*
+ * _parseData does the actual parsing job needed by `strptime`
+ */
+function _parseDate(datestring, format) {
+    var parsed = {};
+    for (var i1=0,i2=0;i1<format.length;i1++,i2++) {
+    var c1 = format[i1];
+    var c2 = datestring[i2];
+    if (c1 == '%') {
+        c1 = format[++i1];
+        var data = _DATE_FORMAT_REGXES[c1].exec(datestring.substring(i2));
+        if (!data.length) {
+            return null;
+        }
+        data = data[0];
+        i2 += data.length-1;
+        var value = parseInt(data, 10);
+        if (isNaN(value)) {
+            return null;
+        }
+        parsed[c1] = value;
+        continue;
+    }
+    if (c1 != c2) {
+        return null;
+    }
+    }
+    return parsed;
+}
+
+/*
+ * basic implementation of strptime. The only recognized formats
+ * defined in _DATE_FORMAT_REGEXES (i.e. %Y, %d, %m, %H, %M)
+ */
+function strptime(datestring, format) {
+    var parsed = _parseDate(datestring, format);
+    if (!parsed) {
+    return null;
+    }
+    // create initial date (!!! year=0 means 1900 !!!)
+    var date = new Date(0, 0, 1, 0, 0);
+    date.setFullYear(0); // reset to year 0
+    if (parsed.Y) {
+    date.setFullYear(parsed.Y);
+    }
+    if (parsed.m) {
+    if (parsed.m < 1 || parsed.m > 12) {
+        return null;
+    }
+    // !!! month indexes start at 0 in javascript !!!
+    date.setMonth(parsed.m - 1);
+    }
+    if (parsed.d) {
+    if (parsed.m < 1 || parsed.m > 31) {
+        return null;
+    }
+    date.setDate(parsed.d);
+    }
+    if (parsed.H) {
+    if (parsed.H < 0 || parsed.H > 23) {
+        return null;
+    }
+    date.setHours(parsed.H);
+    }
+    if (parsed.M) {
+    if (parsed.M < 0 || parsed.M > 59) {
+        return null;
+    }
+    date.setMinutes(parsed.M);
+    }
+    return date;
+
+}
+
 
 const  DailyTasks = (props) => {
     const {showAllTasks} = props;
@@ -36,13 +119,22 @@ const  DailyTasks = (props) => {
             var tempOldTasks = 0;
             if (data != null) {
                 for (var task in data) {
-                    var date_created = new Date(data[task]['date_created'])
+                    console.log(data[task]['date_created'])
+                    var date_created = strptime(data[task]['date_created'], '%Y-%m-%d %H:%M:%S')
+                    // var date_created = Date.parse(data[task]['date_created'])
+                    // var date_4am_today = new Date();
                     var date_4am_today = new Date();
-                    date_4am_today.setHours(4,0,0,0);
+                    if (date_4am_today.getHours() < 4) {
+                        date_4am_today.setDate(date_4am_today.getDate() - 1);
+                    }
+                    console.log(date_4am_today.getTime())
+                    date_4am_today.setHours(4, 0, 0, 0);
+                    console.log(date_4am_today.getTime())
                     if (date_created < date_4am_today) {
                         tempOldTasks += 1;
                     } else {
                         tempTodaysTasks.push(data[task])
+                        console.log(date_created)
                     }
                 }
                 dispatch(setTodaysTasks(tempTodaysTasks));
@@ -193,18 +285,18 @@ const  DailyTasks = (props) => {
         <StartFocusModeOverlay open={overlayOpen} handleClose={handleStartFocusModeFromOverlay} focusModeData={currentFocusModeData} ></StartFocusModeOverlay>
         <AddTaskOverlay open={showAddFocusOverlay} handleClose={handleAddFocusModeFromOverlay}></AddTaskOverlay>
         <Stack direction="column" spacing={2} >
-        
-        
-
         <div >
             <Stack direction="column" spacing={2}>
-            <h2>Todays Tasks</h2>
+
+
             <Stack direction='row' spacing={2} style={{justifyContent:'center'}}>
-            <Button variant='contained' color='success' style={{maxWidth:'3em'}} > <AddIcon onClick={()=>{setShowAddFocusOverlay(true)}}  color='white'/></Button>
-            <Button variant='contained' color='success' onClick={() => getTaskData()}>
-                <Refresh style={css.refreshIcon}/>
-            </Button>
+            <h2>Todays Tasks</h2>
+            <Button variant='contained' color='success' style={{aspectRatio:1,height:'4vw',width:'2vw'}} onClick={()=>{setShowAddFocusOverlay(true)}} > <AddIcon  style={{aspectRatio:1}} color='white'/></Button>
             </Stack>
+            
+            {/* <Button variant='contained' color='success' onClick={() => getTaskData()}>
+                <Refresh style={css.refreshIcon}/>
+            </Button> */}
             <SmartTaskList 
                 tasks={showAllTasks ? currentTasks : todaysTasks}  
                 setCompletedFunction={setCompleted}

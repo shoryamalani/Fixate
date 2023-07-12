@@ -23,19 +23,20 @@ import { easeQuadInOut } from 'd3-ease';
 import  AnimatedProgressProvider  from './AnimatedProgressProvider';
 import { ConfigProvider, Progress } from 'antd';
 const  ProgressOrbits = () => {
-    const [ringsData, setRingsData] = useState(null);
-    const getRingData = async () => {
-        fetch('http://localhost:5005/get_ring_data').then(response => response.json()).then(data => {
-            console.log(data)
-            data = data['rings']
-            setRingsData(data);
-        }).catch(error => { console.log(error)});
-    }
-    useEffect(() => {
-        if (ringsData == null) {
-            getRingData();
-        }
-    }, [ringsData])
+    // const [ringsData, setRingsData] = useState(null);
+    const ringsData = useSelector(state => state.logger.ringsData);
+    // const getRingData = async () => {
+    //     fetch('http://localhost:5005/get_ring_data').then(response => response.json()).then(data => {
+    //         console.log(data)
+    //         data = data['rings']
+    //         setRingsData(data);
+    //     }).catch(error => { console.log(error)});
+    // }
+    // useEffect(() => {
+    //     if (ringsData == null) {
+    //         getRingData();
+    //     }
+    // }, [ringsData])
 
     const colors = {
         'focused_minutes': ['#FFFEED', '#CAE2E8'],
@@ -101,16 +102,14 @@ const  ProgressOrbits = () => {
         <>
        { ringsData != null ?
        <Stack direction='column' spacing={1}>
-        <Button variant='contained' color='success' onClick={() => getRingData()}>
+        {/* <Button variant='contained' color='success' onClick={() => getRingData()}>
                 <Refresh style={css.refreshIcon}/>
-            </Button>
-        <Stack direction='row' spacing={1} style={{justifyContent:'center',textAlign:'right'}}>
+            </Button> */}
+        <Stack direction='row' spacing={1} style={{justifyContent:'center',textAlign:'center'}}>
         {createRing({value:100*ringsData['tasks_total']/3, label : 'Planning', rgb:colors['writing_tasks'], color_1:colors['writing_tasks'][0], color_2:colors['writing_tasks'][1]})}
-        </Stack>
-        <Stack direction='row' spacing={1}>
             {createRing({value:ringsData['total_wanted_time_spent'] != 0 ? 125*ringsData['total_time_spent']/ringsData['total_wanted_time_spent'] :100*ringsData['total_time_spent']/30 , label : 'Focus', color_1:colors['focused_minutes'][0], color_2:colors['focused_minutes'][1]})}
-            {createRing({value:100*ringsData['tasks_completed']/(ringsData['tasks_total']-1), label : 'Tasks', color_1:colors['completed_tasks'][0] , color_2:colors['completed_tasks'][1]})}
-            </Stack>
+            {createRing({value:100*ringsData['tasks_completed']/(ringsData['tasks_total']-1 > 0 ? ringsData['tasks_total']-1: 1), label : 'Tasks', color_1:colors['completed_tasks'][0] , color_2:colors['completed_tasks'][1]})}
+        </Stack>
         </Stack>
         : 
         <CircularProgress />
