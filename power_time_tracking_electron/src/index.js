@@ -31,7 +31,8 @@ const fetch = require('node-fetch');
 // const { Server } = require('http');
 // const { time } = require('console');
 // const { start } = require('repl');
-const { Menu, Tray } = require('electron')
+const { Menu, Tray } = require('electron');
+const log = require('electron-log');
 
 
 
@@ -177,8 +178,14 @@ function copyToStartup() {
   }else{
     source = path.join(__dirname,"..", "installers", "run-server.bat");
   }
+  log.debug(source);
   const target = path.join(process.env.APPDATA, "Microsoft", "Windows", "Start Menu", "Programs", "Startup","run-server.bat");
-  fs.copyFileSync(source, target);
+  fs.copyFileSync(source, target).catch
+  (err => {
+    console.error(err)
+    log.debug(err);
+    return
+  });
 }
 
 
