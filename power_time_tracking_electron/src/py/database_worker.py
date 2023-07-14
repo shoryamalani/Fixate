@@ -268,6 +268,46 @@ def update_to_database_version_1_13():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_14():
+    """
+    Updates the database to version 1.14
+    """
+    # delete everything in memoized_data
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM memoized_data")
+    c.execute("UPDATE database_and_application_version SET database_version = '1.14' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_15():
+    """
+    Updates the database to version 1.15
+    """
+    # add a table for all icons
+    conn = connect_to_db()
+    c = conn.cursor()
+    improvements_table = create_table_command("improvements",[["id","INTEGER PRIMARY KEY"],["name","text"],["data","json"]])
+    c.execute(improvements_table)
+    insert_improvements_daily = make_write_to_db([(["1","daily",json.dumps({})])],"improvements",["id","name","data"])
+    insert_improvements_weekly = make_write_to_db([(["2","weekly",json.dumps({})])],"improvements",["id","name","data"])
+    insert_improvements_monthly = make_write_to_db([(["3","monthly",json.dumps({})])],"improvements",["id","name","data"])
+    c.execute(insert_improvements_daily)
+    c.execute(insert_improvements_weekly)
+    c.execute(insert_improvements_monthly)
+    insert_server_update_times = make_write_to_db([(["6","improvements_daily",get_time_in_format(),3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(insert_server_update_times)
+    insert_server_update_times = make_write_to_db([(["7","improvements_weekly",get_time_in_format(),24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(insert_server_update_times)
+    insert_server_update_times = make_write_to_db([(["8","improvements_monthly",get_time_in_format(),7*24*3600,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(insert_server_update_times)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.15' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+
+
+
 
 def make_data_from_default_distraction_list(current_distractions={}):
     import distracting_apps
@@ -948,3 +988,28 @@ def get_todays_tasks():
     data = c.fetchall()
     conn.close()
     return data
+
+def set_improvements_cache(time,data):
+    """
+    Sets the improvements cache
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    print(data)
+    c.execute("UPDATE improvements SET data = ? WHERE name = ?",[json.dumps(data),time])
+    conn.commit()
+    conn.close()
+
+def get_improvement_data():
+    """
+    Gets the improvements cache
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM improvements")
+    data = c.fetchall()
+    conn.close()
+    if data is None:
+        return None
+    else:
+        return [json.loads(d[2]) for d in data]

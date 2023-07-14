@@ -111,7 +111,7 @@ def proper_time_parse(data,distractions=[],focused_apps=[]): # this should now b
         if not h_data['compressed']:
             h_data['data'] = compress_to_time_chunks(h_data['data'])
             h_data['compressed'] = True
-            if parse_time(hour) + datetime.timedelta(minutes=60) < parse_time(data['metadata']['end_time']) and parse_time(hour) + datetime.timedelta(minutes=60) < datetime.datetime.now():
+            if parse_time(hour) + datetime.timedelta(minutes=60) < parse_time(data['metadata']['end_time']) and parse_time(hour) > parse_time(data['metadata']['start_time']) and parse_time(hour) + datetime.timedelta(minutes=60) < datetime.datetime.now():
                 end_time = parse_time(hour) + datetime.timedelta(hours=1)
                 database_worker.add_memoized_hour(hour,encode_time(end_time),h_data['data'])
         all_stitched_data.append({"hour":hour, "data":h_data['data']})
@@ -186,7 +186,7 @@ def parse_for_display(times):
 
 def get_time_from_focus_session_id(id):
     data = database_worker.get_focus_session_by_id(id)
-    focused_apps = json.loads(data[5])['focused_apps'] if 'focused_apps' in json.loads(data[5]) else [] 
+    focused_apps = json.loads(data[6])['focused_apps'] if 'focused_apps' in json.loads(data[6]) else [] 
     start_time = database_worker.get_time_from_format(data[1])
     end_time = database_worker.get_time_from_format(data[3]) if data[3] else database_worker.get_time_from_format(data[1]) + datetime.timedelta(minutes=data[2])
     times,distractions,name = get_time('custom',start_time,end_time)
@@ -206,7 +206,7 @@ def get_time(time_period,start_time=None,end_time=None,name=None):
         data = smart_get_time(morning,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "Today"
     elif time_period == "yesterday":
-        end_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=23,minute=59,second=59)-datetime.timedelta(days=1),full_time_format)
+        end_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0),full_time_format)
         start_of_yesterday = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=1),full_time_format)
         data = smart_get_time(start_of_yesterday,end_of_yesterday)
         name = "Yesterday"
@@ -214,6 +214,11 @@ def get_time(time_period,start_time=None,end_time=None,name=None):
         start_of_week = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=7),full_time_format)
         data = smart_get_time(start_of_week,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "This Week"
+    elif time_period == "last_week":
+        start_of_last_week = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=14),full_time_format)
+        end_of_last_week = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=7),full_time_format)
+        data = smart_get_time(start_of_last_week,end_of_last_week)
+        name = "Last Week"
     elif time_period == "last_five_hours":
         start_of_last_five_hours = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(hours=5),full_time_format)
         data = smart_get_time(start_of_last_five_hours,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
@@ -226,10 +231,15 @@ def get_time(time_period,start_time=None,end_time=None,name=None):
         start_of_last_30_minutes = datetime.datetime.strftime(datetime.datetime.now()-datetime.timedelta(minutes=30),full_time_format)
         data = smart_get_time(start_of_last_30_minutes,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "Last 30 Minutes"
-    elif time_period == "last_month":
+    elif time_period == "last_month": # INCORRECT JUST FOR COMPATIBILITY
         start_of_last_month = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=30),full_time_format)
         data = smart_get_time(start_of_last_month,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
         name = "Last Month"
+    elif time_period == "previous_month":
+        two_months_ago = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=60),full_time_format)
+        start_of_last_month = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=30),full_time_format)
+        data = smart_get_time(two_months_ago,start_of_last_month)
+        name = "Previous Month"
     elif time_period == "this_month":
         start_of_this_month = datetime.datetime.strftime(datetime.datetime.now().replace(hour=0,minute=0,second=0,microsecond=0)-datetime.timedelta(days=30),full_time_format)
         data = smart_get_time(start_of_this_month,datetime.datetime.strftime(datetime.datetime.now(),full_time_format))
@@ -368,7 +378,7 @@ def main():
     # #     if log[3] == 0:
     # #         print(log)
     # return parse_data(data)
-    print(get_time("all_time"))
+    print(get_time("today"))
 
 if __name__ == "__main__":
     print(main())

@@ -76,25 +76,23 @@ function FocusModes() {
     setName(dataForStartFocusMode['name'])
     startFocusMode(duration,dataForStartFocusMode['name'],dataForStartFocusMode['taskId'])
   };
-  useEffect(() => {
     
-    // add no-cors to the fetch request
-    const get_all_apps = async () => {
-      const response = await fetch('http://localhost:5005/get_daily_tasks').then(
-        response => response.json()
-      ).then(data => {
-        console.log(data['tasks'])
-      dispatch(setCurrentTasks(data['tasks']));
-      }
-      ).catch(error => {
-        console.log(error)
-        return null;
-      });
-
+  const get_all_apps = async () => {
+    const response = await fetch('http://localhost:5005/get_daily_tasks').then(
+      response => response.json()
+    ).then(data => {
+      console.log(data['tasks'])
+    dispatch(setCurrentTasks(data['tasks']));
     }
-    get_all_apps()
+    ).catch(error => {
+      console.log(error)
+      return null;
+    });
 
-  },[dispatch])
+  }
+  useEffect(() => {
+    get_all_apps()
+  }, [])
   useEffect(() => {
     console.log(name)
     console.log(duration)
@@ -215,7 +213,8 @@ function FocusModes() {
       })
     }).then(response => response.json()).then(data => {
       alert('Added')
-      window.location.reload();
+      get_all_apps()
+      // window.location.reload();
     }).catch(error => {
       console.log(error);
       alert('Error')

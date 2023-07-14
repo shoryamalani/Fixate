@@ -1,18 +1,34 @@
 {
   "logFormatVersion": 1,
-  "jobId": "ad92d074-404d-4f7f-9f97-d7b39568cdb7",
+  "jobId": "15f4f55e-ebb9-4409-9815-40f6fefc5165",
   "status": "Invalid",
   "statusSummary": "Archive contains critical validation errors",
   "statusCode": 4000,
-  "archiveFilename": "Fixate-x64-0.9.10.pkg",
-  "uploadDate": "2023-07-08T03:42:36.672Z",
-  "sha256": "a9374db9d06962089dfba7d7e1463365347ae1ee63d08002eae707779c28cda7",
+  "archiveFilename": "Fixate-arm64-0.9.11.pkg",
+  "uploadDate": "2023-07-12T20:46:20.278Z",
+  "sha256": "c29520aa865cd11c6578bdb0290e18cefaf9f486f28b4686bfc605a47e1f8133",
   "ticketContents": null,
   "issues": [
     {
       "severity": "error",
       "code": null,
-      "path": "Fixate-x64-0.9.10.pkg/Fixate-x64-0.9.10.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/node_modules/@ffmpeg-installer/darwin-arm64/ffmpeg",
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_inlines.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_inlines.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_inlines.cpython-39-darwin.so",
       "message": "The binary is not signed with a valid Developer ID certificate.",
       "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
       "architecture": "arm64"
@@ -20,7 +36,7 @@
     {
       "severity": "error",
       "code": null,
-      "path": "Fixate-x64-0.9.10.pkg/Fixate-x64-0.9.10.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/node_modules/@ffmpeg-installer/darwin-arm64/ffmpeg",
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_inlines.cpython-39-darwin.so",
       "message": "The signature does not include a secure timestamp.",
       "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
       "architecture": "arm64"
@@ -28,9 +44,2401 @@
     {
       "severity": "error",
       "code": null,
-      "path": "Fixate-x64-0.9.10.pkg/Fixate-x64-0.9.10.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/app/node_modules/@ffmpeg-installer/darwin-arm64/ffmpeg",
-      "message": "The executable does not have the hardened runtime enabled.",
-      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087724",
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_Foundation.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_Foundation.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_Foundation.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Foundation/_Foundation.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IMServicePlugIn/_IMServicePlugIn.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IMServicePlugIn/_IMServicePlugIn.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IMServicePlugIn/_IMServicePlugIn.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IMServicePlugIn/_IMServicePlugIn.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreData/_CoreData.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreData/_CoreData.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreData/_CoreData.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreData/_CoreData.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Vision/_Vision.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Vision/_Vision.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Vision/_Vision.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Vision/_Vision.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_AVFoundation.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_AVFoundation.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_AVFoundation.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_AVFoundation.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_inlines.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_inlines.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVFoundation/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ScreenCaptureKit/_ScreenCaptureKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ScreenCaptureKit/_ScreenCaptureKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ScreenCaptureKit/_ScreenCaptureKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ScreenCaptureKit/_ScreenCaptureKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/regex/_regex.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/regex/_regex.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MediaToolbox/_MediaToolbox.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MediaToolbox/_MediaToolbox.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MediaToolbox/_MediaToolbox.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MediaToolbox/_MediaToolbox.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CryptoTokenKit/_CryptoTokenKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CryptoTokenKit/_CryptoTokenKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CryptoTokenKit/_CryptoTokenKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CryptoTokenKit/_CryptoTokenKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IntentsUI/_IntentsUI.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IntentsUI/_IntentsUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IntentsUI/_IntentsUI.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/IntentsUI/_IntentsUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Speech/_Speech.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Speech/_Speech.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Speech/_Speech.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Speech/_Speech.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreText/_manual.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreText/_manual.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreText/_manual.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreText/_manual.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingft.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingft.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingmath.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingmath.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingtk.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingtk.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingmorph.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingmorph.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingcms.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imagingcms.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_webp.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_webp.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imaging.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PIL/_imaging.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameplayKit/_GameplayKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameplayKit/_GameplayKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameplayKit/_GameplayKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameplayKit/_GameplayKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreML/_CoreML.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreML/_CoreML.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreML/_CoreML.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreML/_CoreML.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetricKit/_MetricKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetricKit/_MetricKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetricKit/_MetricKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetricKit/_MetricKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SpriteKit/_SpriteKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SpriteKit/_SpriteKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SpriteKit/_SpriteKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SpriteKit/_SpriteKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_inlines.cpython-38-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_inlines.cpython-38-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_inlines.cpython-38-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_inlines.cpython-38-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_MapKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_MapKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_MapKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MapKit/_MapKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ContactsUI/_ContactsUI.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ContactsUI/_ContactsUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ContactsUI/_ContactsUI.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ContactsUI/_ContactsUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_CoreMIDI.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_CoreMIDI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_CoreMIDI.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_CoreMIDI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_inlines.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_inlines.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMIDI/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameController/_GameController.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameController/_GameController.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameController/_GameController.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/GameController/_GameController.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMediaIO/_CoreMediaIO.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMediaIO/_CoreMediaIO.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMediaIO/_CoreMediaIO.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMediaIO/_CoreMediaIO.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/NotificationCenter/_NotificationCenter.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/NotificationCenter/_NotificationCenter.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/NotificationCenter/_NotificationCenter.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/NotificationCenter/_NotificationCenter.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ReplayKit/_ReplayKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ReplayKit/_ReplayKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ReplayKit/_ReplayKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ReplayKit/_ReplayKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ShazamKit/_ShazamKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ShazamKit/_ShazamKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ShazamKit/_ShazamKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ShazamKit/_ShazamKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMedia/_CoreMedia.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMedia/_CoreMedia.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMedia/_CoreMedia.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreMedia/_CoreMedia.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ExternalAccessory/_ExternalAccessory.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ExternalAccessory/_ExternalAccessory.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ExternalAccessory/_ExternalAccessory.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ExternalAccessory/_ExternalAccessory.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVKit/_AVKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVKit/_AVKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVKit/_AVKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AVKit/_AVKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ClassKit/_ClassKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ClassKit/_ClassKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ClassKit/_ClassKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ClassKit/_ClassKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreLocation/_CoreLocation.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreLocation/_CoreLocation.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreLocation/_CoreLocation.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreLocation/_CoreLocation.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FileProvider/_FileProvider.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FileProvider/_FileProvider.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FileProvider/_FileProvider.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FileProvider/_FileProvider.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/OSLog/_OSLog.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/OSLog/_OSLog.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/OSLog/_OSLog.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/OSLog/_OSLog.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreSpotlight/_CoreSpotlight.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreSpotlight/_CoreSpotlight.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreSpotlight/_CoreSpotlight.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreSpotlight/_CoreSpotlight.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AddressBook/_AddressBook.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AddressBook/_AddressBook.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AddressBook/_AddressBook.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AddressBook/_AddressBook.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_AppKit.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_AppKit.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_AppKit.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_AppKit.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_inlines.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_inlines.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_inlines.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AppKit/_inlines.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AuthenticationServices/_AuthenticationServices.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AuthenticationServices/_AuthenticationServices.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AuthenticationServices/_AuthenticationServices.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/AuthenticationServices/_AuthenticationServices.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetalKit/_MetalKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetalKit/_MetalKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetalKit/_MetalKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MetalKit/_MetalKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PhotosUI/_PhotosUI.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PhotosUI/_PhotosUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PhotosUI/_PhotosUI.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PhotosUI/_PhotosUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/VideoToolbox/_VideoToolbox.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/VideoToolbox/_VideoToolbox.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/VideoToolbox/_VideoToolbox.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/VideoToolbox/_VideoToolbox.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SafariServices/_SafariServices.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SafariServices/_SafariServices.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SafariServices/_SafariServices.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SafariServices/_SafariServices.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MultipeerConnectivity/_MultipeerConnectivity.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MultipeerConnectivity/_MultipeerConnectivity.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MultipeerConnectivity/_MultipeerConnectivity.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/MultipeerConnectivity/_MultipeerConnectivity.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Intents/_Intents.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Intents/_Intents.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Intents/_Intents.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Intents/_Intents.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuickLookUI/_QuickLookUI.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuickLookUI/_QuickLookUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuickLookUI/_QuickLookUI.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuickLookUI/_QuickLookUI.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_callbacks.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_callbacks.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_callbacks.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_callbacks.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_sortandmap.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_sortandmap.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_sortandmap.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_sortandmap.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_coregraphics.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_coregraphics.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_coregraphics.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_coregraphics.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_doubleindirect.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_doubleindirect.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_doubleindirect.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_doubleindirect.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_inlines.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_inlines.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreGraphics/_inlines.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/PDFKit/_PDFKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/PDFKit/_PDFKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/PDFKit/_PDFKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/PDFKit/_PDFKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreVideo/_CVPixelBuffer.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreVideo/_CVPixelBuffer.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreVideo/_CVPixelBuffer.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/CoreVideo/_CVPixelBuffer.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuartzCore/_quartzcore.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuartzCore/_quartzcore.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuartzCore/_quartzcore.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/QuartzCore/_quartzcore.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/ImageKit/_imagekit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/ImageKit/_imagekit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/ImageKit/_imagekit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Quartz/ImageKit/_imagekit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ModelIO/_ModelIO.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ModelIO/_ModelIO.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ModelIO/_ModelIO.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/ModelIO/_ModelIO.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/DiscRecording/_DiscRecording.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/DiscRecording/_DiscRecording.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/DiscRecording/_DiscRecording.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/DiscRecording/_DiscRecording.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CFNetwork/_manual.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CFNetwork/_manual.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CFNetwork/_manual.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CFNetwork/_manual.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/_greenlet.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/_greenlet.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/_greenlet.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/_greenlet.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension_cpp.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension_cpp.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension_cpp.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/greenlet/tests/_test_extension_cpp.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Photos/_Photos.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Photos/_Photos.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Photos/_Photos.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Photos/_Photos.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_machsignals.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_machsignals.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_machsignals.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_machsignals.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_objc.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_objc.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_objc.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/objc/_objc.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Accessibility/_Accessibility.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Accessibility/_Accessibility.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Accessibility/_Accessibility.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/Accessibility/_Accessibility.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SystemExtensions/_SystemExtensions.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SystemExtensions/_SystemExtensions.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SystemExtensions/_SystemExtensions.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/SystemExtensions/_SystemExtensions.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/UserNotifications/_UserNotifications.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/UserNotifications/_UserNotifications.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/UserNotifications/_UserNotifications.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/UserNotifications/_UserNotifications.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/InputMethodKit/_InputMethodKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/InputMethodKit/_InputMethodKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/InputMethodKit/_InputMethodKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/InputMethodKit/_InputMethodKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_inlines.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_inlines.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_inlines.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_inlines.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_CoreFoundation.cpython-39-darwin.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_CoreFoundation.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_CoreFoundation.cpython-39-darwin.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/CoreFoundation/_CoreFoundation.cpython-39-darwin.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PushKit/_PushKit.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PushKit/_PushKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PushKit/_PushKit.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/PushKit/_PushKit.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FSEvents/_callbacks.abi3.so",
+      "message": "The binary is not signed.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FSEvents/_callbacks.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
+      "architecture": "x86_64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FSEvents/_callbacks.abi3.so",
+      "message": "The binary is not signed with a valid Developer ID certificate.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087721",
+      "architecture": "arm64"
+    },
+    {
+      "severity": "error",
+      "code": null,
+      "path": "Fixate-arm64-0.9.11.pkg/Fixate-arm64-0.9.11.pkg Contents/Payload/Applications/Fixate.app/Contents/Resources/python/lib/python3.9/site-packages/FSEvents/_callbacks.abi3.so",
+      "message": "The signature does not include a secure timestamp.",
+      "docUrl": "https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution/resolving_common_notarization_issues#3087733",
       "architecture": "arm64"
     }
   ]

@@ -69,6 +69,9 @@ function LiveFocusMode(){
             if(('live_focus_data' in data)){
                 data = data['live_focus_data']
             }
+            if (data == null) {
+                console.log("data is null")
+            }
 
             if (data['status'] === 'success') {
                 console.log(data)

@@ -1,9 +1,10 @@
 import { Button } from "@mui/material";
 
 const css = {
+    /* manrope-regular - latin */
     h1: {
         color: 'white',
-        fontFamily: 'Manrope',
+        fontFamily: 'manrope',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -23,6 +24,7 @@ const css = {
         flex: 1,
         maxWidth:'80vw',
         color:'#d9eaff',
+        // backgroundColor: '#FFFFFF',
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',

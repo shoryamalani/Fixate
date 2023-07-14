@@ -75,7 +75,6 @@ const AddTaskOverlay = (props) => {
         </DialogContentText>
     }
       <TextField
-        autoFocus
         margin="dense"
         label="Duration"
         type="number"

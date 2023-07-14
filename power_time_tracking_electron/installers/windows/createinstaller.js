@@ -20,7 +20,7 @@ function getInstallerConfig () {
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),
     exe: 'Fixate-win32-x64.exe',
-    setupExe: `fixate-windows-installer-0.9.11.exe`,
+    setupExe: `fixate-windows-installer-0.9.12.exe`,
     setupIcon: path.join('./src', 'assets', 'icon.ico')
   })
 }

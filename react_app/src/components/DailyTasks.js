@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import { Avatar, Button, Container, Icon, IconButton, Input, Paper, Stack, Switch, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 import css from '../Style';
 import { useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import { color, maxHeight, maxWidth } from '@xstyled/styled-components';
 import { useNavigate } from 'react-router-dom';
 import StartFocusModeOverlay from './StartFocusModeOverlay';
 import AddTaskOverlay from './AddTaskOverlay';
+import { forwardRef } from 'react';
 // import AddIcon from '@mui/icons-material/Add';
 var _DATE_FORMAT_REGXES = {
     'Y': new RegExp('^-?[0-9]+'),
@@ -101,8 +102,14 @@ function strptime(datestring, format) {
 }
 
 
-const  DailyTasks = (props) => {
+const  DailyTasks = forwardRef((props,ref) => {
     const {showAllTasks} = props;
+    useImperativeHandle(ref, () => ({
+        refresh() {
+            getTaskData();
+        }
+    }));
+
     const currentTasks = useSelector(state => state.tasks.currentTasks);
     const todaysTasks = useSelector(state => state.tasks.todaysTasks);
     const oldTasks = useSelector(state => state.tasks.oldTasks);
@@ -313,6 +320,6 @@ const  DailyTasks = (props) => {
         </Stack>
             </>
     )
-}
+})
 
 export { DailyTasks };
