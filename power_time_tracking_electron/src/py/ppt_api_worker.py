@@ -1,9 +1,11 @@
-import socketio
+# import socketio
 import requests
 import constants
+import json
 import database_worker
 import get_time_spent as time_spent
 import datetime
+from analyze_improvement import analyze_improvements
 API_URL = constants.API_URL
 
 # here we make the back bones for live focus modes
@@ -179,11 +181,57 @@ def update_server_data(to_update,focused):
                         database_worker.set_live_focus_mode_data(val)
                 else:
                     database_worker.reset_database(update[0],update[3])
+            if update[1] == "improvements_daily":
+                try:
+                    data_1 = time_spent.get_time("today")
+                    data_2 = time_spent.get_time("yesterday")
+                    apps = get_current_workflow_data()
+                    distractions = apps['data']['distractions']
+                    focused_apps = apps['data']['focused_apps']
+                    data = analyze_improvements(data_1,data_2,distractions,focused_apps)
+
+                    database_worker.set_improvements_cache('daily',data)
+                    database_worker.reset_database(update[0],update[3])
+                except Exception as e:
+                    print(e)
+                    database_worker.reset_database(update[0],update[3])
+            if update[1] == "improvements_weekly":
+                try:
+                    data_1 = time_spent.get_time("week")
+                    data_2 = time_spent.get_time("last_week")
+                    apps = get_current_workflow_data()
+                    distractions = apps['data']['distractions']
+                    focused_apps = apps['data']['focused_apps']
+                    data = analyze_improvements(data_1,data_2,distractions,focused_apps)
+                    database_worker.set_improvements_cache('weekly',data)
+                    database_worker.reset_database(update[0],update[3])
+                except Exception as e:
+                    print(e)
+                    database_worker.reset_database(update[0],update[3])
+            if update[1] == "improvements_monthly":
+                try:
+                    data_1 = time_spent.get_time("this_month")
+                    data_2 = time_spent.get_time("previous_month")
+                    apps = get_current_workflow_data()
+                    distractions = apps['data']['distractions']
+                    focused_apps = apps['data']['focused_apps']
+                    data = analyze_improvements(data_1,data_2,distractions,focused_apps)
+                    database_worker.set_improvements_cache('monthly',data)
+                    database_worker.reset_database(update[0],update[3])
+                except Exception as e:
+                    print(e)
+                    database_worker.reset_database(update[0],update[3])
         except Exception as e:
             print(e)
             return None
             
-
+def get_current_workflow_data():
+    data = database_worker.get_current_workflow_data()
+    if 'data' not in data:
+        workflow_data = database_worker.get_workflow_by_id(data['id'])
+        data['data'] = json.loads(workflow_data[2])
+        database_worker.set_current_workflow_data(data)
+    return data
             
 # live focus mode stuff
 

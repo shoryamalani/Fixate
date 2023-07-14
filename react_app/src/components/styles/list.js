@@ -28,7 +28,7 @@ const Wrapper = styled.div`
   padding-bottom: 0;
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
-  width: 250px;
+  width: 350px;
 `;
 
 const scrollContainerHeight = 250;

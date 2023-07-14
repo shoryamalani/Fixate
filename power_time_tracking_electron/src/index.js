@@ -19,6 +19,8 @@ catch{
   log.debug("Could not handle squirrel event");
 }
 
+
+
 const fs = require('fs');
 const electron = require('electron')
 // Module to control application life.
@@ -43,7 +45,7 @@ const resourcesPath = app.isPackaged ? process.resourcesPath : __dirname;
 // const { start } = require('repl');
 const { Menu, Tray } = require('electron');
 
-
+let win
 
 
 
@@ -93,12 +95,15 @@ async function setUpTray() {
   
   try{
     response = await fetch('http://127.0.0.1:5005/logger_status');
+    in_focus_mode = false
     if(response.ok){
         const data = await response.json();
+        in_focus_mode = data.in_focus_mode.status;
         if(data.logger_running_status == true){
           if(data.in_focus_mode.status == true){
             tray.setTitle(data.in_focus_mode['Name'] + ' ' + data.in_focus_mode['Time Remaining'])
             logging = true;
+            
             if (tray_color == 'white'){
               tray.setImage(resolvePath('assets/tray_blue.png'));
               tray_color = 'blue';
@@ -119,6 +124,7 @@ async function setUpTray() {
     }
   }catch{
     logging = false;
+    in_focus_mode = false;
   }
   
   const contextMenu = Menu.buildFromTemplate([
@@ -134,7 +140,11 @@ async function setUpTray() {
       contextMenu.items[0].visible = true;
       contextMenu.items[1].visible = false;
       }, visible: logging},
-  ])
+      {label:'End Focus Mode', type: 'normal', click: () => {
+        fetch('http://127.0.0.1:5005/stop_focus_mode')
+      }, visible: in_focus_mode},
+    ])
+  
   tray.setToolTip('Fixate Application Helper')
   tray.setContextMenu(contextMenu)
 }
@@ -260,9 +270,15 @@ function createWindow() {
     //     if (err) throw err;
     //     console.log('finished engine');
     // });   
-    let win = new BrowserWindow({
+    win = new BrowserWindow({
         width: 1600,
         height: 1200,
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            enableRemoteModule: true,
+        }
+
     });
     // PythonShell.run('py/server.py',null,function(err){
     //     if (err) throw err;
@@ -360,4 +376,12 @@ app.on('activate',() => {
         createWindow();
     }
 
+})
+
+
+ipcMain.on('bring-window-front', (event, arg) => {
+  win.show();
+  win.focus();
+  // win.setAlwaysOnTop(true, "floating");
+  // win.setAlwaysOnTop(false);
 })

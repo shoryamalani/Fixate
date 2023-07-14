@@ -21,7 +21,7 @@ const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
 const getBorderColor = (isDragging, authorColors) =>
   isDragging ? 'blue' : 'transparent';
 
-const imageSize = 40;
+const imageSize = 10;
 
 const CloneBadge = styled.div`
   background: #79f2c0;
@@ -171,7 +171,7 @@ function QuoteItem(props) {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      style={{ ...getStyle(provided, style,app.name) ,height: checkFilter(app.name) ? '100%' : '0%'}}
+      style={{ ...getStyle(provided, style,app.name) ,height: checkFilter(app.name) ? null : '0%'}}
       data-is-dragging={isDragging}
       data-testid={app.name}
       data-index={index}
@@ -184,8 +184,8 @@ function QuoteItem(props) {
       <Content>
         {/* <BlockQuote>{quote.content}</BlockQuote> */}
         <h3>{app.name}</h3>
-        <Divider/>
-        <h3>{app.type}</h3>
+        {/* <Divider/> */}
+        {/* <h3>{app.type}</h3> */}
         {/* <Footer>
           <Author colors={quote.author.colors}>{quote.author.name}</Author>
           <QuoteId>

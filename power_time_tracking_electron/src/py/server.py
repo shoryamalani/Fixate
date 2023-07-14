@@ -1,11 +1,11 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
-VERSION = "0.9.11"
+VERSION = "0.9.12"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.11\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.11\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.11\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\py")]
 
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -18,7 +18,6 @@ from loguru import logger
 from datetime import datetime
 import ppt_api_worker
 import constants
-import ppt_api_worker
 
 
 app = Flask(__name__)
@@ -169,7 +168,7 @@ def start_focus_mode():
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
 def stop_focus_mode():
-    return jsonify({"success":logger_application.stop_focus_mode(request.json["id"])})
+    return jsonify({"success":logger_application.stop_focus_mode(logger_application.get_focus_mode_status()['id'])})
 
 @app.route("/add_daily_task",methods=["POST"])
 def add_daily_task():
@@ -303,10 +302,18 @@ def check_chrome_extension_installed():
         return jsonify({"status":logger_application.check_chrome_extension_installed()})
     return jsonify({"status":True})
 
+@app.route("/get_improvements_data",methods=["GET"])
+def get_improvement_data():
+    return jsonify({"improvement_data":logger_application.get_improvement_data()})
+
 @app.route('/images')
 def send_images():
     path = request.args.get('path')
     return send_from_directory(os.path.dirname(path), os.path.basename(path))
+
+@app.route('/getIcon/<name>',methods=["GET"])
+def get_image(name):
+    return send_from_directory(constants.ICON_LOCATION, name+".png")
 
 def start_server():
     logger.debug("Starting server")
@@ -318,6 +325,7 @@ def start_server():
             app.run(host='127.0.0.1', port=5005)
     except Exception as e:
         logger.error(e)
+
 
 if __name__ == "__main__":
     import multiprocessing
