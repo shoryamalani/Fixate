@@ -6,6 +6,7 @@ export const tasksSlice = createSlice({
     currentTasks: null,
     oldTasks: 0,
     todaysTasks: null,
+    oldProgressOrbits: null,
   },
   reducers: {
     setCurrentTasks: (state,action) => {
@@ -16,12 +17,15 @@ export const tasksSlice = createSlice({
     },
     setTodaysTasks: (state,action) => { 
         state.todaysTasks = action.payload
+    },
+    setOldProgressOrbits: (state,action) => {
+        state.oldProgressOrbits = action.payload
     }
 
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {setCurrentTasks,setOldTasks,setTodaysTasks} = tasksSlice.actions
+export const {setCurrentTasks,setOldTasks,setTodaysTasks,setOldProgressOrbits} = tasksSlice.actions
 
 export default tasksSlice.reducer

@@ -1,23 +1,29 @@
+import "../components/Calendar.css";
 import React, { useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import 'chart.js/auto';
 import css from '../Style'
-import dayjs from 'dayjs';
-import ReactDOM from 'react-dom';
 import Calendar from 'react-calendar';
 import {Bar, Line, Pie} from 'react-chartjs-2';
 import Chart, { scales } from 'chart.js/auto';
-import 'react-calendar/dist/Calendar.css';
 import { Colors } from 'chart.js/auto';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFocusModes } from '../features/FocusModesSlice';
 import {CircularProgressWithLabel} from '../components/CircularProgressBar';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import ContentDiv from '../components/ContentDiv';
+import ContentDivUnstyled from '../components/ContentDivUnstyled';
+import {Layout, theme} from 'antd';
+import { Header } from 'antd/es/layout/layout';
+import {Dropdown} from 'antd';
+// import "../components/Calendar.css";
+const {useToken} = theme;
 
 function TimeSpent() {
+  const {token} = useToken();
   const [customDayValue, setCustomDayValue] = React.useState(new Date());
   const [pieChartData, setPieChartData] = React.useState(null);
   const [barChartData, setBarChartData] = React.useState(null);
@@ -48,7 +54,7 @@ function TimeSpent() {
     console.log(data)
     // data['time'].shift();
     setPieChartData({
-      labels: Object.keys(data['time']).map((i) => i), 
+      labels: Object.keys(data['time']).map((i) => i).slice(0,20), 
       datasets: [
         {
           label: "Time Spent",
@@ -216,7 +222,7 @@ function TimeSpent() {
       }
       console.log(final_data)
       setPieChartData({
-        labels: final_data.map((i) => i[0]), 
+        labels: final_data.map((i) => i[0]).slice(0,20), 
         datasets: [
           {
             label: "Time Spent",
@@ -335,6 +341,9 @@ function TimeSpent() {
     // .catch(error => {console.log(error)});
     
   }
+  useEffect(() => {
+    fetchTimeSpentConstrained("today")
+  },[])
   const checkFilter = (focusModeId) => {
     if(currentFocusModes==null){
       return true;
@@ -375,54 +384,123 @@ function TimeSpent() {
     get_all_apps()
 
   },[dispatch])
+  const items = [
+            {
+              key: '1',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_30_minutes")}} >Last 30 minutes</Button>
+                // <a></a>
+              ),
+            },
+            {
+              key: '2',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
+              ),
+            },
+            {
+              key: '3',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
+              ),
+            },
+            {
+              key: '4',
+              label: (
+
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("today")}}>Today</Button>
+              ),
+            },
+            {
+              key: '5',
+              label: (
+
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
+              ),
+            },
+            {
+              key: '6',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
+              ),
+            },
+            {
+              key: '8',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("this_month")}}>This Month</Button>
+              ),
+
+            },
+            {
+              key: '7',
+              label: (
+                <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
+              ),   
+
+            },
+          ]
   return (
     <div style={{
       // flex: 1,
       // maxWidth:'80vw',
       color:'#d9eaff',
       // flexDirection: 'column',
-      alignItems: 'center',
-      textAlign: 'center',
-      justify:'center',
-      alignSelf:'center',
-      maxWidth:'100vw'
+      // alignItems: 'center',
+      // textAlign: 'center',
+      justifyContent:'space-between',
+      // alignSelf:'center',
+      width:'100%',
+      display:'flex',
+      flexDirection:'column',
+
       }}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
-      
-      <h1 style={css.h1}>Time Spent</h1>
-      <Stack direction='row'>
-      <Stack direction='column' spacing={1} style={{minWidth:'30%'}}>
-      <div style={{...css.contrastContent,flex:0,height:'fit-content',display:'table'}}>
-    <Grid2 direction="row" spacing={2}>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_30_minutes")}} >Last 30 minutes</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("today")}}>Today</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
-      <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
-    </Grid2>
-    </div>
-    <div style={{backgroundColor:'black',borderRadius:'2em'}}>
-        <div style={css.contrastContent}>
-          <Stack direction={'column'} spacing={1}>
-
-        <Button color='info' variant="contained" onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button> 
-    {/* <div style={css.contrastContent}> */}
-    
-    <Calendar style = {css.body}
-          onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
-          value={customDayValue}
-          showNeighboringMonth={false}
-          locale={"en-US"}
-          selectRange={true}
-          />
-          </Stack>
-          </div>
-        </div>
+      <div style={{display:'flex',flexDirection:'column',flexGrow:1,flexWrap:1,alignItems:'space-between',height:'100%'}}>
+      {/* <ContentDivUnstyled style={{padding:'0.5em',borderRadius:'1em',height:'10%'}}> */}
+      <h1 style={{padding:0,textAlign:'center',fontSize:44}}>Time Spent</h1>
+      {/* </ContentDivUnstyled>  */}
+      <div style={{backgroundColor:token.colorBgContainer,borderRadius:'2em',padding:'0.5em',margin:'0.5em',display:'flex',justifyContent:'center'}}>
+      <Stack direction='row' style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center',flexGrow:1}}>
+      {/* <Stack direction='row' spacing={1} style={{flex:2}} > */}
+      <Stack direction='column' spacing={1} style={{flex:1,display:'flex'}} >
+      {lineChartData ?
+        <ContentDivUnstyled style={{margin: '2em',padding:'1em',height:'50%',width:'90%',borderRadius:'3em'}} >
+        <Line data={lineChartData}
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: "Distractions Over Time",
+            }
+          }
           
-    {pieChartData && 
-        <div style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', aspectRatio:1}} >
+        }} />
+        </ContentDivUnstyled>
+        :
+        <Skeleton variant="rectangular" width={'90%'} height={'25vh'} style={{borderRadius:'3em'}}/>
+        }
+        {barChartData ?
+        <ContentDivUnstyled style={{margin: '2em',padding:'1em',height:'50%',borderRadius:'3em',width:'90%'}} >
+        <Bar data={barChartData} 
+        style={{height:'50vh',alignSelf:'center'}}
+        options={{
+          plugins: {
+            title: {
+              display: true,
+              text: "Lookaways",
+            }
+          },
+          legend: {
+            display: false
+          }
+        }} />
+        </ContentDivUnstyled>
+        :
+        <Skeleton variant="rectangular" width={'90%'} height={'25vh'} style={{borderRadius:'3em'}}/>
+        }
+        </Stack>
+    {pieChartData ? 
+        <ContentDiv style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', maxWidth:'100%', aspectRatio:1,flex:1}} >
         <Pie data={pieChartData}
         id = "pieChart"
         options={{
@@ -435,43 +513,58 @@ function TimeSpent() {
             
           }
           
-        }} /></div>
+        }} />
+        </ContentDiv>
+        :
+        <Skeleton variant="rectangular" width={'50%'} height={'50vh'} style={{borderRadius:'3em'}}/>
         }
+        </Stack>
+        <Stack direction="column"  spacing={1} style={{flex:1,display:'flexbox',height:'100%',justifyContent:'flex-start',alignItems:'center'}} >
+        {/* <ContentDiv style={{flex:1,height:'fit-content',display:'flex',justifyContent:'center'}}> */}
+          
+        <div style={{fontFamily: 'Manrope',fontSize:18,backgroundColor:token.colorBgElevated,color:token.colorText,borderRadius:'3em',margin:'1em',padding:'2em',display:'flex',justifyContent:'center',width:'fit-content'}}>
+          <Dropdown style={{margin:'0em'}}  menu={
+            {
+              items
+            }
+        } >
+            <Button variant="contained" color='info' >Pick a Time</Button>
+        </Dropdown>
+        </div>
+          {/* <Grid2 direction="row" spacing={0}>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("today")}}>Today</Button>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
+            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
+          </Grid2> */}
+
+        {/* </ContentDiv> */}
+        <ContentDiv style={{flex:1,display:'flex', justifyContent: 'center'}}>
+          <Stack direction={'column'} spacing={1}>
+
+        <Button color='info' variant="contained" onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button> 
+    {/* <div style={css.contrastContent}> */}
+    
+    <Calendar 
+          style={
+            {
+              display: 'flex',
+             
+            }
+          }
+          onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
+          value={customDayValue}
+          showNeighboringMonth={false}
+          locale={"en-US"}
+          selectRange={true}
+          />
+          </Stack>
+        </ContentDiv>
         
 
-</Stack>
-    
-      <div style={{...css.contrastContent,flex:0}}>
-        <Stack direction="column" spacing={1}  >
-        {lineChartData &&
-        <div style={{...css.contrastContent,margin: '0em',flex:0,padding:0,minWidth:'30%', aspectRatio:1}} >
-        <Line data={lineChartData}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Distractions Over Time",
-            }
-          }
-          
-        }} />
-        </div>
-        }
-        {barChartData &&
-        <div style={{...css.contrastContent,margin: '0em',flex:0,padding:0,minWidth:'30%', aspectRatio:1}} >
-        <Bar data={barChartData}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Top 5 Distractions",
-            }
-          }
-        }} />
-        </div>
-        }
-
-      <h1 >Old Focus Modes</h1>
+      {/* <h1 >Old Focus Modes</h1>
       <TableContainer component={Paper} style={{ minWidth: 650,maxHeight:'50vw' }}>
         <Table >
         <TableHead>
@@ -501,13 +594,13 @@ function TimeSpent() {
         </TableBody>
         }
         </Table>
-      </TableContainer>
+      </TableContainer> */}
         </Stack>
+      {/* </div> */}
+      {/* </Stack> */}
       </div>
-      </Stack>
         </div>
-        
-    // </div>
+    </div>
   )
 }
 

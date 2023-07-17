@@ -10,6 +10,8 @@ import { blue } from '@mui/material/colors';
 // import { Icon } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Refresh } from '@mui/icons-material';
+import ContentDiv from './ContentDiv';
+// import { Divider, Space } from 'antd';
 // import AddIcon from '@mui/icons-material/Add';
 
 function UserProfileCard() {
@@ -154,14 +156,15 @@ function UserProfileCard() {
     }
     return (
         <>
-            <Stack direction='column' spacing={2}>
-        <div>
+            <Stack direction='row' flex={1} spacing={2} style={{textAlign:'center',justifyContent:'center',alignItems:'center',borderRadius:'3em',alignContent:'center'}}>
+
         <Stack direction='column' spacing={2}>
-        <h1 style={css.h1}>User Profile</h1>
+            <ContentDiv>
+        <h1 style={{fontSize:44}}>User Profile</h1>
       {userData != null ?
       <>
-        <p>Current Display Name: {userData['user_data']['name']}</p>
-        <p>Share Code: {userData['user_data']['server_data']['user_data']['data']['share_code']}</p>
+        <p style={{fontSize:30}}><strong >Current Display Name:</strong> {userData['user_data']['name']}</p>
+        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['user_data']['data']['share_code']}</p>
         
         </>
         :
@@ -171,12 +174,11 @@ function UserProfileCard() {
         
     }
 
-    <Container  >
         {/* center items in the stack */}
     <Stack direction={'row'} spacing={3} justifyContent='center'>
     {/* <label id='display_name'>Set Display Name</label> */}
       <TextField label='Set Display Name' value={displayName} onChange={(e)=>{setDisplayName(e.target.value)}}  />
-      {userData != null ? <Button color='info' variant='contained' onClick={()=>changeName()}>Change Name</Button>: null}
+      {userData != null ? <Button color='info' variant='outlined' onClick={()=>changeName()}>Change Name</Button>: null}
       </Stack>
       <p>Show on public leader board</p>
         <Stack direction={'row'} spacing={3} justifyContent='center'>
@@ -185,17 +187,17 @@ function UserProfileCard() {
         changePrivacy(e.target.checked)
         }} />
       </Stack>
-        <Stack direction={'row'} spacing={3} justifyContent='center'>
+        <Stack direction={'row'} spacing={3} justifyContent='center' style={{fontSize:30}}>
       <p>To be clear it will never show what you have spent your time on,<br></br> only stats like average time between distractions, your efficiency in work, and the longest time you have gone without distractions. </p>
        </Stack>
-         {userData == null && <Button color='success' variant='contained' onClick={()=>{createUser()}}>Create User</Button>}
+         {userData == null && <Button color='success' variant='outlined' onClick={()=>{createUser()}}>Create User</Button>}
          {userData != null ?
       <>
         <h2>Add Friends</h2>
         <Stack direction={'row'} justifyContent={'center'} spacing={3}>
             <TextField value={friendDisplayName} onChange={(e)=>setFriendDisplayName(e.target.value)} label='Enter Display name' />
             <TextField value={friendShareCode} onChange={(e)=>setFriendShareCode(e.target.value)} label='Enter Share Code' />
-            <Button color='success' variant='contained' onClick={addFriend}><AddIcon/></Button>
+            <Button color='success' variant='outlined' onClick={addFriend}><AddIcon/></Button>
         </Stack>
         
         </>
@@ -203,23 +205,24 @@ function UserProfileCard() {
         null
         
     }
-      </Container>
+      </ContentDiv>
     </Stack>
-    </div>
     {/* { userData['user_data'] != undefined && */}
     
-    <div style={css.contrastContent}>
         <Stack>
+            <ContentDiv>
     <Container>
-        <h1>Friends</h1>
-        <Button color='success' variant='contained' onClick={()=>{getFriendDataNow()}}><Refresh></Refresh></Button>
+        <Stack direction={"row"} style={{display:'flex',justifyContent:'center'}}>
+        <h1>Friends <Button color='success' style={{height:'3em',width:'3em'}} variant='outlined' onClick={()=>{getFriendDataNow()}}><Refresh></Refresh></Button></h1>
+        
+        </Stack>
         <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
         <Table >
         <TableHead>
           <TableRow>
-            <TableCell>Friend Display Name</TableCell>
-            <TableCell align="right">Time logged In the last half hour (min)</TableCell>
-            <TableCell align="right">Percent Focused</TableCell>
+            <TableCell style={{fontSize:20}}>Friend Display Name</TableCell>
+            <TableCell align="center" style={{fontSize:20}}>Time logged In the last half hour (min)</TableCell>
+            <TableCell align="center" style={{fontSize:20}}>Percent Focused</TableCell>
           </TableRow>
         </TableHead>
 
@@ -231,9 +234,14 @@ function UserProfileCard() {
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{friend['name'][0]}</Avatar>{friend['name']}</TableCell>
-                <TableCell align="right"> {friend['data'] != null && friend['data']['live'] ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
-                <TableCell align="right">{friend['data'] != null && friend['data']['live'] ? <CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_min']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel>: null}</TableCell>
+              <TableCell component="th" scope="row">
+                <Stack direction="row"><p style={{fontSize:16,padding:0}}> {friend['name']}</p></Stack></TableCell>
+                <TableCell align="center"> {friend['data'] != null && friend['data']['live'] ? (friend['data']['live']['total_time_spent']/60).toFixed(0): 0 }</TableCell>
+                <TableCell align="center">
+                {friend['data'] != null && friend['data']['live'] ? 
+                friend['data']['live']['total_time_spent'] !== 0 ?
+                <>
+                <CircularProgressWithLabel value={[100*((friend['data']['live']['total_time_spent']-(friend['data']['live']['distractions_time_total']*60))/friend['data']['live']['total_time_spent'])]}></CircularProgressWithLabel></>:null: null}</TableCell>
               </TableRow>
             ))
         }
@@ -243,9 +251,9 @@ function UserProfileCard() {
       </TableContainer>
 
     </Container>
+    </ContentDiv>
     </Stack>
-    </div>
-   
+  
     </Stack>
     {/* } */}
       

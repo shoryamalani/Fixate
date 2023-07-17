@@ -53,9 +53,6 @@ const css = {
         // center content
         justifyContent: 'center',
         display: 'flex',
-        padding: '1.5em',
-        margin: '1em',
-        borderRadius: '3em',
         color: 'white',
         // font
         // fontFamily: 'Times New Roman',
@@ -63,7 +60,8 @@ const css = {
         // color: '#001011'
     },
     button :{
-        margin: '1em',
+        // margin: '0.4em',
+        alignItems: 'center',
     }
 
 

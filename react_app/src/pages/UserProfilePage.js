@@ -2,14 +2,19 @@
 import React, { useState, useEffect } from 'react';
 import { UserProfileCard } from '../components/UserProfileCard';
 import css from '../Style';
+import ContentDiv from '../components/ContentDiv';
+import ContentDivUnstyled from '../components/ContentDivUnstyled';
 const UserProfilePage = () => {
     
     return (
-        <div style={css.mainContent}>
-            <div style={css.contrastContent}>
+
+            // <ContentDivUnstyled style={{display:'flex',height:'100%',width:'100%',justifyContent:'center',color:'white',backgroundColor:'black'}}>
+            // {/* <ContentDiv style={{justifyContent:'center',color:'white'}}> */}
+        // {/* </ContentDiv> */}
+        <div>
         <UserProfileCard></UserProfileCard>
         </div>
-        </div>
+
     )
 }
 
