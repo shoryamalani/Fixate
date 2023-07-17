@@ -1,7 +1,7 @@
 {
   "name": "Fixate",
   "productName": "Fixate",
-  "version": "0.9.12",
+  "version": "1.9.13",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "rep": "https://github.com/shoryamalani/Fixate",
@@ -11,6 +11,7 @@
     "package-int": "electron-forge package --arch=x64",
     "package-arm": "electron-forge package --arch=arm64",
     "package-universal": "electron-forge package --arch=universal --platform=darwin",
+    "package-mas-universal": "electron-forge package --arch=universal --platform=mas",
     "package-win": "electron-forge package --platform=win32",
     "create-installer-win": "node ./installers/windows/createinstaller.js",
     "make": "electron-forge make",

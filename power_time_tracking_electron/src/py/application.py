@@ -98,8 +98,8 @@ def check_if_must_be_closed(app,tabname,closing_app):
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
@@ -206,7 +206,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 0.9.12
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.13
     return parsed_apps
 
 # def get_all_distracting_apps():
@@ -406,6 +406,37 @@ def get_rings():
     except Exception as e:
         logger.error(e)
         return {"total_time_spent":0,"total_wanted_time_spent":0,"tasks_completed":0,"tasks_total":0}
+def get_all_progress_orbits():
+    focus_sessions = database_worker.get_all_focus_sessions()
+    tasks = database_worker.get_all_active_daily_tasks()
+    final_data = {}
+    for task in tasks:
+        day = datetime.datetime.strptime(task[3], database_worker.get_time_format())
+        day = day.strftime("%Y-%m-%d")
+        if day not in final_data:
+            final_data[day] = {"tasks":[],"sessions":[],"complete":0,"desired_time":0,"time_completed":0}
+        final_data[day]['tasks'].append(task[0])
+        try:
+            final_data[day]['complete'] += 1 if json.loads(task[2])['complete'] else 0
+            final_data[day]['desired_time'] += int(json.loads(task[2])['estimate_duration'])
+        except Exception as e:
+            pass
+    for session in focus_sessions:
+        day = datetime.datetime.strptime(session[1], database_worker.get_time_format())
+        day = day.strftime("%Y-%m-%d")
+        if day not in final_data:
+            final_data[day] = {"tasks":[],"sessions":[],"complete":0,"desired_time":0,"time_completed":0}
+        final_data[day]['sessions'].append(session[0])
+        if session[3]:
+            final_data[day]['time_completed'] += (database_worker.get_time_from_format(session[3])- database_worker.get_time_from_format(session[1])).total_seconds()/60
+    return final_data
+
+
+
+
+
+
+
     
 def get_improvement_data():
     data = database_worker.get_improvement_data()

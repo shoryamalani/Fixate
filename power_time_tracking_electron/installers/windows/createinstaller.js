@@ -15,12 +15,12 @@ function getInstallerConfig () {
   console.log(path.join(outPath, 'Fixate-win32-x64'))
 
   return Promise.resolve({
-    appDirectory: path.join('out', 'Fixate-win32-x64'),
+    appDirectory: path.join('out', 'Fixate'),
     authors: 'Fixate Team',
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),
-    exe: 'Fixate-win32-x64.exe',
-    setupExe: `fixate-windows-installer-0.9.12.exe`,
+    exe: 'Fixate.exe',
+    setupExe: `fixate-windows-installer-1.9.13.exe`,
     setupIcon: path.join('./src', 'assets', 'icon.ico')
   })
 }
