@@ -169,7 +169,7 @@ uiautomation
 urllib3==1.26.9
 waitress
 wheel
-Werkzeug==2.1.1
+Werkzeug==2.2.3
 wmi
 pywin32
 zipp==3.8.0
