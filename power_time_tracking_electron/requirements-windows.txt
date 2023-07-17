@@ -159,7 +159,7 @@ pyparsing==3.0.8
 python-engineio==4.3.1
 python-socketio
 regex==2022.6.2
-requests==2.28.0
+requests==2.31.0
 # shiboken2==5.15.2.1
 simplecalculator==0.0.4
 sip==5.0.1
