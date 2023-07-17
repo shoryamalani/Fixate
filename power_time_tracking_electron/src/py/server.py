@@ -1,11 +1,11 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
-VERSION = "0.9.12"
+VERSION = "1.9.13"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.12\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
 
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -295,6 +295,11 @@ def set_workflow():
 @app.route("/get_ring_data",methods=["GET"])
 def get_rings():
     return jsonify({"rings":logger_application.get_rings()})
+
+@app.route("/get_all_progress_orbits",methods=["GET"])
+def get_all_progress_orbits():
+    return jsonify({"progress_orbits":logger_application.get_all_progress_orbits()})
+
 
 @app.route("/check_chrome_extension_installed",methods=["GET"])
 def check_chrome_extension_installed():

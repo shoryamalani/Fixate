@@ -1,1 +1,1 @@
-copy "%LocalAppData%\Fixate\app-0.9.12\resources\app\installers\run-server.bat" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\run-server.bat"
+copy "%LocalAppData%\Fixate\app-1.9.13\resources\app\installers\run-server.bat" "%AppData%\Microsoft\Windows\Start Menu\Programs\Startup\run-server.bat"
