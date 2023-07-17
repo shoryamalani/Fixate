@@ -15,7 +15,7 @@ function getInstallerConfig () {
   console.log(path.join(outPath, 'Fixate-win32-x64'))
 
   return Promise.resolve({
-    appDirectory: path.join('out', 'Fixate'),
+    appDirectory: path.join('out', 'Fixate-win32-x64'),
     authors: 'Fixate Team',
     noMsi: true,
     outputDirectory: path.join('out', 'windows-installer'),

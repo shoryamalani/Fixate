@@ -99,4 +99,4 @@ include/
 scripts/
 @AutomationLog.txt
 *.db
-package-lock.json
+*-lock.*
