@@ -15,6 +15,8 @@ import Droppable from '../components/DroppableColumn';
 import { ThemeProvider } from 'styled-components';
 import CssBaseline from '@mui/material/CssBaseline';
 import Board from '../components/dnd-status-board/Board';
+import { Refresh } from '@mui/icons-material';
+import ContentDiv from '../components/ContentDiv';
 
 const  AppStatus = (props) => {
   // const [allApps, setAllApps] = useState(null);
@@ -63,7 +65,9 @@ const  AppStatus = (props) => {
           'Neutral':[],
           'Focused':[],
         };
+
         Object.keys(data['apps']).forEach((element) => {
+         if(data['time'][0][element] || data['apps'][element]['icon']){ 
           element = {
             'distracting':data['apps'][element]['distracting'],
             'focused':data['apps'][element]['focused'],
@@ -81,6 +85,7 @@ const  AppStatus = (props) => {
             initialAppsTemp['Focused'].push(element);
           } else {
             initialAppsTemp['Neutral'].push(element);
+          }
           }
         });
 
@@ -180,14 +185,14 @@ const  AppStatus = (props) => {
     }
     const columns = ["Distracting","Other","Focused"]
     return (
-      <div style={css.mainContent}>
         
+      <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'start',width:'100%'}}>
       <ThemeProvider theme={props.theme}>
         <CssBaseline />
-      <div>
-      <h1 style={css.h1}>App Status</h1>
-  <div style={css.contrastContent}>
+      <h1 style={{fontSize:44}}>App Status</h1>
+  <ContentDiv >
     <Stack direction="row" spacing={3}>
+    <Button variant="contained" color='success' onClick={() => { window.location.reload() }}><Refresh></Refresh></Button>
       <TextField   label="Name" variant="filled"  onChange={(e)=>{checkFilterText(e.target.value)}} />
       
   <Select
@@ -295,7 +300,7 @@ const  AppStatus = (props) => {
 
 
 </Stack>
-      </div>
+      </ContentDiv>
       {/* <div style={css.contrastContent}> */}
       {initialApps && apps ?
       <>
@@ -355,10 +360,9 @@ const  AppStatus = (props) => {
       
       
       {/* </div> */}
-    </div>
     </ThemeProvider>
-    
     </div>
+    
     
   )
   function handleDragEnd(event) {
@@ -388,8 +392,6 @@ const  AppStatus = (props) => {
         data['distracting'] = false;
         data['focused'] = false;
       }
-      
-
     }
 
     // If the item is dropped over a container, set it as the parent

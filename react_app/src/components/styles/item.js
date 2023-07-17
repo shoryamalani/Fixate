@@ -1,27 +1,27 @@
 import React from 'react';
 import styled from '@xstyled/styled-components';
 import { borderRadius, grid } from './constants';
-import { Divider } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import {Avatar} from '@mui/material';
 import {Apps} from '@material-ui/icons';
 import {Web} from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
   if (isDragging) {
-    return 'yellow';
+    return '#b7b7b7';
   }
 
   if (isGroupedOver) {
     return '#EBECF0';
   }
 
-  return '#FFFFFF';
+  return '#1f1f1f';
 };
 
 const getBorderColor = (isDragging, authorColors) =>
   isDragging ? 'blue' : 'transparent';
 
-const imageSize = 40;
+const imageSize = 10;
 
 const CloneBadge = styled.div`
   background: #79f2c0;
@@ -111,7 +111,7 @@ const Footer = styled.div`
 `;
 
 const Author = styled.small`
-  color: ${(props) => props.colors.hard};
+  color: #fff;
   flex-grow: 0;
   margin: 0;
   background-color: ${(props) => props.colors.soft};
@@ -171,25 +171,25 @@ function QuoteItem(props) {
       ref={provided.innerRef}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-      style={{ ...getStyle(provided, style,app.name) ,visibility: checkFilter(app.name) ? 'visible' : 'hidden',height: checkFilter(app.name) ? '100%' : '0%'}}
+      style={{ ...getStyle(provided, style,app.name) ,height: checkFilter(app.name) ? null : '0%'}}
       data-is-dragging={isDragging}
       data-testid={app.name}
       data-index={index}
       aria-label={`${app.name}`}
-    >
-        {app.icon ? 
-            <Avatar sizes={256} src={'/images?path='+app.icon} />
-            : app.type === 'website' ?
-            <Web/>
-            : <Apps/> 
+    >{checkFilter(app.name) ?
+      <>
+        
             
-        }
-      {/* <Avatar /> */}
-      <Content>
+        
+      {/* <Content> */}
         {/* <BlockQuote>{quote.content}</BlockQuote> */}
-        <h3>{app.name}</h3>
-        <Divider/>
-        <h3>{app.type}</h3>
+        <Stack direction='row' style={{alignItems:'center'}}>
+        {app.icon ? <Avatar sizes={256} style={{color:'white'}} src={'http://127.0.0.1:5005/images?path='+app.icon} />: app.type === 'website' ? <Web lg={{ fontSize: 80 }} style={{fontSize: 40,color:'white'}}/>: <Apps style={{color:'white',fontSize: 40}}/> }
+        <Divider orientation='vertical' style={{height:'100%',margin:'0 8px'}}/>
+        <h3 style={{color: isDragging?'black':'white'}}>{app.name}</h3>
+        </Stack>
+        {/* <Divider/> */}
+        {/* <h3>{app.type}</h3> */}
         {/* <Footer>
           <Author colors={quote.author.colors}>{quote.author.name}</Author>
           <QuoteId>
@@ -197,8 +197,10 @@ function QuoteItem(props) {
             {quote.id}
           </QuoteId>
         </Footer> */}
-      </Content>
-
+      {/* </Content> */}
+      </>
+      : <></>
+      }
     </Container>
   );
 }

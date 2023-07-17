@@ -1,11 +1,12 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import styled from '@xstyled/styled-components';
+import styled, { userSelect } from '@xstyled/styled-components';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import QuoteItem from './item';
 import { grid } from './constants';
 import Title from './title';
+import { useSelector } from 'react-redux';
 
 export const getBackgroundColor = (isDraggingOver, isDraggingFrom) => {
   if (isDraggingOver) {
@@ -14,7 +15,7 @@ export const getBackgroundColor = (isDraggingOver, isDraggingFrom) => {
   if (isDraggingFrom) {
     return '#E6FCFF';
   }
-  return '#EBECF0';
+  return 'rgba(0,0,0,0)';
 };
 
 const Wrapper = styled.div`
@@ -27,7 +28,7 @@ const Wrapper = styled.div`
   padding-bottom: 0;
   transition: background-color 0.2s ease, opacity 0.1s ease;
   user-select: none;
-  width: 250px;
+  width: 350px;
 `;
 
 const scrollContainerHeight = 250;
@@ -54,7 +55,16 @@ const Container = styled.div``;
 
 const InnerQuoteList = React.memo(function InnerQuoteList(props) {
     console.log(props)
+    const filterApps = useSelector(state => state.app.filterApps);
+    const checkFilter = (name) => {
+      if (filterApps[name] === undefined) {
+          return true;
+      }
+      return filterApps[name]['app_name'] && filterApps[name]['app_type'] && filterApps[name]['distracting'];
+  }
+
   return props.apps.map((app, index) => (
+     checkFilter(app.name) ?
     <Draggable key={app.name} draggableId={app.name} index={index}>
         {/* <h1>quote['name']</h1> */}
       {(dragProvided, dragSnapshot) => (
@@ -67,7 +77,8 @@ const InnerQuoteList = React.memo(function InnerQuoteList(props) {
         />
       )}
     </Draggable>
-  ));
+    : null
+    ));
 });
 
 function InnerList(props) {
@@ -108,8 +119,7 @@ export default function AppList(props) {
       isDropDisabled={isDropDisabled}
       isCombineEnabled={isCombineEnabled}
       renderClone={
-        useClone
-          ? (provided, snapshot, descriptor) => (
+        useClone? (provided, snapshot, descriptor) => (
               <QuoteItem
                 quote={apps[descriptor.source.index]}
                 provided={provided}

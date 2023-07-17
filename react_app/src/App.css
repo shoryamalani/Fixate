@@ -1,4 +1,17 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("./fonts/manrope-v14-latin-regular.woff2") format("woff2");
+  font-weight: bold;
+  font-display: swap;
+}
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Open Sans";
+  font-weight: 400;
+}
 /* .App {
+
   text-align: center;
 }
 

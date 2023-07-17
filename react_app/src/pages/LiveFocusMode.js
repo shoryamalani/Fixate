@@ -20,8 +20,14 @@ import { setUserData,setLiveFocusModeData, setLiveFocusModeCachedData } from '..
 import { notInitialized } from 'react-redux/es/utils/useSyncExternalStore';
 import { Line } from 'react-chartjs-2';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-
+import { Content } from 'antd/es/layout/layout';
+import ContentDiv from '../components/ContentDiv';
+import { Check, Refresh } from '@mui/icons-material';
+import { fontSize } from '@xstyled/styled-components';
+import {theme} from 'antd'
+const {useToken} = theme;
 function LiveFocusMode(){
+    const {token} = useToken();
     const userData = useSelector(state => state.user.userData);
     console.log(userData)
     const liveFocusModeData = useSelector(state => state.user.liveFocusModeData);
@@ -68,6 +74,9 @@ function LiveFocusMode(){
 
             if(('live_focus_data' in data)){
                 data = data['live_focus_data']
+            }
+            if (data == null) {
+                console.log("data is null")
             }
 
             if (data['status'] === 'success') {
@@ -223,49 +232,34 @@ function LiveFocusMode(){
 
 
     return (
-        <div style={css.mainContent}>
-            <h1>Live Focus Mode</h1>
-        {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true ?
+        <div style={{width:'100%',color:'white',display:'flex',alignItems:'center'}}>
+            <Stack direction='column' style={{width:'100%',color:'white',display:'flex',alignItems:'center'}} spacing={3}>
+            <h1 style={{fontSize:44}}>Live Focus Mode</h1>
+                {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true &&
+            <ContentDiv style={{marginBottom:'0em'}}>
+            <Stack direction='row' spacing={10}>
+                <Stack style={{padding:0,margin:0}} direction='column' spacing={3}>
+            <h2 style={{padding:0,margin:0}}>Focus Mode : {liveFocusModeData['data']['name']}</h2>
+            <h2 style={{padding:0,margin:0}}>Owner: {liveFocusModeData['data']['owner_name']}</h2>
+            </Stack>
+            <Button color='error' variant='outlined' onClick={()=>{leaveLiveFocusMode()}}>Leave Focus Mode</Button>
+            </Stack>
+            </ContentDiv>
+                }
+        {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true &&
     <>
-        <Stack direction='column'>
-    <div style={css.contrastContent}>
-            {/* Leaderboard spot */}
-            <Stack direction={'column'} spacing={3}>
-            <h2>Leaderboard</h2>
-            <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
-        <Table >
-        <TableHead>
-            <TableRow>
-                <TableCell>Friend Display Name</TableCell>
-                <TableCell align="right">Percent Focused</TableCell>
-            </TableRow>
-        </TableHead>
-        <TableBody>
-            {leaderboardList.map((member) => (
-                <TableRow
-                    key={member.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                    <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{member.name[0]}</Avatar> {member.name}</TableCell>
-                    <TableCell align="right">{<CircularProgressWithLabel color={Math.round(member.percent_focused)>=80 ? 'success':'failure'} value={member.percent_focused}></CircularProgressWithLabel>}</TableCell>
-                </TableRow>
-            ))}
-        </TableBody>
-        </Table>
-        </TableContainer>
-        </Stack>
-        </div>
-            <div style={css.contrastContent}>
-            <Stack direction={'column'} spacing={3}>
-            <h2>Live Focus Mode Data</h2>
+        <Stack direction='column'  style={{width:"100%",height:'100%'}}>
+
+            <ContentDiv  style={{flex:1}}>
+            <Stack direction={'column'} style={{width:"100%"}} spacing={3}>
+            <h2 style={{textAlign:'center'}}>Live Focus Mode Data</h2>
             <Grid2 container spacing={2}>
             {
                 liveFocusModeCachedData['data']['members'].map((member) => (
-                    <div>
-                        <p>{liveFocusModeCachedData['data']['member_names'][member]} has been distracted for {(liveFocusModeCachedData['data']['data']['seconds'][member]['unfocused']/60).toFixed(1)} minutes while being focused for {(liveFocusModeCachedData['data']['data']['seconds'][member]['focused']/60).toFixed(1)} minutes</p>
+                    <div style={{width:'50%',height:'100%'}}>
+                        {/* <p></p> */}
                         {/* Chart js line chart */}
-                        <div style={{width:'100%', height:'50vh'}}>
-                            <Line  style={{width:'100%', height:'20vh'}}options={{
+                            <Line  style={{width:'100%'}}options={{
                                     responsive: true,
                                         plugins: {
                                         legend: {
@@ -274,45 +268,96 @@ function LiveFocusMode(){
                                         title: {
                                         display: true,
                                         text:liveFocusModeCachedData['data']['member_names'][member] + ' Focus Percentage',
+                                        color:'white',
+                                        font:{
+                                            size:20
+                                        }
                                         },
+                                        subtitle:{
+                                            display:true,
+                                            color:'white',
+                                            text:`distracted: ${(liveFocusModeCachedData['data']['data']['seconds'][member]['unfocused']/60).toFixed(1)} minutes    |    focused: ${(liveFocusModeCachedData['data']['data']['seconds'][member]['focused']/60).toFixed(1)} minutes`,
+                                            font:{
+                                                size:14
+                                            }
+                                        }
                                     },
+                                    scales: {
+                                        y: {
+                                            min: 0,
+                                            max: 100
+                                        }
+                                    }
                             }} data={{
                                 labels:userChartData['labels'][member],
                                 datasets: [{
                                     label: 'Focus Percentage',
                                     data: member in userChartData ? userChartData[member] : [],
                                     fill: true,
-                                    borderColor: 'rgb(75, 192, 192)',
-                                    backgroundColor: liveFocusModeCachedData['data']['data']['time_data'][parseInt(member)] ? 'rgb(0,255,0)' : 'rgb(255, 0, 0)',
+                                    borderColor:  liveFocusModeCachedData['data']['data']['time_data'][parseInt(member)] ? token.colorSuccess: token.colorError ,
+                                    backgroundColor: liveFocusModeCachedData['data']['data']['time_data'][parseInt(member)] ? 'rgba(0,0,0,0)' : 'rgba(0, 0, 0,0)',
 
                                 }]
                             }}></Line>
-                        </div>
                     </div>
                 ))
             }                
             </Grid2>
+            
             </Stack>
-    </div>
+    </ContentDiv>
+    
+        
         </Stack>
     </>
-    :
-    <h2>Data not found</h2>
+    
+}
+
+<Stack direction='row' style={liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true ? {width:'100%'}:{}} spacing={3}>
+    {liveFocusModeCachedData != null && liveFocusModeCachedData['data'] != null && liveFocusModeCachedData['data']['active'] == true &&
+    <ContentDiv style={{flex:1}}>
+    {/* Leaderboard spot */}
+    <Stack direction={'column'} spacing={3}>
+    <h2 style={{textAlign:'center'}}>Leaderboard</h2>
+    <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
+<Table >
+<TableHead>
+    <TableRow>
+        <TableCell style={{fontSize:20}}>Friend Display Name</TableCell>
+        <TableCell style={{fontSize:20}} align="right">Percent Focused</TableCell>
+    </TableRow>
+</TableHead>
+<TableBody>
+    {leaderboardList.map((member) => (
+        <TableRow
+            key={member.id}
+            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+        >
+            <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{member.name[0]}</Avatar> {member.name}</TableCell>
+            <TableCell align="right">{<CircularProgressWithLabel color={Math.round(member.percent_focused)>=80 ? 'success':'failure'} value={member.percent_focused}></CircularProgressWithLabel>}</TableCell>
+        </TableRow>
+    ))}
+</TableBody>
+</Table>
+</TableContainer>
+</Stack>
+</ContentDiv>
+
     }
-    <div style={css.contrastContent}>
         {userData != null && liveFocusModeData != null ?
          liveFocusModeData['data'] != null && liveFocusModeData['data']['owner_id'] == String(userData['user_id']) ? 
             userData['user_data']['server_data']['friends_data'] === undefined ? <h2>No Friends added</h2>:
             <>
+    <ContentDiv style={{flex:1}}>
             
             <Stack direction={'column'} spacing={3}>
-            <h2>Invite Friends</h2>
+            <h2 style={{textAlign:'center'}}>Invite Friends</h2>
             <TableContainer component={Paper} style={{ minWidth: 650, maxHeight:'60vh' }}>
         <Table >
         <TableHead>
           <TableRow>
-            <TableCell>Friend Display Name</TableCell>
-            <TableCell align="right">Invite</TableCell>
+            <TableCell style={{fontSize:20}}>Friend Display Name</TableCell>
+            <TableCell style={{fontSize:20}} align="right">Invite</TableCell>
           </TableRow>
         </TableHead>
 
@@ -323,9 +368,9 @@ function LiveFocusMode(){
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row"><Avatar sx={{bgcolor:blue[500]}}>{friend['name'][0]}</Avatar>{friend['name']}</TableCell>
-              <TableCell component="th" scope='row'>
-                {!(liveFocusModeData['data']['invited_members'].includes(friend['user_id']))  ? <Button color='success' variant='contained' onClick={()=>{inviteFriend(friend['user_id'])}}>Invite</Button>: <Button color='success' variant='contained' disabled>Invited</Button>}
+              <TableCell component="th" scope="row">{friend['name']}</TableCell>
+              <TableCell component="th" scope='row' align='right'>
+                {!(liveFocusModeData['data']['invited_members'].includes(friend['user_id']))  ? <Button color='success' variant='outlined' onClick={()=>{inviteFriend(friend['user_id'])}}>Invite</Button>: <Button color='success' variant='outlined' disabled>Invited</Button>}
               </TableCell>
               </TableRow>
             ))}
@@ -333,25 +378,29 @@ function LiveFocusMode(){
 
         </Table>
       </TableContainer>
-      <Button color='error' variant='contained' onClick={()=>{endFocusMode()}}>End Focus Mode</Button>
+      <Button color='error' variant='outlined' onClick={()=>{endFocusMode()}}>End Focus Mode</Button>
         </Stack>
+      </ContentDiv>
       </>
-         :liveFocusModeData != null && liveFocusModeData['data'] == null  ?
+         :
+         liveFocusModeData != null && liveFocusModeData['data'] == null  ?
          <>
+            <ContentDiv style={{flex:1}}>
          <Stack direction={'column'} spacing={3}>
-            <h2>Either create or Join a live focus mode</h2>    
-            <Button color='success' variant='contained' onClick={()=>{getLiveModeData()}}>Refresh</Button>
-            <Stack direction="row" spacing={2}>
+            <h2 style={{textAlign:'center'}}>Create or Join a Live Focus Mode</h2>    
+            
+            <Stack direction="row" style={{width:'100%'}} spacing={2}>
             <TextField label='Live Focus Mode Name' value={liveFocusModeName} onChange={(e)=>{setLiveFocusModeName(e.target.value)}} />
-            <Button color='success' variant='contained' onClick={()=>{createLiveFocusMode()}}>Create Live Focus Mode</Button>
+            <Button color='info' variant='outlined' style={{marginRight:'0em'}} onClick={()=>{createLiveFocusMode()}}>Create Live Focus Mode</Button>
+            <Button color='success' variant='outlined' style={{width:'3em'}} onClick={()=>{getLiveModeData()}}><Refresh></Refresh></Button>
             </Stack>
 
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Focus Mode Name</TableCell>
-                        <TableCell align="right">Owner</TableCell>
-                        <TableCell align="right">Join</TableCell>
+                        <TableCell style={{fontSize:20}}>Focus Mode Name</TableCell>
+                        <TableCell style={{fontSize:20}} align="center">Owner</TableCell>
+                        <TableCell style={{fontSize:20}} align="center">Join</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -361,8 +410,8 @@ function LiveFocusMode(){
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             <TableCell component="th" scope="row">{request['name']}</TableCell>
-                            <TableCell align="right">{request['owner_name']}</TableCell>
-                            <TableCell align="right"><Button color='success' variant='contained' onClick={()=>{joinLiveFocusMode(request['id'])}}>Join</Button></TableCell>
+                            <TableCell align="center">{request['owner_name']}</TableCell>
+                            <TableCell align="center"><Button color='success' variant='outlined' onClick={()=>{joinLiveFocusMode(request['id'])}}><Check></Check></Button></TableCell>
                         </TableRow>
                     ))}                    
 
@@ -370,20 +419,17 @@ function LiveFocusMode(){
                 </TableBody>
             </Table>
             </Stack>
+            </ContentDiv>
+            
          </> : 
-            <>
-            <Stack direction='column'>
-            <h2>Focus Mode : {liveFocusModeData['data']['name']}</h2>
-            <h3>Owner: {liveFocusModeData['data']['owner_name']}</h3>
-            <Button color='error' variant='contained' onClick={()=>{leaveLiveFocusMode()}}>Leave Focus Mode</Button>
-            </Stack>
-            </>
+<></>
     :
     <h2>Loading</h2>}
     
-        </div>
-        </div>
-    )
+        </Stack>
+        </Stack>
+        </div> 
+           )
 }
 
 export default LiveFocusMode;

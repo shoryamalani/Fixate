@@ -65,6 +65,8 @@ def check_if_must_be_closed(app,tabname,closing_app):
         whitelist = False
 
     if will_close == True:
+        if '' in apps_to_close:
+            apps_to_close.remove('')
         if tabname:
             for url in apps_to_close:
                 if url in tabname:
@@ -74,11 +76,13 @@ def check_if_must_be_closed(app,tabname,closing_app):
             systemDataHandler.hide_current_frontmost_app()
             return True
     if whitelist:
+        if '' in apps_to_keep:
+            apps_to_keep.remove('')
         if tabname:
             for url in apps_to_keep:
                 if url in tabname:
                     return True
-        else:
+        if tabname:
             systemDataHandler.hide_current_frontmost_app()
             return True
         if app['app_name'] in apps_to_keep or app['app_name'] == "Fixate":
@@ -94,8 +98,8 @@ def check_if_must_be_closed(app,tabname,closing_app):
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
     last_app = ""
     apps = database_worker.get_all_applications()
     apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
@@ -109,7 +113,7 @@ def search_close_and_log_apps():
     # if front_app != None:
         
         #Getting data replaced by JXA and applescript for macos
-        # try:
+        try:
             app = systemDataHandler.get_current_frontmost_app()
             distracting_apps = get_distracting_apps()
             current_app_name = app['app_name']
@@ -167,14 +171,14 @@ def search_close_and_log_apps():
                 active = False
                 LAST_FEW_SECONDS.pop()
             database_worker.log_current_app(current_app_name,tabname,active,title)
-            print(LAST_FEW_SECONDS)
+            # print(LAST_FEW_SECONDS)
             check_if_server_must_be_updated() 
             # logger.debug(current_app_name)
             if sys.platform != "win32":
                 sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
-        # except Exception as err:
-        #     logger.error(err)
+        except Exception as err:
+            logger.error(err)
 
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()
@@ -202,7 +206,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 0.9.10
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.13
     return parsed_apps
 
 # def get_all_distracting_apps():
@@ -236,10 +240,9 @@ def set_current_workflow(workflow_id):
     logger.debug("Set current workflow to",data[1])
     return True
 
-def add_daily_task(task_name,task_estimate_duration,task_repeating):
+def add_daily_task(task_name,task_estimate_duration):
     info = {
-        "estimate_duration":task_estimate_duration,
-        "repeating":task_repeating,
+        "estimate_duration":int(task_estimate_duration),
         "ids_of_focus_modes":[],
         "complete":False,
         "time_completed":0,
@@ -274,6 +277,12 @@ def complete_task(task_id):
     info['complete'] = True
     database_worker.update_daily_task_info(task_id,json.dumps(info))
     return True
+def uncomplete_task(task_id):
+    data = database_worker.get_task_by_id(task_id)
+    info = json.loads(data[2])
+    info['complete'] = False
+    database_worker.update_daily_task_info(task_id,json.dumps(info))
+    return True
 
 def get_all_focus_sessions():
     focus_sessions = database_worker.get_all_focus_sessions()
@@ -288,17 +297,18 @@ def get_all_focus_sessions():
         })
     return final_focus_sessions
 
-def start_focus_mode(duration,name):
+def start_focus_mode(duration,name,type):
     global FOCUS_MODE
     FOCUS_MODE = True
     distractions, focused_apps = get_current_distracted_and_focused_apps()
-    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"focused_apps":focused_apps}))
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"focused_apps":focused_apps,"type":type}))
     return data
-def start_focus_mode_with_task(duration,name,task_id):
+
+def start_focus_mode_with_task(duration,name,type,task_id):
     global FOCUS_MODE
     FOCUS_MODE = True
     distractions, focused_apps = get_current_distracted_and_focused_apps()
-    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"task_id":task_id,"focused_apps":focused_apps}))
+    data = database_worker.start_focus_mode(name,duration,json.dumps(distractions),json.dumps({"task_id":task_id,"focused_apps":focused_apps,"distracting_apps":distractions,"type":type}))
     task_data = database_worker.get_task_by_id(task_id)
     task_info = json.loads(task_data[2])
     task_info['ids_of_focus_modes'].append(data)
@@ -361,9 +371,9 @@ def get_all_apps_in_workflow(workflow_id):
 def add_workflow_modification(workflow_id,modification):
     workflow_data = database_worker.get_workflow_by_id(workflow_id)[2]
     data = json.loads(workflow_data)
-    print(type(data))
-    print(data['modifications'])
-    print(modification)
+    # print(type(data))
+    # print(data['modifications'])
+    # print(modification)
     data['modifications'][modification['name']] = modification
     database_worker.update_workflow(workflow_id,data)
     return True
@@ -377,6 +387,65 @@ def get_current_workflow_data():
     return data
 
 
+def get_rings():
+    # data = database_worker.get_rings()
+    try:
+        focus_sessions = database_worker.get_all_focus_sessions_for_today()
+        tasks_for_today = database_worker.get_todays_tasks()
+        total_wanted_time_spent = 0
+        tasks_completed = 0
+        for task in tasks_for_today:
+            total_wanted_time_spent += int(json.loads(task[2])['estimate_duration'])
+            if json.loads(task[2])['complete']:
+                tasks_completed += 1
+        total_time_spent = 0
+        for session in focus_sessions:
+            if session[3]:
+                total_time_spent += (database_worker.get_time_from_format(session[3])- database_worker.get_time_from_format(session[1])).total_seconds()/60
+        return {"total_time_spent":total_time_spent,"total_wanted_time_spent":total_wanted_time_spent,"tasks_completed":tasks_completed,"tasks_total":len(tasks_for_today)}
+    except Exception as e:
+        logger.error(e)
+        return {"total_time_spent":0,"total_wanted_time_spent":0,"tasks_completed":0,"tasks_total":0}
+def get_all_progress_orbits():
+    focus_sessions = database_worker.get_all_focus_sessions()
+    tasks = database_worker.get_all_active_daily_tasks()
+    final_data = {}
+    for task in tasks:
+        day = datetime.datetime.strptime(task[3], database_worker.get_time_format())
+        day = day.strftime("%Y-%m-%d")
+        if day not in final_data:
+            final_data[day] = {"tasks":[],"sessions":[],"complete":0,"desired_time":0,"time_completed":0}
+        final_data[day]['tasks'].append(task[0])
+        try:
+            final_data[day]['complete'] += 1 if json.loads(task[2])['complete'] else 0
+            final_data[day]['desired_time'] += int(json.loads(task[2])['estimate_duration'])
+        except Exception as e:
+            pass
+    for session in focus_sessions:
+        day = datetime.datetime.strptime(session[1], database_worker.get_time_format())
+        day = day.strftime("%Y-%m-%d")
+        if day not in final_data:
+            final_data[day] = {"tasks":[],"sessions":[],"complete":0,"desired_time":0,"time_completed":0}
+        final_data[day]['sessions'].append(session[0])
+        if session[3]:
+            final_data[day]['time_completed'] += (database_worker.get_time_from_format(session[3])- database_worker.get_time_from_format(session[1])).total_seconds()/60
+    return final_data
+
+
+
+
+
+
+
+    
+def get_improvement_data():
+    data = database_worker.get_improvement_data()
+    return data
+
+def check_chrome_extension_installed():
+    if database_worker.get_latest_chrome_url() == "NOT A URL":
+        return False
+    return True
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
@@ -468,6 +537,13 @@ def boot_up_checker():
         if database_created[1] == "1.12":
             database_worker.update_to_database_version_1_13()
             database_created[1] = "1.13"
+        if database_created[1] == "1.13":
+            database_worker.update_to_database_version_1_14()
+            database_created[1] = "1.14"
+        if database_created[1] == "1.14":
+            database_worker.update_to_database_version_1_15()
+            database_created[1] = "1.15"
+
         if  'device_id' not in database_worker.get_current_user_data():
             cur_data = database_worker.get_current_user_data()
             val = ppt_api_worker.create_devices()
@@ -513,7 +589,7 @@ def get_focus_mode_status():
                 if (end_time < datetime.datetime.now()):
                     stop_focus_mode(latest_focus_mode[0])
                     return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None}
-                return {"status":True, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0]}
+                return {"status":True,"type":json.loads(latest_focus_mode[6])["type"] if latest_focus_mode[6] else None, "Name": latest_focus_mode[5], "Duration": latest_focus_mode[2], "Time Remaining": time_remaining, "Time Elapsed": time_elapsed, "Time Completed": latest_focus_mode[6], "Time Started": latest_focus_mode[1],'task_id':json.loads(latest_focus_mode[6])["task_id"] if latest_focus_mode[6] else None, 'id': latest_focus_mode[0], "focused_apps":json.loads(latest_focus_mode[6])["focused_apps"] if latest_focus_mode[6] else None, "distracting_apps": latest_focus_mode[3]}
             else:
                 return {"status":False, "Name": 'none', "Duration": 0, "Time Remaining": 0, "Time Elapsed": 0, "Time Completed": 0, "Time Started": 0, "Time Ended": 0, "Distracting Apps": [],'task_id':None} 
         else:

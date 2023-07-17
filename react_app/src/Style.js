@@ -1,8 +1,10 @@
+import { Button } from "@mui/material";
 
 const css = {
+    /* manrope-regular - latin */
     h1: {
         color: 'white',
-        fontFamily: 'Epilogue',
+        fontFamily: 'manrope',
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
@@ -15,13 +17,14 @@ const css = {
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        fontFamily: 'Epilogue',
+        fontFamily: 'Manrope',
 
     },
     mainContent:{
         flex: 1,
         maxWidth:'80vw',
         color:'#d9eaff',
+        // backgroundColor: '#FFFFFF',
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
@@ -50,14 +53,15 @@ const css = {
         // center content
         justifyContent: 'center',
         display: 'flex',
-        padding: '2em',
-        margin: '1em',
-        borderRadius: '3em',
         color: 'white',
         // font
         // fontFamily: 'Times New Roman',
-        fontFamily: 'Epilogue',
+        fontFamily: 'Manrope',
         // color: '#001011'
+    },
+    button :{
+        // margin: '0.4em',
+        alignItems: 'center',
     }
 
 

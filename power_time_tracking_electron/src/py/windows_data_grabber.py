@@ -38,14 +38,14 @@ class windowsOperatingSystemDataGrabber:
             if windows_exe != windows_exe.lower():
                 self.app_name = " ".join(re.findall("([A-Z][^A-Z]*)", windows_exe))
             else:
-                self.app_name = windows_exe
+                self.app_name = windows_exe.capitalize()
             
         self.url = ""
         
         print("Current app:", self.current_app, "Title:", self.title, "PID:", pid, "App name:", self.app_name, "URL:", self.url)
         if self.app_name is None:
             return {"app_name":"Unknown","app_title":"","url":""} 
-        if 'Chrome' in self.app_name:
+        if 'Chrome' in self.app_name or 'Edge' in self.app_name or 'Opera' in self.app_name or 'Brave' in self.app_name:
             data = database_worker.get_latest_chrome_url()
             if data:
                 if datetime.datetime.now() - database_worker.get_time_from_format(data[1]) < datetime.timedelta(seconds=3):
@@ -105,8 +105,8 @@ def start_mouse_and_keyboard_checker():
 
 def check_periodic():
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
     saved_curpos = win32gui.GetCursorPos()
     while True:
         curpos = win32gui.GetCursorPos()

@@ -9,7 +9,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 
 const Container = styled.div`
-  background-color: ${colors.B100};
+  background-color: #141414;
   min-height: 100vh;
   /* like display:flex but will allow bleeding over the window width */
   // min-width: 100vw;
@@ -119,8 +119,9 @@ const Board = ({
   return (
     <>
     {/* <h1>Drag and Drop Status Board</h1> */}
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable
+      <DragDropContext onDragEnd={onDragEnd} >
+        <Droppable 
+
           droppableId="board"
           type="COLUMN"
           direction="horizontal"

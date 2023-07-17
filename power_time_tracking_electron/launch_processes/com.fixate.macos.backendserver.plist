@@ -18,7 +18,7 @@
         <!-- <string>./Applications/PowerTimeTracking.app/Contents/Resources/app/src/scripts/runbackend</string> -->
         <!-- <string>PYTHONHOME=/Applications/Fixate.app/Contents/Resources/python</string>
         <string>PYTHONPATHPATH=/Applications/Fixate.app/Contents/Resources/python/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string> -->
-        <string>/Applications/Fixate.app/Contents/Resources/python/bin/python3</string>
+        <string>/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger</string>
         <string>/Applications/Fixate.app/Contents/Resources/app/src/py/server.py</string>
         <string>></string>
         <string>/tmp/Fixate.log</string>

@@ -1,7 +1,7 @@
 {
   "name": "Fixate",
   "productName": "Fixate",
-  "version": "0.9.10",
+  "version": "1.9.13",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "rep": "https://github.com/shoryamalani/Fixate",
@@ -11,6 +11,7 @@
     "package-int": "electron-forge package --arch=x64",
     "package-arm": "electron-forge package --arch=arm64",
     "package-universal": "electron-forge package --arch=universal --platform=darwin",
+    "package-mas-universal": "electron-forge package --arch=universal --platform=mas",
     "package-win": "electron-forge package --platform=win32",
     "create-installer-win": "node ./installers/windows/createinstaller.js",
     "make": "electron-forge make",
@@ -30,11 +31,14 @@
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "apexcharts": "^3.41.0",
+    "child_process": "^1.0.2",
     "dotenv": "^16.3.1",
     "electron-log": "^4.4.8",
+    "electron-squirrel-startup": "^1.0.0",
     "glob": "^10.3.0",
     "node-fetch": "^2.6.11",
     "purecss": "^2.2.0",
+    "squirrel": "^1.0.0",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {

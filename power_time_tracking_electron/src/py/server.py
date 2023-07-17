@@ -1,11 +1,11 @@
-#!/Applications/Fixate.app/Contents/Resources/python/bin/python3
-VERSION = "0.9.10"
+#!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
+VERSION = "1.9.13"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-0.9.10\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
 
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -18,7 +18,6 @@ from loguru import logger
 from datetime import datetime
 import ppt_api_worker
 import constants
-import ppt_api_worker
 
 
 app = Flask(__name__)
@@ -68,7 +67,7 @@ def logger_status():
     # return resp
     in_focus_mode = logger_application.get_focus_mode_status()
     workflow = logger_application.get_current_workflow_data()
-    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow})
+    return jsonify({"closing_apps":closing_apps,"logger_running_status":logger_application.is_running_logger(),"in_focus_mode":in_focus_mode, "whitelist":whitelist, "workflow":workflow,"rings":logger_application.get_rings()})
 @app.route("/is_running")
 def is_running():
     return jsonify({"success":True})
@@ -116,8 +115,8 @@ def get_time():
         distractions_apps,focused_apps = logger_application.get_current_distracted_and_focused_apps()
         return jsonify({"time":times,"distractions":distractions,"name":name, "relevant_distractions":distractions_apps, "focused_apps":focused_apps})
     else:
-        times,distractions,name,distractions_status = get_time_spent.get_time_from_focus_session_id(request.json["id"])
-        return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions)})
+        times,distractions,name,distractions_status,focused_apps = get_time_spent.get_time_from_focus_session_id(request.json["id"])
+        return jsonify({"time":times,"distractions":distractions_status,"name":name,"relevant_distractions":json.loads(distractions),"focused_apps":focused_apps})
 
 @app.route("/get_app_status")
 def get_app_status():
@@ -133,10 +132,10 @@ def get_version():
 
 @app.route('/kill_server', methods=['GET'])
 def kill_server():
-    if "darwin" in sys.platform:
-        os.kill(os.getpid(), signal.SIGTERM)
-    logger_application.stop_logger()
-    logger_application.boot_up_checker()
+    # if "darwin" in sys.platform:
+    os.kill(os.getpid(), signal.SIGTERM)
+    # logger_application.stop_logger()
+    # logger_application.boot_up_checker()
 
 
 @app.route('/restart_server_macos', methods=['GET'])
@@ -150,22 +149,30 @@ def stop_showing_task():
 @app.route('/complete_task', methods=['POST'])
 def complete_task():
     return jsonify({"success":logger_application.complete_task(request.json["id"])})
-    
+
+@app.route('/uncomplete_task', methods=['POST'])
+def uncomplete_task():
+    return jsonify({"success":logger_application.uncomplete_task(request.json["id"])})
+
 @app.route('/start_focus_mode', methods=['GET','POST'])
 def start_focus_mode():
-    if closing_apps == False:
-        toggle_closing_apps()
-    if request.json["task_id"]!=None:
-        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json["task_id"])}),200
-    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"])})
+    if request.json["type"] == "distracting":
+        global closing_apps
+        closing_apps = True
+    if request.json["type"] == "focused":
+        global whitelist
+        whitelist = True
+    if "task_id" in request.json:
+        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json['type'],request.json["task_id"])}),200
+    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"],request.json['type'])}),200
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
 def stop_focus_mode():
-    return jsonify({"success":logger_application.stop_focus_mode(request.json["id"])})
+    return jsonify({"success":logger_application.stop_focus_mode(logger_application.get_focus_mode_status()['id'])})
 
 @app.route("/add_daily_task",methods=["POST"])
 def add_daily_task():
-    return jsonify({"success":logger_application.add_daily_task(request.json["name"],request.json["task_estimate_time"],request.json["task_repeating"])})
+    return jsonify({"success":logger_application.add_daily_task(request.json["name"],request.json["task_estimate_time"])})
 
 @app.route("/get_daily_tasks",methods=["GET"])
 def get_daily_tasks():
@@ -226,7 +233,7 @@ def get_friend_data_now():
 @app.route("/dump_chrome_data",methods=["POST"])
 @cross_origin()
 def dump_chrome_url():
-    print(request.json)
+    # print(request.json)
     logger_application.save_chrome_url(request.json["url"])
     return "Success", 200
 
@@ -284,10 +291,34 @@ def set_workflow():
     logger.debug(request.json)
     return jsonify({"success":logger_application.set_current_workflow(request.json["workflow_id"])})
 
+
+@app.route("/get_ring_data",methods=["GET"])
+def get_rings():
+    return jsonify({"rings":logger_application.get_rings()})
+
+@app.route("/get_all_progress_orbits",methods=["GET"])
+def get_all_progress_orbits():
+    return jsonify({"progress_orbits":logger_application.get_all_progress_orbits()})
+
+
+@app.route("/check_chrome_extension_installed",methods=["GET"])
+def check_chrome_extension_installed():
+    if sys.platform == "win32":
+        return jsonify({"status":logger_application.check_chrome_extension_installed()})
+    return jsonify({"status":True})
+
+@app.route("/get_improvements_data",methods=["GET"])
+def get_improvement_data():
+    return jsonify({"improvement_data":logger_application.get_improvement_data()})
+
 @app.route('/images')
 def send_images():
     path = request.args.get('path')
     return send_from_directory(os.path.dirname(path), os.path.basename(path))
+
+@app.route('/getIcon/<name>',methods=["GET"])
+def get_image(name):
+    return send_from_directory(constants.ICON_LOCATION, name+".png")
 
 def start_server():
     logger.debug("Starting server")
@@ -299,6 +330,7 @@ def start_server():
             app.run(host='127.0.0.1', port=5005)
     except Exception as e:
         logger.error(e)
+
 
 if __name__ == "__main__":
     import multiprocessing

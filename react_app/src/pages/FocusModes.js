@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import css from '../Style'
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, InputLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
 import { useState } from 'react';
 import Paper from '@mui/material/Paper';
@@ -9,13 +10,16 @@ import InputBase from '@mui/material/InputBase';
 import { styled } from '@mui/material/styles';
 import { FaCalendarCheck } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
-import {setCurrentTasks} from '../features/TasksSlice'
+import {setCurrentTasks, setOldProgressOrbits} from '../features/TasksSlice'
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { waitFor } from '@testing-library/react';
 import { CircularProgressWithLabel } from '../components/CircularProgressBar';
-import { Check, CheckBoxOutlineBlank } from '@mui/icons-material';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import ContentDivUnstyled from '../components/ContentDivUnstyled';
+import OldProgressOrbitsCalendar from '../components/progressOrbits/OldProgressOrbitsCalendar';
+import ContentDiv from '../components/ContentDiv';
+import CheckIcon from '@mui/icons-material/Check';
+import { display } from '@xstyled/styled-components';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
   'label + &': {
@@ -61,7 +65,7 @@ function FocusModes() {
   const navigate = useNavigate();
   const [followUp, setFollowUp] = useState(false);
   const [dataForStartFocusMode, setDataForStartFocusMode] = useState(null);
-
+  const oldProgressOrbitsData = useSelector(state => state.tasks.oldProgressOrbits);
   const openTimeModal = (data) => {
     setOpen(true);
     setDataForStartFocusMode(data);
@@ -76,25 +80,24 @@ function FocusModes() {
     setName(dataForStartFocusMode['name'])
     startFocusMode(duration,dataForStartFocusMode['name'],dataForStartFocusMode['taskId'])
   };
-  useEffect(() => {
     
-    // add no-cors to the fetch request
-    const get_all_apps = async () => {
-      const response = await fetch('http://localhost:5005/get_daily_tasks').then(
-        response => response.json()
-      ).then(data => {
-        console.log(data['tasks'])
-      dispatch(setCurrentTasks(data['tasks']));
-      }
-      ).catch(error => {
-        console.log(error)
-        return null;
-      });
-
+  const get_all_apps = async () => {
+    const response = await fetch('http://localhost:5005/get_daily_tasks').then(
+      response => response.json()
+    ).then(data => {
+      console.log(data['tasks'])
+    dispatch(setCurrentTasks(data['tasks']));
     }
-    get_all_apps()
+    ).catch(error => {
+      console.log(error)
+      return null;
+    });
 
-  },[dispatch])
+  }
+  useEffect(() => {
+    get_all_apps()
+    getAllOldProgressOrbits()
+  }, [])
   useEffect(() => {
     console.log(name)
     console.log(duration)
@@ -142,9 +145,22 @@ function FocusModes() {
       console.log(error);
       alert('Error')
     })
+  }
+  const getAllOldProgressOrbits = () => {
+    console.log("Get all old progress orbits")
+    fetch('http://localhost:5005/get_all_progress_orbits', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(response => response.json()).then(data => {
+      console.log(data)
+      dispatch(setOldProgressOrbits(data['progress_orbits']));
 
-
-
+    }).catch(error => {
+      console.log(error);
+      alert('Error')
+    })
   }
   const waitUntil = (condition, checkInterval=100) => {
     return new Promise(resolve => {
@@ -193,7 +209,7 @@ function FocusModes() {
         "id": taskId
       })
     }).then(response => response.json()).then(data => {
-      alert('Success')
+      get_all_apps()
     }).catch(error => {
       console.log(error);
       alert('Error')
@@ -215,7 +231,8 @@ function FocusModes() {
       })
     }).then(response => response.json()).then(data => {
       alert('Added')
-      window.location.reload();
+      get_all_apps()
+      // window.location.reload();
     }).catch(error => {
       console.log(error);
       alert('Error')
@@ -251,107 +268,61 @@ function FocusModes() {
 
   return (
 
-    <div style={css.mainContent}>
+    <div>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
-      
-      <h1 style={css.h1}>Focus Modes and Tasks</h1>
-      <div style={css.contrastContent}>
-      <h3>
-        Focus modes are a way to block distracting apps and websites for a set amount of time.<br></br> They can be especially useful when you need to work on something that is boring.
-      </h3>
-    </div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Set focus mode length</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Enter the duration of the focus mode in minutes
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            label="Duration"
-            type="number"
-            value={duration}
-            onChange={(e)=>{setDuration(e.target.value)}}
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={()=>handleClose('submit')}>Submit</Button>
-        </DialogActions>
-      </Dialog>
+      {/* <ContentDivUnstyled style={{borderRadius:'3em',padding:'1em'}}> */}
+      <h1 style={{fontSize:44,textAlign:'center',color:'white'}}>Tasks and Orbit History</h1>
+      {/* </ContentDivUnstyled> */}
+     
     <Stack direction="row" spacing={3}>
-    {/* <div> */}
-      <Stack direction="column" spacing={3}>
-      {/* make a description of focus modes later */}
-        <div style={css.contrastContent}>
-          <Stack direction="column" spacing={3} style={css.body}>
-        <h2 style={css.h2}>Create Focus Mode</h2>
-      <Stack direction="row" spacing={3} style={css.body}>
-        {/* <InputLabel id="Name">Name</InputLabel> */}
-        <TextField id="Name" label='Name' value={name} onChange={(e) =>{setName(e.target.value)}}/>
-        {/* <InputLabel id="Duration"></InputLabel> */}
-        <TextField aria-label='Duration (Minutes)' label='Duration (Minutes)' id="Duration" type="number" value={duration} onChange={(e)=>{setDuration(e.target.value)}} />
-    </Stack>
-        <Button style={{margin:5}} variant='contained' color='success' onClick={()=>{startFocusMode()}}><span>Start Focus Mode</span></Button>
-    </Stack>
-    </div>
-   
-    
-      
-    <div style={{...css.contrastContent,minWidth:320}}>
-      <Stack direction='column' spacing={3}>
-      <h2 style={css.h2}>Create Task</h2>
-      <Stack direction="row" spacing={3} style={css.body}>
-        {/* <InputLabel id="Name">Name</InputLabel>
-        <BootstrapInput id="Name" value={taskName} onChange={(e) =>{setTaskName(e.target.value)}}/>
-        <InputLabel id="Duration">Estimated Duration (Minutes)</InputLabel>
-        <BootstrapInput id="Duration" type="number" value={taskDuration} onChange={(e)=>{setTaskDuration(e.target.value)}} /> */}
-        <TextField id="Name" label='Name' value={taskName} onChange={(e) =>{setTaskName(e.target.value)}}/>
-        <TextField aria-label='Duration (Minutes)' label='Estimated Duration (Minutes)' id="Duration" type="number" value={taskDuration} onChange={(e)=>{setTaskDuration(e.target.value)}} />
-      </Stack>
-        <Button style={{margin:5}} variant='contained' color='success' onClick={()=>{createTask()}}><span>Create Task</span></Button>
-      </Stack>
-      </div>
+      <Stack direction="column" flex={1} spacing={3}>
+        { oldProgressOrbitsData != null ?
+        <ContentDiv>
+        <OldProgressOrbitsCalendar progressOrbits={oldProgressOrbitsData} changeSelection={()=>{}}  />
+        </ContentDiv>
+        :
+        <CircularProgress></CircularProgress>
+        }
       </Stack> 
       <Divider orientation="vertical" flexItem />
-      <Stack direction="column" spacing={3}>
-    <div style={{...css.contrastContent,minWidth:550}}>
-      <Stack direction={'column'}>
-      <h2>Current Tasks</h2>
-      <TableContainer component={Paper} style={{ minWidth: 350, maxWidth:'inherit', maxHeight:'60vh' }}>
+      <Stack direction="column" flex={1} spacing={3}>
+    <ContentDiv>
+      <Stack direction={'column'} style={{display:'flex'}}>
+      <h2 style={{textAlign:"center",}}>Current Tasks</h2>
+      <TableContainer component={Paper} style={{  maxWidth:'inherit', maxHeight:'60vh' }}>
         <Table >
         <TableHead>
           <TableRow>
-            <TableCell>Task name</TableCell>
-            <TableCell align="right">Estimated Duration</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Current Time Spent</TableCell>
-            <TableCell align="right">Progress</TableCell>
-            <TableCell align="right">See Focus Modes</TableCell>
-            <TableCell align="right">Start Focus Mode</TableCell>
-            <TableCell align="right">Actions</TableCell>
+            <TableCell style={{fontSize:20}}>Task name</TableCell>
+            <TableCell align="center" style={{fontSize:20}}>Estimated Duration</TableCell>
+            <TableCell align="center" style={{fontSize:20}}>Current Time Spent</TableCell>
+            <TableCell align="center" style={{fontSize:20}}>Progress</TableCell>
+            {/* <TableCell align="right">See Focus Modes</TableCell>
+            <TableCell align="right">Start Focus Mode</TableCell> */}
+            <TableCell align="center" style={{fontSize:20}}>Actions</TableCell>
             {/* <TableCell align="right">Delete</TableCell> */}
           </TableRow>
         </TableHead>
         {currentTasks!= null &&
         <TableBody>
-          {Object.keys(currentTasks).map((task) => (
+          {Object.keys(currentTasks).reverse().map((task) => (
             <TableRow
               key={currentTasks[task].id}
-              style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
+              style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse', backgroundColor: currentTasks[task]['complete'] ? 'rgba(29,55,19,0.54)':'inherit'}}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">{currentTasks[task]['name']}</TableCell>
-              <TableCell align="right">{currentTasks[task]['estimated_time']}</TableCell>
-              
-              <TableCell align="right">{currentTasks[task]['complete'] ? <CheckBoxIcon></CheckBoxIcon> : <CheckBoxOutlineBlank></CheckBoxOutlineBlank> }</TableCell>
-              <TableCell align="right">{currentTasks[task]['time_completed']}</TableCell>
-              <TableCell align="right"><CircularProgressWithLabel value={(currentTasks[task]['time_completed']/currentTasks[task]['estimated_time'])*100} /></TableCell>
-              <TableCell align="right"><Button variant='contained'  onClick={()=>{seeFocusModes(currentTasks[task]['id'])}}>See Focus Modes</Button></TableCell>
-              <TableCell align="right"><Button variant='contained' onClick={()=>{startFocusModeForTask(currentTasks[task]['name'],currentTasks[task]['id'])}}>Start Focus Modes</Button></TableCell>
-              <TableCell align="right"><Button variant='contained' color='success' onClick={()=>{setCompleted(currentTasks[task]['id'])}}>Complete</Button><Button variant='contained' color='failure' onClick={()=>{deleteTask(currentTasks[task]['id'])}}>Delete</Button></TableCell>
+              <TableCell align="center">{currentTasks[task]['estimated_time']}</TableCell>
+              <TableCell align="center">{currentTasks[task]['time_completed']}</TableCell>
+              <TableCell align="center"><CircularProgressWithLabel value={(currentTasks[task]['time_completed']/currentTasks[task]['estimated_time'])*100} /></TableCell>
+              {/* <TableCell align="right"><Button variant='contained'  onClick={()=>{seeFocusModes(currentTasks[task]['id'])}}>See Focus Modes</Button></TableCell> */}
+              {/* <TableCell align="right"><Button variant='contained' onClick={()=>{startFocusModeForTask(currentTasks[task]['name'],currentTasks[task]['id'])}}>Start Focus Modes</Button></TableCell> */}
+              <TableCell align="center">
+                <Stack direction='row' spacing={1}>
+                  <Button  variant='outlined' color='success' onClick={()=>{setCompleted(currentTasks[task]['id'])}}><CheckIcon></CheckIcon></Button>
+                  <Button variant='outlined' color='error' onClick={()=>{deleteTask(currentTasks[task]['id'])}}><DeleteIcon></DeleteIcon></Button>
+                </Stack>
+                </TableCell>
               {/* <TableCell align="right"></TableCell> */}
               
               </TableRow>
@@ -362,7 +333,7 @@ function FocusModes() {
       </TableContainer>
       </Stack>
       
-    </div>
+    </ContentDiv>
     </Stack>
     {/* </div> */}
       </Stack>
