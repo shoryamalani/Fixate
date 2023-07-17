@@ -291,19 +291,13 @@ const  DailyTasks = forwardRef((props,ref) => {
         <>
         <StartFocusModeOverlay open={overlayOpen} handleClose={handleStartFocusModeFromOverlay} focusModeData={currentFocusModeData} ></StartFocusModeOverlay>
         <AddTaskOverlay open={showAddFocusOverlay} handleClose={handleAddFocusModeFromOverlay}></AddTaskOverlay>
-        <Stack direction="column" spacing={2} >
-        <div >
-            <Stack direction="column" spacing={2}>
+        <Stack direction="column" spacing={0} style={{padding:0}} >
 
 
-            <Stack direction='row' spacing={2} style={{justifyContent:'center'}}>
+            <Stack direction='row' spacing={2} style={{justifyContent:'center',margin:0}}>
             <h2>Todays Tasks</h2>
-            <Button variant='contained' color='success' style={{aspectRatio:1,height:'4vw',width:'2vw'}} onClick={()=>{setShowAddFocusOverlay(true)}} > <AddIcon  style={{aspectRatio:1}} color='white'/></Button>
+            <Button variant='contained' color='success' style={{margin:'1em'}} onClick={()=>{setShowAddFocusOverlay(true)}} > <AddIcon  style={{aspectRatio:1}} color='white'/></Button>
             </Stack>
-            
-            {/* <Button variant='contained' color='success' onClick={() => getTaskData()}>
-                <Refresh style={css.refreshIcon}/>
-            </Button> */}
             <SmartTaskList 
                 tasks={showAllTasks ? currentTasks : todaysTasks}  
                 setCompletedFunction={setCompleted}
@@ -312,10 +306,8 @@ const  DailyTasks = forwardRef((props,ref) => {
                 startFocusModeForTaskFunction={startFocusModeForTask}
                 setNotCompletedFunction={setNotCompleted}
                 checkFilterFunction={()=>true} />
-                {!showAllTasks && <Button variant='contained' color='success' onClick={()=>{navigate('/focusModes')}}>See All Tasks</Button>}
+            {!showAllTasks && <Button variant='outlined' color='info' onClick={()=>{navigate('/focusModes')}}>See All Tasks</Button>}
 
-                </Stack>
-            </div>
 
         </Stack>
             </>

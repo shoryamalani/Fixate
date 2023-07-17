@@ -15,7 +15,7 @@ export const getBackgroundColor = (isDraggingOver, isDraggingFrom) => {
   if (isDraggingFrom) {
     return '#E6FCFF';
   }
-  return '#EBECF0';
+  return 'rgba(0,0,0,0)';
 };
 
 const Wrapper = styled.div`

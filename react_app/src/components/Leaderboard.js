@@ -114,7 +114,7 @@ function Leaderboard(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'center' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -174,6 +174,8 @@ function EnhancedTableToolbar(props) {
           variant="h6"
           id="tableTitle"
           component="div"
+          align='center'
+          fontSize={25}
         >
           {props.title}
         </Typography>
@@ -194,7 +196,6 @@ function SingleLeaderboard(props) {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const {leaderboardData} = props;
-  console.log(leaderboardData);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -234,11 +235,10 @@ function SingleLeaderboard(props) {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - leaderboardData.length) : 0;
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2,padding:'2em' }}>
+      <Paper sx={{ width: '100%', mb: 2,padding:'2em',backgroundColor:'#141414',borderRadius:'3em' }}>
         <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
           <Table
-            sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
@@ -271,13 +271,14 @@ function SingleLeaderboard(props) {
                       id={row.id}
                       scope="row"
                       padding="none"
+
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell align="right" id={row.id} value={row.total_time_spent}>{row.total_time_spent.toFixed(2) }</TableCell>
-                    <TableCell align="right">{row.time_between_distractions != null ? row.time_between_distractions.toFixed(2): 'Unknown'}</TableCell>
-                    <TableCell align="right">{row.distractions_per_hour != null ? row.distractions_per_hour.toFixed(2): 'Unknown'}</TableCell>
-                    <TableCell align="right"><CircularProgressWithLabel color={row.percent_time_focused>80 ?'success':'failure'} value={row.percent_time_focused}></CircularProgressWithLabel></TableCell>
+                    <TableCell align="center" id={row.id} value={row.total_time_spent}>{row.total_time_spent.toFixed(2) }</TableCell>
+                    <TableCell align="center">{row.time_between_distractions != null ? row.time_between_distractions.toFixed(2): 'Unknown'}</TableCell>
+                    <TableCell align="center">{row.distractions_per_hour != null ? row.distractions_per_hour.toFixed(2): 'Unknown'}</TableCell>
+                    <TableCell align="center"><CircularProgressWithLabel color={row.percent_time_focused>80 ?'success':'info'} value={row.percent_time_focused}></CircularProgressWithLabel></TableCell>
                   </TableRow>
                 );
               })}
@@ -296,6 +297,7 @@ function SingleLeaderboard(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
+          style={{fontSize:14}}
           count={leaderboardData.length}
           rowsPerPage={rowsPerPage}
           page={page}

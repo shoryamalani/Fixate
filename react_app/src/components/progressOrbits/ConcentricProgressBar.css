@@ -1,0 +1,20 @@
+.concentric-progress-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circle-container {
+    position: relative;
+  }
+  
+  .circle-overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .circle-overlay .ant-progress-inner {
+    transform: rotate(90deg);
+  }

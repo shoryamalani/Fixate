@@ -93,7 +93,7 @@ const AddTaskOverlay = (props) => {
 
     <DialogActions>
       <Button variant='contained' onClick={()=>readySubmit('cancel')}>Cancel</Button>
-        <Button variant='contained' onClick={()=>readySubmit('create')}>Create Focus Mode</Button>
+        <Button variant='contained' onClick={()=>readySubmit('create')}>Create Task</Button>
     </DialogActions>
   </Dialog>
     )

@@ -1,21 +1,21 @@
 import React from 'react';
 import styled from '@xstyled/styled-components';
 import { borderRadius, grid } from './constants';
-import { Divider } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import {Avatar} from '@mui/material';
 import {Apps} from '@material-ui/icons';
 import {Web} from '@material-ui/icons';
 import { useSelector } from 'react-redux';
 const getBackgroundColor = (isDragging, isGroupedOver, authorColors) => {
   if (isDragging) {
-    return 'yellow';
+    return '#b7b7b7';
   }
 
   if (isGroupedOver) {
     return '#EBECF0';
   }
 
-  return '#FFFFFF';
+  return '#1f1f1f';
 };
 
 const getBorderColor = (isDragging, authorColors) =>
@@ -111,7 +111,7 @@ const Footer = styled.div`
 `;
 
 const Author = styled.small`
-  color: ${(props) => props.colors.hard};
+  color: #fff;
   flex-grow: 0;
   margin: 0;
   background-color: ${(props) => props.colors.soft};
@@ -178,12 +178,16 @@ function QuoteItem(props) {
       aria-label={`${app.name}`}
     >{checkFilter(app.name) ?
       <>
-        {app.icon ? <Avatar sizes={256} src={'http://127.0.0.1:5005/images?path='+app.icon} />: app.type === 'website' ? <Web/>: <Apps/> }
+        
             
         
-      <Content>
+      {/* <Content> */}
         {/* <BlockQuote>{quote.content}</BlockQuote> */}
-        <h3>{app.name}</h3>
+        <Stack direction='row' style={{alignItems:'center'}}>
+        {app.icon ? <Avatar sizes={256} style={{color:'white'}} src={'http://127.0.0.1:5005/images?path='+app.icon} />: app.type === 'website' ? <Web lg={{ fontSize: 80 }} style={{fontSize: 40,color:'white'}}/>: <Apps style={{color:'white',fontSize: 40}}/> }
+        <Divider orientation='vertical' style={{height:'100%',margin:'0 8px'}}/>
+        <h3 style={{color: isDragging?'black':'white'}}>{app.name}</h3>
+        </Stack>
         {/* <Divider/> */}
         {/* <h3>{app.type}</h3> */}
         {/* <Footer>
@@ -193,7 +197,7 @@ function QuoteItem(props) {
             {quote.id}
           </QuoteId>
         </Footer> */}
-      </Content>
+      {/* </Content> */}
       </>
       : <></>
       }
