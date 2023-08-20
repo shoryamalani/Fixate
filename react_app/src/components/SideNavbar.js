@@ -10,6 +10,7 @@ import StreamIcon from '@mui/icons-material/Stream';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {theme } from 'antd'
+import { Schedule } from "@mui/icons-material";
 const {useToken} = theme;
 function getItem(label, key, icon, children) {
 	return {
@@ -24,10 +25,12 @@ const pages = [
 	getItem('Time Spent', '/timeSpent',<DataThresholdingIcon/>),
     getItem('History', '/focusModes',<TimelapseIcon></TimelapseIcon>),
     getItem('App Status', '/appStatus',<AppsIcon></AppsIcon>),
+    getItem('Schedule', '/schedule',<Schedule></Schedule>),
     getItem('User Profile', '/userProfile',<PersonIcon></PersonIcon>),
     getItem('Leaderboards', '/leaderboards',<LeaderboardIcon></LeaderboardIcon>),
     getItem('Live Focus', '/liveFocusMode',<StreamIcon></StreamIcon>),
     getItem('Settings', '/settings',<SettingsIcon></SettingsIcon>),
+    
 ]
 
 const SideNavbar = () => {

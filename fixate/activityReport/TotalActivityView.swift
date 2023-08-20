@@ -8,10 +8,20 @@
 import SwiftUI
 
 struct TotalActivityView: View {
+//    let totalActivity: String
+//
+//    var body: some View {
+//        Text(totalActivity)
+//    }
+    @AppStorage("settedHour") var settedHour: Int = UserDefaults.standard.integer(forKey: "settedHour")
+    @AppStorage("settedMinute") var settedMinute: Int = UserDefaults.standard.integer(forKey: "settedMinute")
     let totalActivity: String
-    
+
     var body: some View {
+        Text("Hello")
         Text(totalActivity)
+        Text("\(settedHour)")
+        Text("\(settedMinute)")
     }
 }
 

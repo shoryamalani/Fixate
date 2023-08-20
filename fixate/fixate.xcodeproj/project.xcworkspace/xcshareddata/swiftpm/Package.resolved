@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "bryxbanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bryx-inc/BRYXBanner.git",
+      "state" : {
+        "revision" : "1d00ffc19c379253712a5792a7f5121fa0d66243",
+        "version" : "0.8.5"
+      }
+    }
+  ],
+  "version" : 2
+}

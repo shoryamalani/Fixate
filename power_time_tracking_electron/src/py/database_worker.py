@@ -305,6 +305,27 @@ def update_to_database_version_1_15():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_16():
+    # add the integrations table
+    conn = connect_to_db()
+    c = conn.cursor()
+    integrations_table = create_table_command("integrations",[["id","INTEGER PRIMARY KEY"],["name","text"],['data','json']])
+    c.execute(integrations_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.16' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_17():
+    # add the table for scheduling_buckets and the table for scheduling_apps
+    conn = connect_to_db()
+    c = conn.cursor()
+    scheduling_buckets_table = create_table_command("scheduling_buckets",[["id","INTEGER PRIMARY KEY"],["name","text"],['data','json'],['active','boolean'],['start_time','DATETIME'],['end_time','DATETIME'],['time_spent','DOUBLE'],['duration','int'],['last_updated','DATETIME']])
+    
+    scheduling_apps_table = create_table_command("scheduling_apps",[["id","INTEGER PRIMARY KEY"],["name","text"],['bucket_id','int'],['data','json'],['time_spent','DOUBLE'],['duration','int'],['last_updated','DATETIME']])
+    c.execute(scheduling_apps_table)
+    c.execute(scheduling_buckets_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.17' WHERE id=1")
+    conn.commit()
 
 
 
@@ -1013,3 +1034,62 @@ def get_improvement_data():
         return None
     else:
         return [json.loads(d[2]) for d in data]
+    
+
+def get_scheduling_buckets():
+    """
+    Gets the scheduling buckets
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM scheduling_buckets")
+    data = c.fetchall()
+    conn.close()
+    if data is None:
+        return []
+    else:
+        return data
+
+def add_scheduling_bucket(name,data,active,start_time,end_time,duration):
+    """
+    Adds a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO scheduling_buckets (name,data,active,start_time,end_time,time_spent,duration,last_updated) VALUES (?,?,?,?,?,?,?,?)",(name,json.dumps(data),active,start_time,end_time,0.0,duration,get_time_in_format()))
+    conn.commit()
+    conn.close()
+
+def update_scheduling_bucket(id,name,data,active,start_time,end_time,duration):
+    """
+    Updates a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET name = ?, data = ?, active = ?, start_time = ?, end_time = ?, duration = ? WHERE id = ?",(name,json.dumps(data),active,start_time,end_time,duration,id))
+    conn.commit()
+    conn.close()
+
+def get_scheduling_bucket_time(id):
+    """
+    Gets the time for a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT time_spent FROM scheduling_buckets WHERE id = ?",[id])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return 0
+    else:
+        return data[0]
+
+def add_time_to_scheduling_bucket(id,time):
+    """
+    Adds time to a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET time_spent = ? WHERE id = ?",(time,id))
+    conn.commit()
+    conn.close()

@@ -46,4 +46,7 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         
         // Handle the warning before the event reaches its threshold.
     }
+    func newFuncs(){
+        
+    }
 }

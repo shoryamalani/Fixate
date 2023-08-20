@@ -237,12 +237,34 @@ def get_current_workflow_data():
 
 def add_mobile_device(device_id):
     try:
-        data = requests.post(f"{API_URL}/api/addMobileDevice",json={"device_id":device_id},headers=create_headers()).json()
+        data = requests.post(f"{API_URL}/api/addPhone",json={"phone_share_code":device_id},headers=create_headers()).json()
         if data['success']:
             current_user = database_worker.get_current_user_data()
             current_user['server_data'] = data['user_data']
             database_worker.set_current_user_data(current_user)
 
+    except Exception as e:
+        print(e)
+        return None
+
+def start_focus_mode_on_phone(duration,name,type,id):
+    try:
+        print("SENDING FOCUS MODE")
+        return requests.post(f"{API_URL}/api/startFocusModeOnPhone",json={
+            "duration":duration,
+            "name":name,
+            "type":type,
+            "id":id
+        },headers=create_headers()).json()['success']
+    except Exception as e:
+        print(e)
+        return None
+
+def end_focus_mode_on_phone(id):
+    try:
+        return requests.post(f"{API_URL}/api/endFocusModeOnPhone",headers=create_headers(),json={
+            "id":id
+        }).json()['success']
     except Exception as e:
         print(e)
         return None

@@ -132,6 +132,7 @@ function FrontPage() {
             if(improvement['period_1_time'] < 600 || improvement['period_2_time'] < 600){
               continue;
             }
+            if(improvement['all_deltas'] !== undefined){
             console.log(improvement['all_deltas']['lookaway_deltas'])
             improvement['all_deltas']['lookaway_deltas'].forEach((element) => {
                 if(element['delta_percent'] < -5.0) {
@@ -152,13 +153,17 @@ function FrontPage() {
             if (improvement['all_deltas']['lookaway_delta_percent'] < -5.0) {
               final_improvements_data.push([improvement['period_1_name'] + ", you were distracted " + -Math.round(improvement['all_deltas']['lookaway_delta_percent']) + "% less than you did " + improvement['period_2_name'].toLowerCase(),"__eyes__"])
             }
+          }
 
             // GET ICON
+            if(final_improvements_data.length !== 0){
             var picked = Math.floor(Math.random() * final_improvements_data.length);
+
             
             // dispatch(setCurrentImprovement(final_improvements_data[picked]))
             // dispatch(setImprovementData(final_improvements_data))
             pickCurrentImprovement()
+            }
             
 
 
