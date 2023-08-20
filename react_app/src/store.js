@@ -4,6 +4,7 @@ import appSlice from './features/AppSlice'
 import tasksSlice from './features/TasksSlice'
 import focusModesSlice from './features/FocusModesSlice'
 import userSlice from './features/UserSlice'
+import SchedulingSlice from './features/SchedulingSlice'
 export default configureStore({
   reducer: {
     logger: loggerSlice,
@@ -11,5 +12,6 @@ export default configureStore({
     tasks: tasksSlice,
     focusModes: focusModesSlice,
     user: userSlice,
+    scheduling: SchedulingSlice,
   },
 })

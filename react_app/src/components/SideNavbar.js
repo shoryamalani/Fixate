@@ -21,8 +21,8 @@ function getItem(label, key, icon, children) {
 	};
   }
 const pages = [
-	getItem('Home', '/',<HomeIcon></HomeIcon> ),
-	getItem('Time Spent', '/timeSpent',<DataThresholdingIcon/>),
+    getItem('Home', '/',<HomeIcon></HomeIcon> ),
+    getItem('Time Spent', '/timeSpent',<DataThresholdingIcon/>),
     getItem('History', '/focusModes',<TimelapseIcon></TimelapseIcon>),
     getItem('App Status', '/appStatus',<AppsIcon></AppsIcon>),
     getItem('Schedule', '/schedule',<Schedule></Schedule>),
@@ -30,7 +30,6 @@ const pages = [
     getItem('Leaderboards', '/leaderboards',<LeaderboardIcon></LeaderboardIcon>),
     getItem('Live Focus', '/liveFocusMode',<StreamIcon></StreamIcon>),
     getItem('Settings', '/settings',<SettingsIcon></SettingsIcon>),
-    
 ]
 
 const SideNavbar = () => {
