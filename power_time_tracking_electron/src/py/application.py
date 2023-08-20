@@ -433,9 +433,14 @@ def get_all_progress_orbits():
 
 
 
+def get_active_phones():
+    data = database_worker.get_current_user_data()
+    return data['server_data']['mobile_devices']
 
-
-
+def add_active_phone(phone_id):
+    ppt_api_worker.add_mobile_device(phone_id)
+    data = database_worker.get_current_user_data()
+    return data['server_data']['mobile_devices']
 
     
 def get_improvement_data():
@@ -543,6 +548,10 @@ def boot_up_checker():
         if database_created[1] == "1.14":
             database_worker.update_to_database_version_1_15()
             database_created[1] = "1.15"
+        if database_created[1] == "1.15":
+            database_worker.update_to_database_version_1_16()
+            database_created[1] = "1.16"
+            
 
         if  'device_id' not in database_worker.get_current_user_data():
             cur_data = database_worker.get_current_user_data()

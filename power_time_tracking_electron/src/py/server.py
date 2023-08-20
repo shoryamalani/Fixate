@@ -162,12 +162,25 @@ def start_focus_mode():
     if request.json["type"] == "focused":
         global whitelist
         whitelist = True
+    active_phones = get_active_phones()
+    
     if "task_id" in request.json:
-        return jsonify({"id":logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json['type'],request.json["task_id"])}),200
-    return jsonify({"id":logger_application.start_focus_mode(request.json["duration"],request.json["name"],request.json['type'])}),200
+        id = logger_application.start_focus_mode_with_task(request.json["duration"],request.json["name"],request.json['type'],request.json["task_id"])
+    else:
+        id = logger_application.start_focus_mode(request.json["duration"],request.json["name"],request.json['type'])
+    if active_phones != {} and active_phones != None:
+        try:
+            ppt_api_worker.start_focus_mode_on_phone(request.json["duration"],request.json["name"],request.json['type'],id)
+        except:
+            pass
+    return jsonify({"id":id})
 
 @app.route("/stop_focus_mode",methods=["GET","POST"])
 def stop_focus_mode():
+    try:
+        ppt_api_worker.end_focus_mode_on_phone(logger_application.get_focus_mode_status()['id'])
+    except:
+        print("FAILED TO END FOCUS MODE ON PHONE")
     return jsonify({"success":logger_application.stop_focus_mode(logger_application.get_focus_mode_status()['id'])})
 
 @app.route("/add_daily_task",methods=["POST"])
@@ -320,6 +333,13 @@ def send_images():
 def get_image(name):
     return send_from_directory(constants.ICON_LOCATION, name+".png")
 
+@app.route("/add_active_phone",methods=["POST"])
+def add_active_phone():
+    return jsonify({"activePhones":logger_application.add_active_phone(request.json["phone_id"]),'success':True})
+
+@app.route("/activePhones",methods=["GET"])
+def get_active_phones():
+    return jsonify({"activePhones":logger_application.get_active_phones()})
 def start_server():
     logger.debug("Starting server")
     try:
@@ -331,6 +351,14 @@ def start_server():
     except Exception as e:
         logger.error(e)
 
+@app.route('/get_scheduling_buckets', methods=['GET'])
+def get_scheduling_buckets():
+    return jsonify({"buckets":logger_application.get_scheduling_buckets()})
+
+@app.route("/add_scheduling_bucket",methods=["POST"])
+def add_scheduling_bucket():
+    logger_application.add_scheduling_bucket(request.json["name"])
+    return jsonify({"buckets":logger_application.get_scheduling_buckets()})
 
 if __name__ == "__main__":
     import multiprocessing

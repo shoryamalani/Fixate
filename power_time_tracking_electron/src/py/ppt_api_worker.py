@@ -143,6 +143,8 @@ def update_server_data(to_update,focused):
                 response = requests.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
                 if response.status_code == 200:
                     database_worker.reset_database(update[0],update[3])
+                    current_user = database_worker.get_current_user_data()
+                    current_user['server_data'] = response.json()['user_data']
                 else:
                     database_worker.reset_database(update[0],60) 
             if update[1] == "daily":
@@ -232,6 +234,18 @@ def get_current_workflow_data():
         data['data'] = json.loads(workflow_data[2])
         database_worker.set_current_workflow_data(data)
     return data
+
+def add_mobile_device(device_id):
+    try:
+        data = requests.post(f"{API_URL}/api/addMobileDevice",json={"device_id":device_id},headers=create_headers()).json()
+        if data['success']:
+            current_user = database_worker.get_current_user_data()
+            current_user['server_data'] = data['user_data']
+            database_worker.set_current_user_data(current_user)
+
+    except Exception as e:
+        print(e)
+        return None
             
 # live focus mode stuff
 

@@ -292,7 +292,6 @@ const  DailyTasks = forwardRef((props,ref) => {
         <>
         <StartFocusModeOverlay open={overlayOpen} handleClose={handleStartFocusModeFromOverlay} focusModeData={currentFocusModeData} ></StartFocusModeOverlay>
         <AddTaskOverlay open={showAddFocusOverlay} handleClose={handleAddFocusModeFromOverlay}></AddTaskOverlay>
-        <Stack direction="column" spacing={0} style={{padding:0,position:'relative'}} >
             <ContextualHelp title="Today's Tasks" >
                 <p>Todays tasks is a place to pick what you want to focus on for the day</p>
                 <p>Each item should be considered a separate thing that you want to focus on.</p>
@@ -300,6 +299,7 @@ const  DailyTasks = forwardRef((props,ref) => {
                 <p>When you want to work on a task hit the start button and pick whether you want to block distractions or allow only focused applications</p>
                 <p>If you hit block distractions the app will hide all distractions while hitting focused apps only will block anything thats not in the focused apps category</p>
                 </ContextualHelp>
+        <Stack direction="column" spacing={0} style={{padding:0,position:'relative'}} >
             {/* add a contextual help in the top right corner */}
            
             <Stack direction='row' spacing={2} style={{justifyContent:'center',margin:0}}>
