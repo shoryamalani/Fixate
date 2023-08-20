@@ -327,6 +327,43 @@ def update_to_database_version_1_17():
     c.execute("UPDATE database_and_application_version SET database_version = '1.17' WHERE id=1")
     conn.commit()
 
+def create_scheduling_bucket_data(apps,websites):
+    data = {"apps":apps,"websites":websites,"group_block":False,"group_block_time":0,"group_block_time_type":"minutes","group_block_time_type":False,"block_time": 3600, "post_block_time": 60,"post_double_time":60*15,"weekdays":[True,True,True,True,True,False,False]}
+    return data
+
+def update_to_database_version_1_18():
+    # add defaults to scheduling_buckets
+    conn = connect_to_db()
+    c = conn.cursor()
+    # create messaging bucket
+    messages_bucket = create_scheduling_bucket_data(['Messages',"Discord","Slack","Whatsapp"],['www.discord.com','www.slack.com','  www.remind.com'])
+    # create social media bucket
+    social_media_bucket =  create_scheduling_bucket_data([],['www.facebook.com','www.instagram.com','www.twitter.com','www.reddit.com'])
+    # create entertainment bucket
+    entertainment_bucket = create_scheduling_bucket_data(['Youtube',"Netflix","Hulu","Prime Video"],['www.youtube.com','www.netflix.com','www.hulu.com','www.primevideo.com'])
+    # create news bucket
+    news_bucket = create_scheduling_bucket_data(["News"],['www.nytimes.com','www.washingtonpost.com','www.wsj.com','www.economist.com'])
+    # create shopping bucket
+    shopping_bucket = create_scheduling_bucket_data([],['www.amazon.com','www.ebay.com','www.walmart.com','www.target.com'])
+    # start of day
+    start_time = get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+    # end of day
+    end_time = get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+    add_scheduling_bucket("Messaging",messages_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Social Media",social_media_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Entertainment",entertainment_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("News",news_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Shopping",shopping_bucket,False,start_time,end_time,24*60*60)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.18' WHERE id=1")
+    conn.commit()
+
+def update_to_database_version_1_19():
+    # add a way to know to update the backend scheduling
+    conn = connect_to_db()
+    c = conn.cursor()
+    add_server_update_times = make_write_to_db([(["9","scheduling",get_time_in_format(),120,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+
+
 
 
 
@@ -1060,13 +1097,13 @@ def add_scheduling_bucket(name,data,active,start_time,end_time,duration):
     conn.commit()
     conn.close()
 
-def update_scheduling_bucket(id,name,data,active,start_time,end_time,duration):
+def update_scheduling_bucket(id,name,data,active,duration):
     """
     Updates a scheduling bucket
     """
     conn = connect_to_db()
     c = conn.cursor()
-    c.execute("UPDATE scheduling_buckets SET name = ?, data = ?, active = ?, start_time = ?, end_time = ?, duration = ? WHERE id = ?",(name,json.dumps(data),active,start_time,end_time,duration,id))
+    c.execute("UPDATE scheduling_buckets SET name = ?, data = ?, active = ?,  duration = ? WHERE id = ?",(name,json.dumps(data),active,duration,id))
     conn.commit()
     conn.close()
 

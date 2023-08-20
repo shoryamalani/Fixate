@@ -359,7 +359,10 @@ def get_scheduling_buckets():
 def add_scheduling_bucket():
     logger_application.add_scheduling_bucket(request.json["name"])
     return jsonify({"buckets":logger_application.get_scheduling_buckets()})
-
+@app.route('/update_scheduling_bucket', methods=['POST'])
+def update_scheduling_bucket():
+    logger_application.update_scheduling_bucket(request.json["bucket_id"],request.json['data'])
+    return jsonify({"buckets":logger_application.get_scheduling_buckets()})
 if __name__ == "__main__":
     import multiprocessing
     multiprocessing.freeze_support()

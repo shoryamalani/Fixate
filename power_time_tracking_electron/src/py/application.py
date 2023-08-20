@@ -406,6 +406,7 @@ def get_rings():
     except Exception as e:
         logger.error(e)
         return {"total_time_spent":0,"total_wanted_time_spent":0,"tasks_completed":0,"tasks_total":0}
+
 def get_all_progress_orbits():
     focus_sessions = database_worker.get_all_focus_sessions()
     tasks = database_worker.get_all_active_daily_tasks()
@@ -454,12 +455,25 @@ def check_chrome_extension_installed():
 
 def get_scheduling_buckets():
     data = database_worker.get_scheduling_buckets()
-    return data
+    final_data = []
+    for bucket in data:
+        bucket = list(bucket)
+        bucket[2] = json.loads(bucket[2])
+        final_data.append(bucket)
+    return final_data
 
 def add_scheduling_bucket(name):
-    data = database_worker.add_scheduling_bucket(name,{"apps":[],"websites":[],"group_block":False,"group_block_time":0,"group_block_time_type":"minutes","group_block_time_type":False,"block_time": 3600, "post_block_time": 60,"post_double_time":60*15},True,datetime.datetime.now(),datetime.datetime.now() + datetime.timedelta(days=1),60*60*24)
+    # start of day
+    start_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+    # end of day
+    end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+    data = database_worker.add_scheduling_bucket(name,database_worker.create_scheduling_bucket_data([],[]),True,start_time,end_time,60*60*24)
     return data
 
+def update_scheduling_bucket(id,data):
+    print(data)
+    data = database_worker.update_scheduling_bucket(id,data[1],data[2],data[3],data[5])
+    return data
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
@@ -563,7 +577,12 @@ def boot_up_checker():
         if database_created[1] == "1.16":
             database_worker.update_to_database_version_1_17()
             database_created[1] = "1.17"
-
+        if database_created[1] == "1.17":
+            database_worker.update_to_database_version_1_18()
+            database_created[1] = "1.18"
+        if database_created[1] == "1.18":
+            database_worker.update_to_database_version_1_19()
+            database_created[1] = "1.19"
         if  'device_id' not in database_worker.get_current_user_data():
             cur_data = database_worker.get_current_user_data()
             val = ppt_api_worker.create_devices()
