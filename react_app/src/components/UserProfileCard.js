@@ -164,7 +164,7 @@ function UserProfileCard() {
       {userData != null ?
       <>
         <p style={{fontSize:30}}><strong >Current Display Name:</strong> {userData['user_data']['name']}</p>
-        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['user_data']['data']['share_code']}</p>
+        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['data']['share_code']}</p>
         
         </>
         :

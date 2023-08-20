@@ -1,0 +1,35 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'activityReport' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for activityReport
+
+end
+
+target 'fixate' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  
+  # Pods for fixate
+  pod 'BRYXBanner'
+  target 'fixateTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'fixateUITests' do
+    # Pods for testing
+  end
+
+end
+
+target 'FixateMonitor' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for FixateMonitor
+  pod 'BRYXBanner'
+end

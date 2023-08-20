@@ -22,6 +22,7 @@ import SideNavbar from './components/SideNavbar';
 import { theme } from 'antd';
 import GlowingImage from './components/GlowingImage';
 import SettingsPage from './pages/SettingsPage';
+import Schedule from './pages/Scheduling';
 const {useToken} = theme;
 
 const AppContent = () => {
@@ -101,6 +102,7 @@ const AppContent = () => {
 		<Route path="/liveFocusMode" element={<LiveFocusMode/>}/>
 		<Route path="/userProfile" element={<UserProfilePage></UserProfilePage>}/>
         <Route path='/settings' element={<SettingsPage></SettingsPage>}/>
+        <Route path='/schedule' element={<Schedule></Schedule>}/>
 	</Routes>
 	{/* </div> */}
 	</Layout>

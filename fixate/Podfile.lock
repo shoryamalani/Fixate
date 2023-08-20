@@ -1,0 +1,16 @@
+PODS:
+  - BRYXBanner (0.8.4)
+
+DEPENDENCIES:
+  - BRYXBanner
+
+SPEC REPOS:
+  trunk:
+    - BRYXBanner
+
+SPEC CHECKSUMS:
+  BRYXBanner: 4fbd266f96ce000e4c6cc9a0558c446bd88d9801
+
+PODFILE CHECKSUM: 90febf48f1ce84bdc3dbf2ee1f80c729b9ee6203
+
+COCOAPODS: 1.12.1
