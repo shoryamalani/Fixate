@@ -8,6 +8,7 @@ import AppsIcon from '@mui/icons-material/Apps';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import StreamIcon from '@mui/icons-material/Stream';
 import PersonIcon from '@mui/icons-material/Person';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {theme } from 'antd'
 const {useToken} = theme;
 function getItem(label, key, icon, children) {
@@ -25,7 +26,8 @@ const pages = [
     getItem('App Status', '/appStatus',<AppsIcon></AppsIcon>),
     getItem('User Profile', '/userProfile',<PersonIcon></PersonIcon>),
     getItem('Leaderboards', '/leaderboards',<LeaderboardIcon></LeaderboardIcon>),
-    getItem('Live Focus', '/liveFocusMode',<StreamIcon></StreamIcon>)
+    getItem('Live Focus', '/liveFocusMode',<StreamIcon></StreamIcon>),
+    getItem('Settings', '/settings',<SettingsIcon></SettingsIcon>),
 ]
 
 const SideNavbar = () => {
