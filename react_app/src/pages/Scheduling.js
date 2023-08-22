@@ -46,6 +46,9 @@ function Schedule(props) {
                 if(app['type'] === 'application'){
                     app['type'] = 'apps';
                 }
+                else{
+                    app['type'] = 'websites';
+                }
                 console.log(app['type'])
                 data[app['type']].push(app['name']);
                 var final_bucket = [...buckets[i]];

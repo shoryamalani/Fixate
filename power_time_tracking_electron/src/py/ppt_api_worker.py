@@ -223,6 +223,8 @@ def update_server_data(to_update,focused):
                 except Exception as e:
                     print(e)
                     database_worker.reset_database(update[0],update[3])
+            if update[1] == 'scheduling':
+                database_worker.reset_database(update[0],update[3])
         except Exception as e:
             print(e)
             return None

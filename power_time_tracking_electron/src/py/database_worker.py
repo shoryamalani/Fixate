@@ -362,7 +362,9 @@ def update_to_database_version_1_19():
     conn = connect_to_db()
     c = conn.cursor()
     add_server_update_times = make_write_to_db([(["9","scheduling",get_time_in_format(),120,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
-
+    c.execute(add_server_update_times)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.19' WHERE id=1")
+    conn.commit()
 
 
 
@@ -1120,6 +1122,16 @@ def get_scheduling_bucket_time(id):
         return 0
     else:
         return data[0]
+
+def set_schedule_bucket_timings(id,start_time,end_time):
+    """
+    Sets the schedule bucket timings
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET start_time = ?, end_time = ?,time_spent = ? WHERE id = ?",(start_time,end_time,0,id))
+    conn.commit()
+    conn.close()
 
 def add_time_to_scheduling_bucket(id,time):
     """
