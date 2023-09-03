@@ -11,11 +11,17 @@ struct PointsView: View {
     @ObservedObject var userData:CurrentUserData;
     var body: some View {
         VStack{
-            ScrollView{
-                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisMorningDate() , endTime: Date()))/1000,progressText: "Today:\n "+String(userData.calculatePoints(startTime:getThisMorningDate() , endTime: Date()))).frame(width: 250, height: 250).padding()
-                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisWeek() , endTime: Date()))/5000,progressText: "Week:\n "+String(userData.calculatePoints(startTime:getThisWeek() , endTime: Date()))).frame(width: 250, height: 250).padding()
-                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisMonth() , endTime: Date()))/20000,progressText: "Month:\n "+String(userData.calculatePoints(startTime:getThisMonth() , endTime: Date()))).frame(width: 250, height: 250).padding()
-            }.scrollIndicators(ScrollIndicatorVisibility.hidden)
+//            ScrollView{
+            HStack{
+                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisMorningDate() , endTime: Date()))/1000,progressText: "Today:\n "+String(userData.calculatePoints(startTime:getThisMorningDate() , endTime: Date()))).frame(width: 180, height: 180).padding()
+                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisWeek() , endTime: Date()))/5000,progressText: "Week:\n "+String(userData.calculatePoints(startTime:getThisWeek() , endTime: Date()))).frame(width: 180, height: 180).padding()
+            }
+            HStack{
+                CircularProgressView(progress:Double(userData.calculatePoints(startTime:getThisMonth() , endTime: Date()))/20000,progressText: "Month:\n "+String(userData.calculatePoints(startTime:getThisMonth() , endTime: Date()))).frame(width: 180, height: 180).padding()
+                CircularProgressView(progress:Double(userData.calculateStreakDifficulty())/100,progressText:"Current Streak:\(ObjectPersistanceManager().calculateStreakDays())" ).frame(width: 180, height: 180).padding()
+            }
+            Spacer()
+//            }.scrollIndicators(ScrollIndicatorVisibility.hidden)
         }
     
     }

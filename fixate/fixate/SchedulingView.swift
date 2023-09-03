@@ -10,10 +10,10 @@ import SwiftUI
 struct SchedulingView: View {
     @ObservedObject var userData:CurrentUserData;
     @EnvironmentObject var modelPublic: MyModel
-    var days: [String: Bool]
+    @State var days: [String: Bool]
     @State var selectedNumber: Int
     let minimumValue = 0
-    let maximumValue = 30
+    let maximumValue = 60
     @State private var isDisallowPresented = false
     @State private var weekDays: [String]
     init(userData:CurrentUserData){
@@ -36,8 +36,10 @@ struct SchedulingView: View {
 //                        days[day]?.toggle()
                         var tempDays = days
                         tempDays[day]!.toggle()
-                        ObjectPersistanceManager().saveWeekdays(tempDays)
-                        userData.updateData()
+                        self.days = tempDays
+                        
+//                        ObjectPersistanceManager().saveWeekdays(tempDays)
+//                        userData.updateData()
                         
                         
                     }) {
@@ -46,49 +48,84 @@ struct SchedulingView: View {
                             .foregroundColor(days[day]! ? .white : .blue)
                             .background(days[day]! ? Color.blue : Color.white)
                             .cornerRadius(10)
+                            .scaleEffect(days[day]! ? 1 : 0.7)
                     }
                 }
             }
-            Text("Minutes of use before blocking: \(selectedNumber)")
-                .padding()
+//            Text("Minutes of use before blocking: \(selectedNumber)")
+//                .padding()
             
             Slider(value: Binding<Double>(
                             get: { Double(selectedNumber) },
                             set: {
                                 selectedNumber = Int($0)
-                                ObjectPersistanceManager().setFocusModeThreshold(selectedNumber)
                             }
                         ), in: Double(minimumValue)...Double(maximumValue), step: 1)
                         .padding(.horizontal)
-            Button("Select Apps That Should Always Be Blocked") {
+            Button {
                 isDisallowPresented = true
-            }.buttonStyle(.borderedProminent)
+            }
+        label:{
+            Text("Select Apps That Be Blocked after \(selectedNumber) minutes")
+                .font(Font.body.bold())
+                .padding()
+                .foregroundColor(Color.primary)
+                .colorInvert()
+        }
+        .myButtonStyle()
+                .buttonStyle(.borderedProminent)
                 .familyActivityPicker(isPresented: $isDisallowPresented, selection: $modelPublic.alwaysDistractingApps)
-            Button("Set configuration") {
-                let weekdays = ObjectPersistanceManager().getUserData()?.currentFocusSettings.weekdays
-                let calendar = Calendar.current
-                let components = calendar.dateComponents([.weekday], from: Date())
-                let allWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-                print(weekdays![allWeekdays[components.weekday!-1]])
-                if(weekdays![allWeekdays[components.weekday!-1]] == true){
-                    print("CORRECT WEEKDAY")
+           
+            Text("Apps/Categories Considered Distracting")
+//            VStack{
+//                ForEach(modelPublic.alwaysDistractingApps.applicationTokens, id: \.self) { app in
+//                    Label(app).labelStyle(.iconOnly)
+//                }
+//            }
+            List {
+                ForEach(Array(modelPublic.alwaysDistractingApps.applicationTokens), id: \.self) { app in
+                    Label(app).labelStyle(.titleAndIcon)
                 }
-                else{
-                    
+                ForEach(Array(modelPublic.alwaysDistractingApps.categoryTokens), id: \.self) { app in
+                    Label(app).labelStyle(.titleAndIcon)
                 }
-                MySchedule.scheduleWeeklyFocus()
-            }.buttonStyle(.borderedProminent)
-            
+            }
+            if(days != userData.userData.currentFocusSettings.weekdays || selectedNumber != userData.userData.currentFocusSettings.threshold || model.alwaysDistractingApps != userData.userData.alwaysDistractingApps){
+                Button {
+                    ObjectPersistanceManager().setFocusModeThreshold(selectedNumber)
+                    ObjectPersistanceManager().saveWeekdays(days)
+                    ObjectPersistanceManager().setAlwaysDistractingApps(modelPublic.alwaysDistractingApps)
+                    let weekdays = ObjectPersistanceManager().getUserData()?.currentFocusSettings.weekdays
+                    let calendar = Calendar.current
+                    let components = calendar.dateComponents([.weekday], from: Date())
+                    let allWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                    print(weekdays![allWeekdays[components.weekday!-1]])
+                    if(weekdays![allWeekdays[components.weekday!-1]] == true){
+                        print("CORRECT WEEKDAY")
+                    }
+                    else{
+                        
+                    }
+                    MySchedule.scheduleWeeklyFocus()
+                }
+            label:{
+                Text("Set configuration and reset streak")
+                    .font(Font.body.bold())
+                    .padding()
+                    .foregroundColor(Color.primary)
+                    .colorInvert()
+            }.errorButtonStyle()
+            }
         }.onChange(of: model.alwaysDistractingApps) { newSelection in
             print(newSelection)
-            ObjectPersistanceManager().setAlwaysDistractingApps(newSelection)
+            
             print(model.alwaysDistractingApps)
         }
     }
 }
 
-struct SchedulingView_Previews: PreviewProvider {
-    static var previews: some View {
-        SchedulingView(userData: CurrentUserData()).environmentObject(MyModel())
-    }
-}
+//struct SchedulingView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SchedulingView(userData: CurrentUserData()).environmentObject(MyModel())
+//    }
+//}
