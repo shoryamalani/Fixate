@@ -33,6 +33,10 @@ struct ComputerIntegration: View {
                     .padding()
             
             }
+            Link("Download the computer version", destination: URL(string: "https://www.fixateapp.dev")!)
+                           .font(.headline)
+                           .foregroundColor(.blue)
+                           .padding()
         }.onAppear {
             let account = ObjectPersistanceManager().retrieveAccount()
             if(account == nil) {

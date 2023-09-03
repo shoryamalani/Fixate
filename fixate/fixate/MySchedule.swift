@@ -31,6 +31,8 @@ class MySchedule {
         // create a schedule that repeats every day
         let weeklySchedule = DeviceActivitySchedule(intervalStart: startTime, intervalEnd: endTime, repeats: true)
         let threshold = DateComponents(minute:ObjectPersistanceManager().getUserData()?.currentFocusSettings.threshold ?? 0)
+        
+        ObjectPersistanceManager().startFocusModeStreak()
         let blockedApps = ObjectPersistanceManager().getUserData()?.alwaysDistractingApps ?? FamilyActivitySelection()
         do {
             center.stopMonitoring([.daily])

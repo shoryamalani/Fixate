@@ -38,12 +38,23 @@
 		FBB81E9C2A82B70B007E89EC /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB81E9B2A82B70B007E89EC /* ShieldConfigurationExtension.swift */; };
 		FBB81EA12A82B70B007E89EC /* shieldBranding.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FBB81E952A82B70B007E89EC /* shieldBranding.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FBB81EA52A82B7A3007E89EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBF9C4FC2A6C6C9C008F8943 /* Assets.xcassets */; };
+		FBCBDD7E2A9BB50A002EB665 /* SelectedAppIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBDD7D2A9BB50A002EB665 /* SelectedAppIconView.swift */; };
+		FBCBDD7F2A9BD064002EB665 /* ObjectPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */; };
+		FBCBDD822A9BD102002EB665 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBDD812A9BD102002EB665 /* IconView.swift */; };
+		FBCBDD832A9BD105002EB665 /* IconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBCBDD812A9BD102002EB665 /* IconView.swift */; };
+		FBCBDD842A9BD49B002EB665 /* MyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB05EFC92A6CE6E100C20955 /* MyModel.swift */; };
+		FBCBDD852A9BD4ED002EB665 /* LiveFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6C89202A87EC86007D87EF /* LiveFocus.swift */; };
 		FBD068E52A70DE0E00B8195D /* BRYXBanner in Frameworks */ = {isa = PBXBuildFile; productRef = FBD068E42A70DE0E00B8195D /* BRYXBanner */; };
 		FBD068F12A7106D200B8195D /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB05EFD72A6CEA8A00C20955 /* DeviceActivity.framework */; };
 		FBD068F92A7106D200B8195D /* TestMonitor.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FBD068F02A7106D200B8195D /* TestMonitor.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FBD068FE2A710A1000B8195D /* BRYXBanner in Frameworks */ = {isa = PBXBuildFile; productRef = FBD068FD2A710A1000B8195D /* BRYXBanner */; };
 		FBD069042A7110AD00B8195D /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBD068F32A7106D200B8195D /* DeviceActivityMonitorExtension.swift */; };
 		FBD069072A71181400B8195D /* MyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB05EFC92A6CE6E100C20955 /* MyModel.swift */; };
+		FBF5CEC22AA2F0D100733BE4 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = FBF5CEC12AA2F0D100733BE4 /* SwiftyJSON */; };
+		FBF5CEC42AA3DCC100733BE4 /* WaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CEC32AA3DCC100733BE4 /* WaveView.swift */; };
+		FBF5CEC62AA3DCC900733BE4 /* SliderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CEC52AA3DCC900733BE4 /* SliderData.swift */; };
+		FBF5CED22AA3E0A300733BE4 /* FixateAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0D09F52A7B0415001D1CA7 /* FixateAPIHelper.swift */; };
+		FBF5CED42AA50EE000733BE4 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CED32AA50EE000733BE4 /* Badges.swift */; };
 		FBF9C4F92A6C6C9A008F8943 /* fixateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */; };
 		FBF9C4FB2A6C6C9A008F8943 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF9C4FA2A6C6C9A008F8943 /* ContentView.swift */; };
 		FBF9C4FD2A6C6C9C008F8943 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBF9C4FC2A6C6C9C008F8943 /* Assets.xcassets */; };
@@ -171,11 +182,16 @@
 		FBB81E9B2A82B70B007E89EC /* ShieldConfigurationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldConfigurationExtension.swift; sourceTree = "<group>"; };
 		FBB81E9D2A82B70B007E89EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FBB81E9E2A82B70B007E89EC /* shieldBranding.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = shieldBranding.entitlements; sourceTree = "<group>"; };
+		FBCBDD7D2A9BB50A002EB665 /* SelectedAppIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedAppIconView.swift; sourceTree = "<group>"; };
+		FBCBDD812A9BD102002EB665 /* IconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconView.swift; sourceTree = "<group>"; };
 		FBD068EB2A7101CD00B8195D /* FixateMonitorRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FixateMonitorRelease.entitlements; sourceTree = "<group>"; };
 		FBD068F02A7106D200B8195D /* TestMonitor.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TestMonitor.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBD068F32A7106D200B8195D /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		FBD068F52A7106D200B8195D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FBD068F62A7106D200B8195D /* TestMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestMonitor.entitlements; sourceTree = "<group>"; };
+		FBF5CEC32AA3DCC100733BE4 /* WaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
+		FBF5CEC52AA3DCC900733BE4 /* SliderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderData.swift; sourceTree = "<group>"; };
+		FBF5CED32AA50EE000733BE4 /* Badges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badges.swift; sourceTree = "<group>"; };
 		FBF9C4F52A6C6C9A008F8943 /* fixate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fixate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fixateApp.swift; sourceTree = "<group>"; };
 		FBF9C4FA2A6C6C9A008F8943 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -230,6 +246,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FBF5CEC22AA2F0D100733BE4 /* SwiftyJSON in Frameworks */,
 				FBD068E52A70DE0E00B8195D /* BRYXBanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +288,8 @@
 				FB05EFF22A6CEB6400C20955 /* TotalActivityView.swift */,
 				FB05EFF42A6CEB6400C20955 /* Info.plist */,
 				FB05EFF52A6CEB6400C20955 /* activityReport.entitlements */,
+				FBCBDD7D2A9BB50A002EB665 /* SelectedAppIconView.swift */,
+				FBCBDD812A9BD102002EB665 /* IconView.swift */,
 			);
 			path = activityReport;
 			sourceTree = "<group>";
@@ -348,15 +367,14 @@
 		FBF9C4F72A6C6C9A008F8943 /* fixate */ = {
 			isa = PBXGroup;
 			children = (
-				FB30614E2A81EC31006E4E06 /* Info.plist */,
-				FB56891D2A70B72700D3D516 /* fixateRelease.entitlements */,
-				FBF9C5272A6C7155008F8943 /* fixate.entitlements */,
-				FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */,
+				FB0B4A402A7D566800F4402D /* ComputerIntegration.swift */,
 				FB6C89442A892C27007D87EF /* SchedulingView.swift */,
 				FB30614C2A81DEE7006E4E06 /* PointsView.swift */,
-				FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */,
-				FB0B4A402A7D566800F4402D /* ComputerIntegration.swift */,
 				FBF9C4FA2A6C6C9A008F8943 /* ContentView.swift */,
+				FBF5CEC52AA3DCC900733BE4 /* SliderData.swift */,
+				FBF5CEC32AA3DCC100733BE4 /* WaveView.swift */,
+				FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */,
+				FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */,
 				FBF9C4FC2A6C6C9C008F8943 /* Assets.xcassets */,
 				FBF9C5012A6C6C9C008F8943 /* Persistence.swift */,
 				FBF9C5032A6C6C9C008F8943 /* fixate.xcdatamodeld */,
@@ -366,6 +384,10 @@
 				FB05F0012A6D074E00C20955 /* MySchedule.swift */,
 				FB0D09F52A7B0415001D1CA7 /* FixateAPIHelper.swift */,
 				FB6C89202A87EC86007D87EF /* LiveFocus.swift */,
+				FB30614E2A81EC31006E4E06 /* Info.plist */,
+				FB56891D2A70B72700D3D516 /* fixateRelease.entitlements */,
+				FBF9C5272A6C7155008F8943 /* fixate.entitlements */,
+				FBF5CED32AA50EE000733BE4 /* Badges.swift */,
 			);
 			path = fixate;
 			sourceTree = "<group>";
@@ -491,6 +513,7 @@
 			name = fixate;
 			packageProductDependencies = (
 				FBD068E42A70DE0E00B8195D /* BRYXBanner */,
+				FBF5CEC12AA2F0D100733BE4 /* SwiftyJSON */,
 			);
 			productName = fixate;
 			productReference = FBF9C4F52A6C6C9A008F8943 /* fixate.app */;
@@ -581,6 +604,7 @@
 			mainGroup = FBF9C4EC2A6C6C9A008F8943;
 			packageReferences = (
 				FBD068E32A70DE0E00B8195D /* XCRemoteSwiftPackageReference "BRYXBanner" */,
+				FBF5CEC02AA2F0D100733BE4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = FBF9C4F62A6C6C9A008F8943 /* Products */;
 			projectDirPath = "";
@@ -659,8 +683,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				FB05EFF32A6CEB6400C20955 /* TotalActivityView.swift in Sources */,
+				FBCBDD822A9BD102002EB665 /* IconView.swift in Sources */,
+				FBCBDD852A9BD4ED002EB665 /* LiveFocus.swift in Sources */,
+				FBCBDD7E2A9BB50A002EB665 /* SelectedAppIconView.swift in Sources */,
+				FBCBDD7F2A9BD064002EB665 /* ObjectPersistanceManager.swift in Sources */,
 				FB05EFEF2A6CEB6400C20955 /* activityReport.swift in Sources */,
 				FB05EFF12A6CEB6400C20955 /* TotalActivityReport.swift in Sources */,
+				FBF5CED22AA3E0A300733BE4 /* FixateAPIHelper.swift in Sources */,
+				FBCBDD842A9BD49B002EB665 /* MyModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -706,11 +736,15 @@
 				FBF9C5022A6C6C9C008F8943 /* Persistence.swift in Sources */,
 				FB6C89372A87ECFC007D87EF /* LiveFocusWidgets.intentdefinition in Sources */,
 				FB6C89212A87EC86007D87EF /* LiveFocus.swift in Sources */,
+				FBF5CEC42AA3DCC100733BE4 /* WaveView.swift in Sources */,
 				FBF9C4FB2A6C6C9A008F8943 /* ContentView.swift in Sources */,
 				FB0D09F62A7B0415001D1CA7 /* FixateAPIHelper.swift in Sources */,
 				FB05F0022A6D074E00C20955 /* MySchedule.swift in Sources */,
+				FBCBDD832A9BD105002EB665 /* IconView.swift in Sources */,
+				FBF5CEC62AA3DCC900733BE4 /* SliderData.swift in Sources */,
 				FB6C89452A892C27007D87EF /* SchedulingView.swift in Sources */,
 				FB0B4A412A7D566800F4402D /* ComputerIntegration.swift in Sources */,
+				FBF5CED42AA50EE000733BE4 /* Badges.swift in Sources */,
 				FBF9C4F92A6C6C9A008F8943 /* fixateApp.swift in Sources */,
 				FB30614D2A81DEE7006E4E06 /* PointsView.swift in Sources */,
 			);
@@ -781,7 +815,7 @@
 				INFOPLIST_FILE = activityReport/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = activityReport;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -809,7 +843,7 @@
 				INFOPLIST_FILE = activityReport/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = activityReport;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -839,7 +873,7 @@
 				INFOPLIST_FILE = LiveFocusWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveFocusWidgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -869,7 +903,7 @@
 				INFOPLIST_FILE = LiveFocusWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveFocusWidgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1049,7 +1083,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1103,7 +1137,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1136,12 +1170,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1177,12 +1211,12 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1357,6 +1391,14 @@
 				minimumVersion = 0.8.5;
 			};
 		};
+		FBF5CEC02AA2F0D100733BE4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1369,6 +1411,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = FBD068E32A70DE0E00B8195D /* XCRemoteSwiftPackageReference "BRYXBanner" */;
 			productName = BRYXBanner;
+		};
+		FBF5CEC12AA2F0D100733BE4 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBF5CEC02AA2F0D100733BE4 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
 

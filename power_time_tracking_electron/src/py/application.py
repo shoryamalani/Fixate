@@ -162,15 +162,23 @@ def update_scheduling_time(app,tabname,last_time):
 def check_if_closed_on_scheduling(app,tabname,time):
     global SCHEDULING_DATA
     relevant_buckets = []
+    relevant_name = ""
     if tabname:
         tabname = make_url_to_base(tabname)
+        relevant_name = tabname
         if tabname in SCHEDULING_DATA['websites']:
             relevant_buckets = SCHEDULING_DATA['websites'][tabname]
     else:
+        relevant_name = app['app_name']
         if app['app_name'] in SCHEDULING_DATA['apps']:
             relevant_buckets = SCHEDULING_DATA['apps'][app['app_name']]
     logger.debug('relevant buckets' + str(relevant_buckets))
     logger.debug(time)
+    if 'block_stamps' in SCHEDULING_DATA:
+        if relevant_name in SCHEDULING_DATA['block_stamps']:
+            if datetime.datetime.now() < datetime.datetime.strptime(SCHEDULING_DATA['block_stamps'][relevant_name],"%Y-%m-%d %H:%M:%S"):
+                systemDataHandler.hide_current_frontmost_app()
+                return True
     for bucket in relevant_buckets:
         logger.debug(SCHEDULING_DATA['buckets'][bucket][6])
         if int(SCHEDULING_DATA['buckets'][bucket][6]) > SCHEDULING_DATA['buckets'][bucket][2]['block_time']:
@@ -178,8 +186,10 @@ def check_if_closed_on_scheduling(app,tabname,time):
             logger.debug(int((SCHEDULING_DATA['buckets'][bucket][2]['post_block_time']))/math.pow(2,(int(SCHEDULING_DATA['buckets'][bucket][6]) - int(SCHEDULING_DATA['buckets'][bucket][2]['block_time']))/SCHEDULING_DATA['buckets'][bucket][2]['post_double_time']))
             if int(time) > int((SCHEDULING_DATA['buckets'][bucket][2]['post_block_time']))/math.pow(2,(int(SCHEDULING_DATA['buckets'][bucket][6]) - int(SCHEDULING_DATA['buckets'][bucket][2]['block_time']))/SCHEDULING_DATA['buckets'][bucket][2]['post_double_time']):
                 systemDataHandler.hide_current_frontmost_app()
+                if 'block_stamps' not in SCHEDULING_DATA['buckets'][bucket][2]:
+                    SCHEDULING_DATA['block_stamps'] = {}
+                SCHEDULING_DATA['block_stamps'][relevant_name] = (datetime.datetime.now()+datetime.timedelta(seconds=SCHEDULING_DATA['buckets'][bucket][2]['post_block_time'])).strftime("%Y-%m-%d %H:%M:%S")
                 return True
-
 
 
 
@@ -317,7 +327,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.13
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.16
     return parsed_apps
 
 # def get_all_distracting_apps():

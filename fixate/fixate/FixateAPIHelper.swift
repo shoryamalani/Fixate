@@ -175,6 +175,7 @@ class APIManager {
                     do {
                         //                        let vals = try mobileConectResponse(from: data as! Decoder)
                         let vals = try JSONDecoder().decode(FocusModeResponse.self, from: data)
+                        print(String(data: data, encoding: .utf8) )
                         print(vals.status)
                         
                         completion(.success(vals))
@@ -182,6 +183,7 @@ class APIManager {
                         
                     }catch{
                         print("failed to decode")
+                        print(String(data: data, encoding: .utf8) )
                     }
 //                    print("Response data string:\n \(dataString)")
                 }

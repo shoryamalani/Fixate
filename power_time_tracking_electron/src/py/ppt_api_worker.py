@@ -252,6 +252,10 @@ def add_mobile_device(device_id):
 def start_focus_mode_on_phone(duration,name,type,id):
     try:
         print("SENDING FOCUS MODE")
+        try:
+            duration = int(duration)
+        except:
+            duration = 20
         return requests.post(f"{API_URL}/api/startFocusModeOnPhone",json={
             "duration":duration,
             "name":name,

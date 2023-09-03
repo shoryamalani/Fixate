@@ -11,6 +11,7 @@ import Combine
 import DeviceActivity
 import ManagedSettings
 
+
 extension DeviceActivityName {
     // Set the name of the activity to "daily"
     static let daily = Self("daily")
@@ -63,6 +64,8 @@ struct FocusModeSettings: Codable {
     var threshold: Int?
     var lastReachedThreshold: Int?
     var lastReachedThresholdDay: String?
+    var streakSince: String?
+    var pointsPerDay: Int?
     
 }
 
@@ -80,6 +83,21 @@ struct SavedUserData : Codable {
     var alwaysDistractingApps: FamilyActivitySelection
 }
 
+struct Badge : Codable {
+    var dateAchieved: Date?
+    var displayId: Int
+}
+
+
+struct BadgeDisplayData {
+    var displayId: Int
+    var name: String
+    var type: String
+    var description: String
+    var thresholds: [Double]
+    var pointValue: Int
+    var image: String
+}
 
 
 
@@ -227,6 +245,26 @@ class ObjectPersistanceManager {
         var userData = getUserData()
         userData?.currentFocusSettings.threshold = threshold
         saveUserData(userData!)
+    }
+    func startFocusModeStreak(){
+        var userData = getUserData()
+        let streakFormat = DateFormatter()
+        streakFormat.dateFormat = "yyyy-MM-dd"
+        userData?.currentFocusSettings.streakSince = streakFormat.string(from: Date())
+        saveUserData(userData!)
+    }
+    func calculateStreakDays()->Int{
+//        return int
+        let userData = getUserData()
+        let streakFormat = DateFormatter()
+        streakFormat.dateFormat = "yyyy-MM-dd"
+        let streakSince = streakFormat.date(from: userData!.currentFocusSettings.streakSince ?? streakFormat.string(from: Date()))
+        let today = streakFormat.date(from: streakFormat.string(from: Date()))
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: streakSince!, to: today!)
+        return components.day!
+        
+        
     }
 }
 struct FixateAccount: Codable {

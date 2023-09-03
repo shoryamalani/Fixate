@@ -59,6 +59,7 @@ struct TotalActivityReport: DeviceActivityReportScene {
                                 appHash.updateValue(appHash[appsNext!.application.localizedDisplayName!]!+appsNext!.totalActivityDuration, forKey: appsNext!.application.localizedDisplayName!)
                             }else{
                                 appHash[appsNext!.application.localizedDisplayName!] = appsNext!.totalActivityDuration
+                            
                             }
                         }
                         appsNext = await appsIter.next()

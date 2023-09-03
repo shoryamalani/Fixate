@@ -11,7 +11,7 @@ import FamilyControls
 import ManagedSettings
 import UserNotifications
 import Combine
-
+import DeviceActivity
 
 
 //public let tim = Timer.publish(every: 2, on: .current, in: .common).autoconnect()
@@ -20,6 +20,10 @@ public var model = MyModel.shared
 public struct publicModelStore {
     static var publicModel = model
 }
+extension DeviceActivityReport.Context {
+    static let iconView = Self("Icon View")
+}
+
 
 class AppDelegate: NSObject, UIApplicationDelegate,UNUserNotificationCenterDelegate {
     // Make this request when the app launches
@@ -63,6 +67,15 @@ class CurrentUserData : ObservableObject {
         DispatchQueue.main.async {
             self.userData = ObjectPersistanceManager().getUserData()!
         }
+    }
+    
+    func calculateStreakDifficulty() -> Double{
+//        Take number of days/7 and multiply it by 10/minutes allowed
+        let days = self.userData.currentFocusSettings.weekdays!.filter{$0.value}.count
+        let minutes = Double(self.userData.currentFocusSettings.threshold ?? 10) + 1
+        let streakDifficulty = Double(days)/Double(7) * Double(20)/minutes * 100
+        return streakDifficulty
+        
     }
     func calculatePoints(startTime:Date, endTime:Date) -> Int{
         var points:Int = 0
@@ -173,14 +186,17 @@ struct fixateApp: App {
                             if(duration < 15){
                                 duration = 15
                             }
-                            
+                            print("The duration is \(duration)")
                             
                             MySchedule.startTimedFocusMode(num: duration,focusMode: focusModeFixed)
                         } else if (curUserData?.currentFocusSettings.focusMode?.focusMode != nil && data.focus_mode_active == false){
                             print("we should end a focus mode")
+                            MyModel.shared.stopFocusMode()
                             ObjectPersistanceManager().saveCurrentFocusMode()
                             ObjectPersistanceManager().clearCurrentFocusMode()
 
+                        } else if(curUserData?.currentFocusSettings.streakSince == nil){
+                            ObjectPersistanceManager().startFocusModeStreak()
                         }
                         userData.updateData()
                     }

@@ -146,7 +146,6 @@ struct LiveFocusActivityWidget: Widget {
                         } else {
                             print("The time is now \(time)")
                         }
-
                         counter += 1
                     }
 //                    Spacer()
