@@ -3,8 +3,6 @@ Power Time Tracking is an application that helps you both identify what is distr
 # Installation
 Download the latest version through [SourceForge](https://sourceforge.net/projects/powertimetracking/)
 
-On Windows versions, a restart is required after the installation process. This is expected to be resolved in a future version.
-
 
 # Contributors
 Main developer - [Shorya Malani](https://github.com/shoryamalani)
