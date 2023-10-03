@@ -166,7 +166,7 @@ sip==5.0.1
 six==1.16.0
 # toml==0.10.2
 uiautomation
-urllib3==1.26.9
+urllib3==1.26.17
 waitress
 wheel
 Werkzeug==2.1.1

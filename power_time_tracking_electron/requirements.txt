@@ -161,7 +161,7 @@ simplecalculator
 sip==5.0.1
 six==1.16.0
 toml==0.10.2
-urllib3==1.26.9
+urllib3==1.26.17
 Werkzeug
 zipp==3.8.0
 zope.event==4.5.0
