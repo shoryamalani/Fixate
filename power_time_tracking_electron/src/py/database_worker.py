@@ -1142,3 +1142,10 @@ def add_time_to_scheduling_bucket(id,time):
     c.execute("UPDATE scheduling_buckets SET time_spent = ? WHERE id = ?",(time,id))
     conn.commit()
     conn.close()
+
+
+def reset_user_data():
+    """
+    Resets the user data
+    """
+    set_current_user_data({})
