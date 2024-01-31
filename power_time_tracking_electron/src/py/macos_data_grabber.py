@@ -9,7 +9,7 @@ import os
 import multiprocessing
 from AppKit import NSAlert, NSAlertFirstButtonReturn, NSWorkspace, NSURL,NSEvent, NSMouseMovedMask, NSKeyDownMask
 from Foundation import NSObject
-from ApplicationServices import AXIsProcessTrusted
+
 import datetime
 import database_worker
 import constants
@@ -133,31 +133,28 @@ def get_permission_to_accessibility():
     # no point recreating it
     #https://github.com/ActivityWatch/aw-watcher-window/tree/235ebea7d9e6cd9ec96e943b0d2cdb17e7c2e398
     
-    
+    from ApplicationServices import AXIsProcessTrusted
     sleep(5)
     accessibility_permissions = AXIsProcessTrusted()
     if not accessibility_permissions:
-        sleep(5)
-        accessibility_permissions = AXIsProcessTrusted()
-        if not accessibility_permissions:
-            title = "Missing accessibility permissions"
-            info = "For Fixate to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Fixate in System Preferences"
+        title = "Missing accessibility permissions"
+        info = "For Fixate to get the name of windows and tabs we need accessibility permissions. \n If you've already given permission before and yet you are still seeing this try removing and re-adding Fixate in System Preferences"
 
-            alert = NSAlert.new()
-            alert.setMessageText_(title)
-            alert.setInformativeText_(info)
+        alert = NSAlert.new()
+        alert.setMessageText_(title)
+        alert.setInformativeText_(info)
 
-            ok_button = alert.addButtonWithTitle_("Open accessibility settings")
+        ok_button = alert.addButtonWithTitle_("Open accessibility settings")
 
-            alert.addButtonWithTitle_("Close")
-            choice = alert.runModal()
-            if choice == NSAlertFirstButtonReturn:
-                NSWorkspace.sharedWorkspace().openURL_(
-                    NSURL.URLWithString_(
-                        "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
-                    )
+        alert.addButtonWithTitle_("Close")
+        choice = alert.runModal()
+        if choice == NSAlertFirstButtonReturn:
+            NSWorkspace.sharedWorkspace().openURL_(
+                NSURL.URLWithString_(
+                    "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"
                 )
-        
+            )
+    
 
 # old code to grab tabs that is no longer used
         

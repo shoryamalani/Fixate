@@ -9,7 +9,7 @@ import { CircularProgressWithLabel } from './CircularProgressBar';
 import { blue } from '@mui/material/colors';
 // import { Icon } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { AspectRatio, Refresh } from '@mui/icons-material';
+import { AspectRatio, QuestionMark, Refresh } from '@mui/icons-material';
 import { setCurrentTasks, setOldTasks, setTodaysTasks } from '../features/TasksSlice';
 import SmartTaskList from './SmartTaskList';
 import { color, maxHeight, maxWidth } from '@xstyled/styled-components';
@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import StartFocusModeOverlay from './StartFocusModeOverlay';
 import AddTaskOverlay from './AddTaskOverlay';
 import { forwardRef } from 'react';
+import ContextualHelp from './ContextualHelp';
 // import AddIcon from '@mui/icons-material/Add';
 var _DATE_FORMAT_REGXES = {
     'Y': new RegExp('^-?[0-9]+'),
@@ -291,9 +292,16 @@ const  DailyTasks = forwardRef((props,ref) => {
         <>
         <StartFocusModeOverlay open={overlayOpen} handleClose={handleStartFocusModeFromOverlay} focusModeData={currentFocusModeData} ></StartFocusModeOverlay>
         <AddTaskOverlay open={showAddFocusOverlay} handleClose={handleAddFocusModeFromOverlay}></AddTaskOverlay>
-        <Stack direction="column" spacing={0} style={{padding:0}} >
-
-
+            <ContextualHelp title="Today's Tasks" >
+                <p>Todays tasks is a place to pick what you want to focus on for the day</p>
+                <p>Each item should be considered a separate thing that you want to focus on.</p>
+                <p>It is better if each thing has some sort of end goal after which you know you are done</p>
+                <p>When you want to work on a task hit the start button and pick whether you want to block distractions or allow only focused applications</p>
+                <p>If you hit block distractions the app will hide all distractions while hitting focused apps only will block anything thats not in the focused apps category</p>
+                </ContextualHelp>
+        <Stack direction="column" spacing={0} style={{padding:0,position:'relative'}} >
+            {/* add a contextual help in the top right corner */}
+           
             <Stack direction='row' spacing={2} style={{justifyContent:'center',margin:0}}>
             <h2>Todays Tasks</h2>
             <Button variant='contained' color='success' style={{margin:'1em'}} onClick={()=>{setShowAddFocusOverlay(true)}} > <AddIcon  style={{aspectRatio:1}} color='white'/></Button>

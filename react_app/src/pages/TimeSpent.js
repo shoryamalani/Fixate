@@ -8,7 +8,7 @@ import Calendar from 'react-calendar';
 import {Bar, Line, Pie} from 'react-chartjs-2';
 import Chart, { scales } from 'chart.js/auto';
 import { Colors } from 'chart.js/auto';
-import { Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
+import { Grid, Paper, Skeleton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFocusModes } from '../features/FocusModesSlice';
 import {CircularProgressWithLabel} from '../components/CircularProgressBar';
@@ -19,6 +19,9 @@ import ContentDivUnstyled from '../components/ContentDivUnstyled';
 import {Layout, theme} from 'antd';
 import { Header } from 'antd/es/layout/layout';
 import {Dropdown} from 'antd';
+import LookawayChart from "../components/charts/LookawayChart";
+import DistractedPercentChart from "../components/charts/DistractedPercentChart";
+import TimeSpentPieChart from "../components/charts/TimeSpentPieChart";
 // import "../components/Calendar.css";
 const {useToken} = theme;
 
@@ -447,101 +450,61 @@ function TimeSpent() {
       // flexDirection: 'column',
       // alignItems: 'center',
       // textAlign: 'center',
-      justifyContent:'space-between',
+      // justifyContent:'space-between',
       // alignSelf:'center',
       width:'100%',
-      display:'flex',
-      flexDirection:'column',
+      // display:'flex',
+      // flexDirection:'column',
 
       }}>
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
-      <div style={{display:'flex',flexDirection:'column',flexGrow:1,flexWrap:1,alignItems:'space-between',height:'100%'}}>
+      {/* <div style={{maxWidth:'100%'}}> */}
+      {/* <div style={{display:'flex',flexDirection:'column',flexGrow:1,flexWrap:1,alignItems:'space-between',height:'100%',maxWidth:'100%'}}> */}
       {/* <ContentDivUnstyled style={{padding:'0.5em',borderRadius:'1em',height:'10%'}}> */}
       <h1 style={{padding:0,textAlign:'center',fontSize:44}}>Time Spent</h1>
       {/* </ContentDivUnstyled>  */}
-      <div style={{backgroundColor:token.colorBgContainer,borderRadius:'2em',padding:'0.5em',margin:'0.5em',display:'flex',justifyContent:'center'}}>
-      <Stack direction='row' style={{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center',flexGrow:1}}>
+      
+      {/* <div style={{backgroundColor:token.colorBgContainer,display:'table-row',borderRadius:'2em',margin:'0em',maxWidth:'100%'}}> */}
+      {/* <Stack direction='row' spacing={0} style={{display:'table-cell',position:'relative',flexDirection:'row',justifyContent:'center',alignItems:'center',flexGrow:1,maxWidth:'100%',overflow:'unset'}}> */}
+      <Grid2 style={{display:'flex',width:'100%'}} container spacing={1} columns={9} >
       {/* <Stack direction='row' spacing={1} style={{flex:2}} > */}
-      <Stack direction='column' spacing={1} style={{flex:1,display:'flex'}} >
+      <Grid2 xs={3}>
+      <Stack direction='column' spacing={1} style={{marginLeft:'0em',marginRight:'0em'}} >
       {lineChartData ?
-        <ContentDivUnstyled style={{margin: '2em',padding:'1em',height:'50%',width:'90%',borderRadius:'3em'}} >
-        <Line data={lineChartData}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Distractions Over Time",
-            }
-          }
-          
-        }} />
+        <ContentDivUnstyled style={{display:'flex',margin: '2em',padding:'1em',height:'50%',width:'90%',borderRadius:'3em'}} >
+          <DistractedPercentChart data={lineChartData} />
         </ContentDivUnstyled>
         :
         <Skeleton variant="rectangular" width={'90%'} height={'25vh'} style={{borderRadius:'3em'}}/>
         }
         {barChartData ?
-        <ContentDivUnstyled style={{margin: '2em',padding:'1em',height:'50%',borderRadius:'3em',width:'90%'}} >
-        <Bar data={barChartData} 
-        style={{height:'50vh',alignSelf:'center'}}
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Lookaways",
-            }
-          },
-          legend: {
-            display: false
-          }
-        }} />
+        <ContentDivUnstyled style={{margin: '2em',padding:'1em',height:'40%',borderRadius:'3em',width:'90%'}} > 
+        <LookawayChart data={barChartData} />
         </ContentDivUnstyled>
         :
         <Skeleton variant="rectangular" width={'90%'} height={'25vh'} style={{borderRadius:'3em'}}/>
         }
         </Stack>
+        </Grid2>
+        <Grid2 xs={3}>
     {pieChartData ? 
-        <ContentDiv style={{...css.contrastContent,margin: '0em',padding:0,minWidth:'30%', maxWidth:'100%', aspectRatio:1,flex:1}} >
-        <Pie data={pieChartData}
-        id = "pieChart"
-        options={{
-          plugins: {
-            title: {
-              display: true,
-              text: "Minutes Spent per App",
-              
-            }
-            
-          }
-          
-        }} />
+        <ContentDiv style={{margin: '0em',padding:0}} >
+        <TimeSpentPieChart data={pieChartData} />
         </ContentDiv>
         :
         <Skeleton variant="rectangular" width={'50%'} height={'50vh'} style={{borderRadius:'3em'}}/>
-        }
-        </Stack>
-        <Stack direction="column"  spacing={1} style={{flex:1,display:'flexbox',height:'100%',justifyContent:'flex-start',alignItems:'center'}} >
+    }
+   </Grid2> 
+   <Grid2 xs={3}>
+        <Stack direction="column"  spacing={1} style={{height:'100%',justifyContent:'flex-start',alignItems:'center'}} >
         {/* <ContentDiv style={{flex:1,height:'fit-content',display:'flex',justifyContent:'center'}}> */}
           
         <div style={{fontFamily: 'Manrope',fontSize:18,backgroundColor:token.colorBgElevated,color:token.colorText,borderRadius:'3em',margin:'1em',padding:'2em',display:'flex',justifyContent:'center',width:'fit-content'}}>
-          <Dropdown style={{margin:'0em'}}  menu={
-            {
-              items
-            }
-        } >
+          <Dropdown style={{margin:'0em'}}  menu={{items}} >
             <Button variant="contained" color='info' >Pick a Time</Button>
         </Dropdown>
         </div>
-          {/* <Grid2 direction="row" spacing={0}>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_hour")}}>Last Hour</Button>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("last_five_hours")}}>Last 5 Hours</Button>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("today")}}>Today</Button>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("yesterday")}}>Yesterday</Button>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("week")}}>This Week</Button>
-            <Button variant="contained" color='info' style={css.button} onClick={()=>{fetchTimeSpentConstrained("all")}}>All Time</Button>
-          </Grid2> */}
-
-        {/* </ContentDiv> */}
-        <ContentDiv style={{flex:1,display:'flex', justifyContent: 'center'}}>
+        <ContentDiv style={{ justifyContent: 'center',marginLeft:'0em',marginRight:'0em',width:'fit-content'}}>
           <Stack direction={'column'} spacing={1}>
 
         <Button color='info' variant="contained" onClick={()=>{fetchTimeSpent(customDayValue[0],customDayValue[1])}}>Custom</Button> 
@@ -550,8 +513,7 @@ function TimeSpent() {
     <Calendar 
           style={
             {
-              display: 'flex',
-             
+              
             }
           }
           onChange={(v)=>{setCustomDayValue(v);console.log(v)}}
@@ -562,46 +524,17 @@ function TimeSpent() {
           />
           </Stack>
         </ContentDiv>
-        
-
-      {/* <h1 >Old Focus Modes</h1>
-      <TableContainer component={Paper} style={{ minWidth: 650,maxHeight:'50vw' }}>
-        <Table >
-        <TableHead>
-          <TableRow>
-            <TableCell>Focus Name </TableCell>
-            <TableCell align="right">Date</TableCell>
-            <TableCell align="right">Desired Duration (min)</TableCell>
-            <TableCell align="right">Completed</TableCell>
-            <TableCell align="right">Time Spent</TableCell>
-          </TableRow>
-        </TableHead>
-        {focusModes &&
-        <TableBody>
-          {Object.keys(focusModes).reverse().map((focusModeId) => (
-            <TableRow
-              key={focusModeId}
-              style={{visibility: checkFilter(focusModeId) ? 'visible':'collapse'}}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">{focusModes[focusModeId]['name']}</TableCell>
-              <TableCell align="right">{dayjs(focusModes[focusModeId]['start_time']).format('MM/DD/YYYY')}</TableCell>
-              <TableCell align="right">{focusModes[focusModeId]['stated_duration']}</TableCell>
-              <TableCell align="right"><CircularProgressWithLabel  value={(100*(focusModes[focusModeId]['time_completed']/focusModes[focusModeId]['stated_duration'])).toFixed(1)}></CircularProgressWithLabel></TableCell>
-              <TableCell align="right"><Button variant="contained" color='info' onClick={()=>{fetchTimeSpentConstrained(null,focusModeId)}}>See Time Spent</Button></TableCell>
-            </TableRow>
-            ))}
-        </TableBody>
-        }
-        </Table>
-      </TableContainer> */}
         </Stack>
+      </Grid2>
+        </Grid2>
       {/* </div> */}
       {/* </Stack> */}
       </div>
-        </div>
-    </div>
-  )
-}
-
-export default TimeSpent;
+        // </div>
+        // </div>
+        // </div>
+        )
+      }
+      
+      export default TimeSpent;
+      

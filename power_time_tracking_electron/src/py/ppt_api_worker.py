@@ -5,9 +5,23 @@ import json
 import database_worker
 import get_time_spent as time_spent
 import datetime
+from requests.packages.urllib3 import Retry
 from analyze_improvement import analyze_improvements
 API_URL = constants.API_URL
 
+s = requests.Session()
+
+http_retries = Retry(total=1,
+                backoff_factor=0.1,
+                status_forcelist=[ 500, 502, 503, 504 ])
+
+https_retries = Retry(total=1,
+                backoff_factor=0.1,
+                status_forcelist=[ 500, 502, 503, 504 ])
+http = requests.adapters.HTTPAdapter(max_retries=http_retries)
+https = requests.adapters.HTTPAdapter(max_retries=https_retries)
+s.mount('http://', http)
+s.mount('https://', https)
 # here we make the back bones for live focus modes
 
 # below this is non socket requests
@@ -49,6 +63,18 @@ def create_user(name,privacy_level,device_id):
     except Exception as a:
         print(a)
         return None
+    
+def has_active_user():
+    current_user = database_worker.get_current_user_data()
+    try:
+        if 'user_id' in current_user:
+            hasUser = requests.post(f"{API_URL}/api/hasUser",json={"user_id":current_user['user_id']},headers=create_headers())
+            print(hasUser.json())
+            if hasUser.status_code == 200:
+                return hasUser.json()['has_user']
+    except:
+        return True
+    return True
 
 def set_display_name(display_name):
     try:
@@ -64,7 +90,7 @@ def set_display_name(display_name):
 def get_user_data_from_server():
     try:
         print(create_headers())
-        data = requests.get(f"{API_URL}/api/getUser",headers=create_headers()).json()
+        data = s.get(f"{API_URL}/api/getUser",headers=create_headers()).json()
         current_user = database_worker.get_current_user_data()
         current_user['server_data'] = data
         database_worker.set_current_user_data(current_user)
@@ -117,7 +143,7 @@ def get_friend_data_from_server_and_save():
 
 def get_leaderboard_data():
     try:
-        return requests.get(f"{API_URL}/api/getLeaderboardData",headers=create_headers()).json()['leaderboard_data']['data']
+        return s.get(f"{API_URL}/api/getLeaderboardData",headers=create_headers()).json()['leaderboard_data']['data']
     except:
         return None
 
@@ -140,34 +166,36 @@ def update_server_data(to_update,focused):
         try:
             if update[1] == "every_5_minute_regular":
                 time = time_spent.get_time("last_30_minutes")[1]
-                response = requests.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
+                response = s.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
                 if response.status_code == 200:
                     database_worker.reset_database(update[0],update[3])
+                    current_user = database_worker.get_current_user_data()
+                    current_user['server_data'] = response.json()['user_data']
                 else:
                     database_worker.reset_database(update[0],60) 
             if update[1] == "daily":
                 time = time_spent.get_time("today")[1]
-                response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily', 'expiry':24 * 3600},headers=create_headers())
+                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily', 'expiry':24 * 3600},headers=create_headers())
                 if response.status_code == 200:
                     database_worker.reset_database(update[0],update[3])
                 else:
                     database_worker.reset_database(update[0],600) 
             if update[1] == "weekly":
                 time = time_spent.get_time("week")[1]
-                response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly', "expiry":7*84600},headers=create_headers())
+                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly', "expiry":7*84600},headers=create_headers())
                 if response.status_code == 200:
                     database_worker.reset_database(update[0],update[3])
                 else:
                     database_worker.reset_database(update[0],600) 
             if update[1] == "monthly":
                 time = time_spent.get_time("this_month")[1]
-                response = requests.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'monthly', 'expiry':7*84600*4 },headers=create_headers())
+                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'monthly', 'expiry':7*84600*4 },headers=create_headers())
                 if response.status_code == 200:
                     database_worker.reset_database(update[0],update[3])
                 else:
                     database_worker.reset_database(update[0],600) 
             if update[1] == "live_focus_mode":
-                response = requests.post(f"{API_URL}/api/updateLiveFocusMode",json={"data":{
+                response = s.post(f"{API_URL}/api/updateLiveFocusMode",json={"data":{
                     'focused':focused['focused'],
                     'seconds':focused['seconds'],
                 }},headers=create_headers())
@@ -221,6 +249,8 @@ def update_server_data(to_update,focused):
                 except Exception as e:
                     print(e)
                     database_worker.reset_database(update[0],update[3])
+            if update[1] == 'scheduling':
+                database_worker.reset_database(update[0],update[3])
         except Exception as e:
             print(e)
             return None
@@ -232,12 +262,50 @@ def get_current_workflow_data():
         data['data'] = json.loads(workflow_data[2])
         database_worker.set_current_workflow_data(data)
     return data
+
+def add_mobile_device(device_id):
+    try:
+        data = requests.post(f"{API_URL}/api/addPhone",json={"phone_share_code":device_id},headers=create_headers()).json()
+        if data['success']:
+            current_user = database_worker.get_current_user_data()
+            current_user['server_data'] = data['user_data']
+            database_worker.set_current_user_data(current_user)
+
+    except Exception as e:
+        print(e)
+        return None
+
+def start_focus_mode_on_phone(duration,name,type,id):
+    try:
+        print("SENDING FOCUS MODE")
+        try:
+            duration = int(duration)
+        except:
+            duration = 20
+        return s.post(f"{API_URL}/api/startFocusModeOnPhone",json={
+            "duration":duration,
+            "name":name,
+            "type":type,
+            "id":id
+        },headers=create_headers()).json()['success']
+    except Exception as e:
+        print(e)
+        return None
+
+def end_focus_mode_on_phone(id):
+    try:
+        return s.post(f"{API_URL}/api/endFocusModeOnPhone",headers=create_headers(),json={
+            "id":id
+        }).json()['success']
+    except Exception as e:
+        print(e)
+        return None
             
 # live focus mode stuff
 
 def get_live_focus_mode_data():
     try:
-        data =  requests.get(f"{API_URL}/api/getLiveFocusModeData",headers=create_headers()).json()
+        data =  s.get(f"{API_URL}/api/getLiveFocusModeData",headers=create_headers()).json()
         database_worker.set_live_focus_mode_data(data)
         return data
     except Exception as e:
@@ -246,7 +314,7 @@ def get_live_focus_mode_data():
 
 def get_live_focus_mode_requests():
     try:
-        return requests.get(f"{API_URL}/api/getLiveFocusModeRequests",headers=create_headers()).json()['live_focus_mode_requests']
+        return s.get(f"{API_URL}/api/getLiveFocusModeRequests",headers=create_headers()).json()['live_focus_mode_requests']
     except Exception as e:
         print(e)
         return []

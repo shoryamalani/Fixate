@@ -40,13 +40,13 @@ function LiveFocusMode(){
     const [leaderboardList, setLeaderboardList] = useState([]);
     const dispatch = useDispatch();
 
-    if(userData!=null){
-        if(userData['user_data']['server_data']['friends_data'] !== null){
-            if(userData['user_data']['server_data']['friends_data'].length === 0){
-                console.log("In dedication to Mark Wood, maybe you should not have said 'make me a sandwich.'")
-                }
-        }
-    }
+    // if(userData!=null){
+    //     if(userData['user_data']['server_data']['friends_data'] !== null){
+    //         if(userData['user_data']['server_data']['friends_data'].length === 0){
+    //             console.log("In dedication to Mark Wood, maybe you should not have said 'make me a sandwich.'")
+    //             }
+    //     }
+    // }
     const getUserData = async () => {
         fetch('http://localhost:5005/get_current_user').then(response => response.json()).then(data => {
             console.log(data)

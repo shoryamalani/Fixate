@@ -305,6 +305,66 @@ def update_to_database_version_1_15():
     conn.commit()
     conn.close()
 
+def update_to_database_version_1_16():
+    # add the integrations table
+    conn = connect_to_db()
+    c = conn.cursor()
+    integrations_table = create_table_command("integrations",[["id","INTEGER PRIMARY KEY"],["name","text"],['data','json']])
+    c.execute(integrations_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.16' WHERE id=1")
+    conn.commit()
+    conn.close()
+
+def update_to_database_version_1_17():
+    # add the table for scheduling_buckets and the table for scheduling_apps
+    conn = connect_to_db()
+    c = conn.cursor()
+    scheduling_buckets_table = create_table_command("scheduling_buckets",[["id","INTEGER PRIMARY KEY"],["name","text"],['data','json'],['active','boolean'],['start_time','DATETIME'],['end_time','DATETIME'],['time_spent','DOUBLE'],['duration','int'],['last_updated','DATETIME']])
+    
+    scheduling_apps_table = create_table_command("scheduling_apps",[["id","INTEGER PRIMARY KEY"],["name","text"],['bucket_id','int'],['data','json'],['time_spent','DOUBLE'],['duration','int'],['last_updated','DATETIME']])
+    c.execute(scheduling_apps_table)
+    c.execute(scheduling_buckets_table)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.17' WHERE id=1")
+    conn.commit()
+
+def create_scheduling_bucket_data(apps,websites):
+    data = {"apps":apps,"websites":websites,"group_block":False,"group_block_time":0,"group_block_time_type":"minutes","group_block_time_type":False,"block_time": 3600, "post_block_time": 60,"post_double_time":60*15,"weekdays":[True,True,True,True,True,False,False]}
+    return data
+
+def update_to_database_version_1_18():
+    # add defaults to scheduling_buckets
+    conn = connect_to_db()
+    c = conn.cursor()
+    # create messaging bucket
+    messages_bucket = create_scheduling_bucket_data(['Messages',"Discord","Slack","Whatsapp"],['www.discord.com','www.slack.com','  www.remind.com'])
+    # create social media bucket
+    social_media_bucket =  create_scheduling_bucket_data([],['www.facebook.com','www.instagram.com','www.twitter.com','www.reddit.com'])
+    # create entertainment bucket
+    entertainment_bucket = create_scheduling_bucket_data(['Youtube',"Netflix","Hulu","Prime Video"],['www.youtube.com','www.netflix.com','www.hulu.com','www.primevideo.com'])
+    # create news bucket
+    news_bucket = create_scheduling_bucket_data(["News"],['www.nytimes.com','www.washingtonpost.com','www.wsj.com','www.economist.com'])
+    # create shopping bucket
+    shopping_bucket = create_scheduling_bucket_data([],['www.amazon.com','www.ebay.com','www.walmart.com','www.target.com'])
+    # start of day
+    start_time = get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+    # end of day
+    end_time = get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+    add_scheduling_bucket("Messaging",messages_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Social Media",social_media_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Entertainment",entertainment_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("News",news_bucket,False,start_time,end_time,24*60*60)
+    add_scheduling_bucket("Shopping",shopping_bucket,False,start_time,end_time,24*60*60)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.18' WHERE id=1")
+    conn.commit()
+
+def update_to_database_version_1_19():
+    # add a way to know to update the backend scheduling
+    conn = connect_to_db()
+    c = conn.cursor()
+    add_server_update_times = make_write_to_db([(["9","scheduling",get_time_in_format(),120,get_time_in_format()])],"server_update_times",["id","name","next_time","seconds_between_updates","last_updated"])
+    c.execute(add_server_update_times)
+    c.execute("UPDATE database_and_application_version SET database_version = '1.19' WHERE id=1")
+    conn.commit()
 
 
 
@@ -1013,3 +1073,79 @@ def get_improvement_data():
         return None
     else:
         return [json.loads(d[2]) for d in data]
+    
+
+def get_scheduling_buckets():
+    """
+    Gets the scheduling buckets
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM scheduling_buckets")
+    data = c.fetchall()
+    conn.close()
+    if data is None:
+        return []
+    else:
+        return data
+
+def add_scheduling_bucket(name,data,active,start_time,end_time,duration):
+    """
+    Adds a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("INSERT INTO scheduling_buckets (name,data,active,start_time,end_time,time_spent,duration,last_updated) VALUES (?,?,?,?,?,?,?,?)",(name,json.dumps(data),active,start_time,end_time,0.0,duration,get_time_in_format()))
+    conn.commit()
+    conn.close()
+
+def update_scheduling_bucket(id,name,data,active,duration):
+    """
+    Updates a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET name = ?, data = ?, active = ?,  duration = ? WHERE id = ?",(name,json.dumps(data),active,duration,id))
+    conn.commit()
+    conn.close()
+
+def get_scheduling_bucket_time(id):
+    """
+    Gets the time for a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("SELECT time_spent FROM scheduling_buckets WHERE id = ?",[id])
+    data = c.fetchone()
+    conn.close()
+    if data is None:
+        return 0
+    else:
+        return data[0]
+
+def set_schedule_bucket_timings(id,start_time,end_time):
+    """
+    Sets the schedule bucket timings
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET start_time = ?, end_time = ?,time_spent = ? WHERE id = ?",(start_time,end_time,0,id))
+    conn.commit()
+    conn.close()
+
+def add_time_to_scheduling_bucket(id,time):
+    """
+    Adds time to a scheduling bucket
+    """
+    conn = connect_to_db()
+    c = conn.cursor()
+    c.execute("UPDATE scheduling_buckets SET time_spent = ? WHERE id = ?",(time,id))
+    conn.commit()
+    conn.close()
+
+
+def reset_user_data():
+    """
+    Resets the user data
+    """
+    set_current_user_data({})

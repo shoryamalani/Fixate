@@ -164,7 +164,7 @@ function UserProfileCard() {
       {userData != null ?
       <>
         <p style={{fontSize:30}}><strong >Current Display Name:</strong> {userData['user_data']['name']}</p>
-        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['user_data']['data']['share_code']}</p>
+        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['data']['share_code']}</p>
         
         </>
         :
@@ -179,6 +179,7 @@ function UserProfileCard() {
     {/* <label id='display_name'>Set Display Name</label> */}
       <TextField label='Set Display Name' value={displayName} onChange={(e)=>{setDisplayName(e.target.value)}}  />
       {userData != null ? <Button color='info' variant='outlined' onClick={()=>changeName()}>Change Name</Button>: null}
+      {userData == null && <Button color='success' variant='outlined' onClick={()=>{createUser()}}>Create User</Button>}
       </Stack>
       <p>Show on public leader board</p>
         <Stack direction={'row'} spacing={3} justifyContent='center'>
@@ -190,7 +191,7 @@ function UserProfileCard() {
         <Stack direction={'row'} spacing={3} justifyContent='center' style={{fontSize:30}}>
       <p>To be clear it will never show what you have spent your time on,<br></br> only stats like average time between distractions, your efficiency in work, and the longest time you have gone without distractions. </p>
        </Stack>
-         {userData == null && <Button color='success' variant='outlined' onClick={()=>{createUser()}}>Create User</Button>}
+         
          {userData != null ?
       <>
         <h2>Add Friends</h2>

@@ -20,6 +20,7 @@ import {theme} from 'antd'
 import ContentDiv from '../components/ContentDiv';
 import { Store } from 'react-notifications-component';
 import ContentDivUnstyled from '../components/ContentDivUnstyled';
+import ContextualHelp from '../components/ContextualHelp';
 // import {Button} from 'antd'
 const {useToken} = theme;
 var ipcRenderer = window.require('electron').ipcRenderer;
@@ -131,6 +132,7 @@ function FrontPage() {
             if(improvement['period_1_time'] < 600 || improvement['period_2_time'] < 600){
               continue;
             }
+            if(improvement['all_deltas'] !== undefined){
             console.log(improvement['all_deltas']['lookaway_deltas'])
             improvement['all_deltas']['lookaway_deltas'].forEach((element) => {
                 if(element['delta_percent'] < -5.0) {
@@ -151,13 +153,17 @@ function FrontPage() {
             if (improvement['all_deltas']['lookaway_delta_percent'] < -5.0) {
               final_improvements_data.push([improvement['period_1_name'] + ", you were distracted " + -Math.round(improvement['all_deltas']['lookaway_delta_percent']) + "% less than you did " + improvement['period_2_name'].toLowerCase(),"__eyes__"])
             }
+          }
 
             // GET ICON
+            if(final_improvements_data.length !== 0){
             var picked = Math.floor(Math.random() * final_improvements_data.length);
+
             
             // dispatch(setCurrentImprovement(final_improvements_data[picked]))
             // dispatch(setImprovementData(final_improvements_data))
             pickCurrentImprovement()
+            }
             
 
 
@@ -428,7 +434,7 @@ function FrontPage() {
       
       {/* <h1 style={{alignContent:'center',textAlign:"center"}}>Server Controls</h1> */}
       
-    <Stack direction="row" spacing={3} style={{justifyContent:'center',justifyItems:'center', justifyContent:'center',display:'flex',width:'100%'}}>
+    <Stack direction="row" spacing={3} style={{justifyItems:'center', justifyContent:'center',display:'flex',width:'100%'}}>
       <Stack direction="column" spacing={0} style={{justifyContent:'center',justifySelf:'center',height:'fit-content',width:'100%'}} > {/* make this column start from the top*/}
       {/* <div style={{...css.contrastContent}}> */}
       {/* <ContentDivUnstyled style={{padding:'0.5em',margin:'1em',borderRadius:'3em'}}> */}
@@ -458,7 +464,15 @@ function FrontPage() {
     <></>
       }
       
-    <ContentDiv style={{...css.contrastContent,marginBottom:'0em'}}>
+    <ContentDiv style={{...css.contrastContent,marginBottom:'0em',position:'relative'}}>
+      <ContextualHelp title="Logger Controls">
+      <p>Logger controls allow you to control what apps are hidden, as well as what data gets saved.</p>
+      <p>Click the "Logger" button to start logging data about what applications you are using. When "Logger" is blue it is active</p>
+      <p>Click the "Blocking" button to start blocking apps and websites that are considered distracting in your current workflow. When "Blocking" is red it is active</p>
+      <p>Click the "Lockdown" button to start blocking all apps and websites except for those that are considered Focused in your current workflow. When "Lockdown" is red it is active</p>
+      <p>Click the "Restart" button to restart the logger. This is useful if you are having issues with the logger.</p>
+      <p>The workflow that is blue is the one that is active.</p>
+         </ContextualHelp>
       <Stack direction="row" spacing={3} >
     <Stack direction="column" style={{display:'flex',alignItems:'center'}}  spacing={0} >
       <h2 style={{marginTop:'0em',marginBottom:'.5em'}}>Logger Controls</h2>
@@ -489,6 +503,12 @@ function FrontPage() {
     :
     <>
       <ContentDiv>
+      
+
+    <ContextualHelp title="Focus Mode">
+      <p>Focus mode allows you to focus on a task for a set amount of time. </p>
+      <p>Click the "Stop Focus Mode" button to stop the current focus mode.</p>
+      </ContextualHelp>
     <Stack direction="column" spacing={3} >
     <h1 style={css.h1}>Focus Mode</h1>
     <LinearProgress style={{minWidth:'30em'}} variant="determinate" value={(100*((parseInt(currentFocusMode['Time Elapsed'].split(":")[0])  +parseInt((currentFocusMode['Time Elapsed'].split(":")[1]))/60)/currentFocusMode["Duration"]))}/>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "B7734531-B5E0-4CA6-BE8A-EE1CD062F7EB"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E8F806FE-DECE-4D80-92BD-0863C39BD5B6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FixateMonitor/DeviceActivityMonitorExtension.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
+            landmarkName = "intervalDidStart(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E8F806FE-DECE-4D80-92BD-0863C39BD5B6 - 2e00c1d8fb8938a2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FixateMonitor.DeviceActivityMonitorExtension.intervalDidStart(for: DeviceActivity.DeviceActivityName) -&gt; ()"
+                  moduleName = "FixateMonitor"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shoryamalani/Documents/coding/electron_apps/new_app/fixate/FixateMonitor/DeviceActivityMonitorExtension.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "268">
+               </Location>
+               <Location
+                  uuid = "E8F806FE-DECE-4D80-92BD-0863C39BD5B6 - 99dff9fa80b6ab0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "fixate.DeviceActivityMonitorExtension.intervalDidStart(for: DeviceActivity.DeviceActivityName) -&gt; ()"
+                  moduleName = "fixate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shoryamalani/Documents/coding/electron_apps/new_app/fixate/FixateMonitor/DeviceActivityMonitorExtension.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "212">
+               </Location>
+               <Location
+                  uuid = "E8F806FE-DECE-4D80-92BD-0863C39BD5B6 - 99dff9fa80b6ab0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "fixate.DeviceActivityMonitorExtension.intervalDidStart(for: DeviceActivity.DeviceActivityName) -&gt; ()"
+                  moduleName = "fixate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shoryamalani/Documents/coding/electron_apps/new_app/fixate/FixateMonitor/DeviceActivityMonitorExtension.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "19"
+                  endingLineNumber = "19"
+                  offsetFromSymbolStart = "268">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E82782F2-830C-4EF1-A544-6E83C8E18031"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestMonitor/DeviceActivityMonitorExtension.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "intervalDidEnd(for:)"
+            landmarkType = "7">
+            <Actions>
+               <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.Log">
+                  <ActionContent
+                     message = "reaced"
+                     conveyanceType = "0">
+                  </ActionContent>
+               </BreakpointActionProxy>
+            </Actions>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CADD7844-805E-4FA9-8341-D9A1F97AF7D7"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestMonitor/DeviceActivityMonitorExtension.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "32"
+            endingLineNumber = "32"
+            landmarkName = "intervalDidStart(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6BB6CA3A-FD90-44C9-B7DE-A8CEB13F0E34"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fixate/SliderData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
+            landmarkName = "final()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "36631EAD-0E65-4906-BE7C-09675AF15FF8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "fixate/SliderData.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "init(side:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "36631EAD-0E65-4906-BE7C-09675AF15FF8 - ce46757389ceb619"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "fixate.SliderData.init(side: fixate.SliderSide) -&gt; fixate.SliderData"
+                  moduleName = "fixate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shoryamalani/Documents/coding/electron_apps/new_app/fixate/fixate/SliderData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "68">
+               </Location>
+               <Location
+                  uuid = "36631EAD-0E65-4906-BE7C-09675AF15FF8 - d2b211154f5efa15"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in fixate.SliderData.init(side: fixate.SliderSide) -&gt; fixate.SliderData"
+                  moduleName = "fixate"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shoryamalani/Documents/coding/electron_apps/new_app/fixate/fixate/SliderData.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "42"
+                  endingLineNumber = "42"
+                  offsetFromSymbolStart = "0">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

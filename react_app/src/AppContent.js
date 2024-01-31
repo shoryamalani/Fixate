@@ -21,6 +21,8 @@ import Sider from 'antd/es/layout/Sider';
 import SideNavbar from './components/SideNavbar';
 import { theme } from 'antd';
 import GlowingImage from './components/GlowingImage';
+import SettingsPage from './pages/SettingsPage';
+import Schedule from './pages/Scheduling';
 const {useToken} = theme;
 
 const AppContent = () => {
@@ -71,10 +73,10 @@ const AppContent = () => {
 		<Stack direction='column' style={{height:'100%', color:'white', fontSize:'1.5em',flex:1,alignItems:'center',position:'fixed',width:collapsed?'3em':'10em'}}>
 		<SideNavbar style={{height:'100%'}}></SideNavbar>
         { !collapsed ?
-			<Stack direction='column' style={{height:'512px', margin:'16px', color:'white', fontSize:'1.5em',flex:0,alignItems:'center'}}>
-                <GlowingImage style={{height:'5em',width:'5em',aspectRatio:1}} src={require('./assets/icon_512x512x32.png')} alt='Logo'>
-			{/* <img ></img> */}
-            </GlowingImage>
+			<Stack direction='column' style={{height:'10em', margin:'16px', color:'white', fontSize:'1.5em',flex:0,alignItems:'center'}}>
+                {/* <GlowingImage style={{height:'5em',width:'5em',aspectRatio:1}} src={require('./assets/icon_512x512x32.png')} alt='Logo'> */}
+			<img alt='Fixate Logo' style={{height:'3em', margin:'16px', color:'white', fontSize:'1.5em',flex:0,alignItems:'center'}} src={require('./assets/icon_512x512x32.png')} ></img>
+            {/* </GlowingImage> */}
 			<span style={{verticalAlign:'middle'}}>Fixate</span>
 		</Stack>
 		: null
@@ -99,6 +101,8 @@ const AppContent = () => {
 		<Route path="/leaderboards" element={<Leaderboards/>}/>
 		<Route path="/liveFocusMode" element={<LiveFocusMode/>}/>
 		<Route path="/userProfile" element={<UserProfilePage></UserProfilePage>}/>
+        <Route path='/settings' element={<SettingsPage></SettingsPage>}/>
+        <Route path='/schedule' element={<Schedule></Schedule>}/>
 	</Routes>
 	{/* </div> */}
 	</Layout>

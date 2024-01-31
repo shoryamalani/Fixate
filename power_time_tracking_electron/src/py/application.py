@@ -34,6 +34,9 @@ elif sys.platform == "win32":
 global FOCUS_MODE
 FOCUS_MODE = False
 
+global SCHEDULING_DATA
+SCHEDULING_DATA = {}
+
 
 global LAST_FEW_SECONDS
 LAST_FEW_SECONDS = []
@@ -81,32 +84,131 @@ def check_if_must_be_closed(app,tabname,closing_app):
         if tabname:
             for url in apps_to_keep:
                 if url in tabname:
-                    return True
+                    return False
         if tabname:
             systemDataHandler.hide_current_frontmost_app()
             return True
         if app['app_name'] in apps_to_keep or app['app_name'] == "Fixate":
-            return True
+            return False
         else:
             systemDataHandler.hide_current_frontmost_app()
             return True
+    return False
         
+    
 
-        
-        
+def update_scheduling_data():
+    global SCHEDULING_DATA
+    data = database_worker.get_scheduling_buckets()
+    SCHEDULING_DATA['buckets'] = {}
+    SCHEDULING_DATA['apps'] = {}
+    SCHEDULING_DATA['websites'] = {}
+    for bucket in data:
+        if bucket[3] == 1:
+            print(bucket)
+            bucket = list(bucket)
+            bucket[2] = json.loads(bucket[2])
+            
+            SCHEDULING_DATA['buckets'][bucket[0]] = bucket
+            for app in bucket[2]['apps']:
+                if app not in SCHEDULING_DATA['apps']:
+                    SCHEDULING_DATA['apps'][app] = []
+                SCHEDULING_DATA['apps'][app].append(bucket[0])
+            
+            for url in bucket[2]['websites']:
+                if url not in SCHEDULING_DATA['websites']:
+                    SCHEDULING_DATA['websites'][make_url_to_base(url)] = []
+                SCHEDULING_DATA['websites'][make_url_to_base(url)].append(bucket[0])
+            logger.error(SCHEDULING_DATA['websites'])
+
+def update_scheduling_time(app,tabname,last_time):
+    global SCHEDULING_DATA
+    seconds_between_last_time = (datetime.datetime.now()-last_time).total_seconds()
+    logger.debug(seconds_between_last_time) 
+    if tabname:
+        tabname = make_url_to_base(tabname)
+        if tabname in SCHEDULING_DATA['websites']:
+            for bucket in SCHEDULING_DATA['websites'][tabname]:
+                old_bucket_time = SCHEDULING_DATA['buckets'][bucket][6]
+                bucket_end_time = SCHEDULING_DATA['buckets'][bucket][5]
+                if database_worker.get_time_from_format(bucket_end_time) < datetime.datetime.now():
+                    # start of day
+                    start_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+                    # end of day
+                    end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+                    database_worker.set_schedule_bucket_timings(bucket,start_time,end_time)
+                    print("updated scheduling data")
+                    update_scheduling_data()
+                else:
+                    SCHEDULING_DATA['buckets'][bucket][6] = old_bucket_time + seconds_between_last_time
+                    database_worker.add_time_to_scheduling_bucket(bucket,SCHEDULING_DATA['buckets'][bucket][6])
+    else:
+        if app['app_name'] in SCHEDULING_DATA['apps']:
+            for bucket in SCHEDULING_DATA['apps'][app['app_name']]:
+                old_bucket_time = SCHEDULING_DATA['buckets'][bucket][6]
+                bucket_end_time = SCHEDULING_DATA['buckets'][bucket][5]
+                if database_worker.get_time_from_format(bucket_end_time) < datetime.datetime.now():
+                    # start of day
+                    start_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+                    # end of day
+                    end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+                    database_worker.set_schedule_bucket_timings(bucket,start_time,end_time)
+                    print("updated scheduling data")
+                    update_scheduling_data()
+                else:
+                    SCHEDULING_DATA['buckets'][bucket][6] = old_bucket_time + seconds_between_last_time
+                    database_worker.add_time_to_scheduling_bucket(bucket,SCHEDULING_DATA['buckets'][bucket][6])                
+
+def check_if_closed_on_scheduling(app,tabname,time):
+    global SCHEDULING_DATA
+    relevant_buckets = []
+    relevant_name = ""
+    if tabname:
+        tabname = make_url_to_base(tabname)
+        relevant_name = tabname
+        if tabname in SCHEDULING_DATA['websites']:
+            relevant_buckets = SCHEDULING_DATA['websites'][tabname]
+    else:
+        relevant_name = app['app_name']
+        if app['app_name'] in SCHEDULING_DATA['apps']:
+            relevant_buckets = SCHEDULING_DATA['apps'][app['app_name']]
+    logger.debug('relevant buckets' + str(relevant_buckets))
+    logger.debug(time)
+    if 'block_stamps' in SCHEDULING_DATA:
+        if relevant_name in SCHEDULING_DATA['block_stamps']:
+            if datetime.datetime.now() < datetime.datetime.strptime(SCHEDULING_DATA['block_stamps'][relevant_name],"%Y-%m-%d %H:%M:%S"):
+                systemDataHandler.hide_current_frontmost_app()
+                return True
+    for bucket in relevant_buckets:
+        logger.debug(SCHEDULING_DATA['buckets'][bucket][6])
+        if int(SCHEDULING_DATA['buckets'][bucket][6]) > SCHEDULING_DATA['buckets'][bucket][2]['block_time']:
+            logger.debug(time)
+            logger.debug(int((SCHEDULING_DATA['buckets'][bucket][2]['post_block_time']))/math.pow(2,(int(SCHEDULING_DATA['buckets'][bucket][6]) - int(SCHEDULING_DATA['buckets'][bucket][2]['block_time']))/SCHEDULING_DATA['buckets'][bucket][2]['post_double_time']))
+            if int(time) > int((SCHEDULING_DATA['buckets'][bucket][2]['post_block_time']))/math.pow(2,(int(SCHEDULING_DATA['buckets'][bucket][6]) - int(SCHEDULING_DATA['buckets'][bucket][2]['block_time']))/SCHEDULING_DATA['buckets'][bucket][2]['post_double_time']):
+                systemDataHandler.hide_current_frontmost_app()
+                if 'block_stamps' not in SCHEDULING_DATA['buckets'][bucket][2]:
+                    SCHEDULING_DATA['block_stamps'] = {}
+                SCHEDULING_DATA['block_stamps'][relevant_name] = (datetime.datetime.now()+datetime.timedelta(seconds=SCHEDULING_DATA['buckets'][bucket][2]['post_block_time'])).strftime("%Y-%m-%d %H:%M:%S")
+                return True
+
+
+
 
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.13\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\py")]
     last_app = ""
+    current_app_time = 0
     apps = database_worker.get_all_applications()
     apps_and_websites_with_icons = [a[1] for a in database_worker.get_all_applications_and_websites_with_icons()]
     apps_in_name_form = [app[1] for app in apps]
     last_thirty_mins_distracting = 0
     whole_time = 0
     global LAST_FEW_SECONDS
+    last_time = datetime.datetime.now()
+    update_scheduling_data()
     while True:
         
     # # logger.debug(front_app)
@@ -164,8 +266,23 @@ def search_close_and_log_apps():
                 if last_thirty_mins_distracting > 60*20:
                     requests.post("http://127.0.0.1:5005/add_current_notification",json={"notification":{"title":"Just know...","body":f"You have been distracted for more than {math.floor(last_thirty_mins_distracting/60)} minutes in the last 30 minutes. Its ok to be distracted but important to be aware of it."}})
                 last_thirty_mins_distracting = 0
-            check_if_must_be_closed(app,tabname,distracting_apps)
+            update_scheduling_time(app,tabname,last_time)
             
+            if not check_if_must_be_closed(app,tabname,distracting_apps):
+                check_if_closed_on_scheduling(app,tabname,current_app_time)
+            if tabname:
+                if make_url_to_base(tabname) != last_app:
+                    current_app_time = 0
+                else:
+                    current_app_time += (datetime.datetime.now()-last_time).total_seconds()
+                last_app = make_url_to_base(tabname)
+            else:
+                if current_app_name != last_app:
+                    current_app_time = 0
+                else:
+                    current_app_time += (datetime.datetime.now()-last_time).total_seconds()
+                last_app = current_app_name
+            last_time = datetime.datetime.now()
             last_mouse_movement = database_worker.get_time_of_last_mouse_movement()
             if datetime.datetime.now()- last_mouse_movement  > datetime.timedelta(seconds=INACTIVE_TIME):
                 active = False
@@ -174,6 +291,8 @@ def search_close_and_log_apps():
             # print(LAST_FEW_SECONDS)
             check_if_server_must_be_updated() 
             # logger.debug(current_app_name)
+            logger.debug(current_app_time)
+            
             if sys.platform != "win32":
                 sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
@@ -190,6 +309,8 @@ def check_if_server_must_be_updated():
                 vals['focused'] = all(LAST_FEW_SECONDS)
                 vals['seconds'] = len(LAST_FEW_SECONDS)
                 LAST_FEW_SECONDS = []
+            elif a[1] == 'scheduling':
+                update_scheduling_data()
         ppt_api_worker.update_server_data(to_update,vals)
 
 
@@ -206,7 +327,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.13
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.20
     return parsed_apps
 
 # def get_all_distracting_apps():
@@ -406,6 +527,7 @@ def get_rings():
     except Exception as e:
         logger.error(e)
         return {"total_time_spent":0,"total_wanted_time_spent":0,"tasks_completed":0,"tasks_total":0}
+
 def get_all_progress_orbits():
     focus_sessions = database_worker.get_all_focus_sessions()
     tasks = database_worker.get_all_active_daily_tasks()
@@ -433,9 +555,14 @@ def get_all_progress_orbits():
 
 
 
+def get_active_phones():
+    data = database_worker.get_current_user_data()
+    return data['server_data']['mobile_devices']
 
-
-
+def add_active_phone(phone_id):
+    ppt_api_worker.add_mobile_device(phone_id)
+    data = database_worker.get_current_user_data()
+    return data['server_data']['mobile_devices']
 
     
 def get_improvement_data():
@@ -446,6 +573,28 @@ def check_chrome_extension_installed():
     if database_worker.get_latest_chrome_url() == "NOT A URL":
         return False
     return True
+
+def get_scheduling_buckets():
+    data = database_worker.get_scheduling_buckets()
+    final_data = []
+    for bucket in data:
+        bucket = list(bucket)
+        bucket[2] = json.loads(bucket[2])
+        final_data.append(bucket)
+    return final_data
+
+def add_scheduling_bucket(name):
+    # start of day
+    start_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=0,minute=0,second=0))
+    # end of day
+    end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
+    data = database_worker.add_scheduling_bucket(name,database_worker.create_scheduling_bucket_data([],[]),True,start_time,end_time,60*60*24)
+    return data
+
+def update_scheduling_bucket(id,data):
+    print(data)
+    data = database_worker.update_scheduling_bucket(id,data[1],data[2],data[3],data[7])
+    return data
 
 def boot_up_checker():
     # check if still using PowerTimeTracking folder
@@ -543,13 +692,33 @@ def boot_up_checker():
         if database_created[1] == "1.14":
             database_worker.update_to_database_version_1_15()
             database_created[1] = "1.15"
+        if database_created[1] == "1.15":
+            database_worker.update_to_database_version_1_16()
+            database_created[1] = "1.16"
+        if database_created[1] == "1.16":
+            database_worker.update_to_database_version_1_17()
+            database_created[1] = "1.17"
+        if database_created[1] == "1.17":
+            database_worker.update_to_database_version_1_18()
+            database_created[1] = "1.18"
+        if database_created[1] == "1.18":
+            database_worker.update_to_database_version_1_19()
+            database_created[1] = "1.19"
+        
+        if ppt_api_worker.has_active_user() == False:
+            database_worker.reset_user_data()
+            print("no active user")
+        else:
+            print("has active user")
+
+
 
         if  'device_id' not in database_worker.get_current_user_data():
             cur_data = database_worker.get_current_user_data()
             val = ppt_api_worker.create_devices()
             print(val)
             if val:
-                cur_data['device_id'] = ppt_api_worker.create_devices()
+                cur_data['device_id'] = val
                 database_worker.set_current_user_data(cur_data)
         # start_running_event_loop_in_ns_application()
         # start_mouse_movement_checker()

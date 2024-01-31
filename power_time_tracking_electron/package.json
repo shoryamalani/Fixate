@@ -1,7 +1,7 @@
 {
   "name": "Fixate",
   "productName": "Fixate",
-  "version": "1.9.13",
+  "version": "1.9.20",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "rep": "https://github.com/shoryamalani/Fixate",
