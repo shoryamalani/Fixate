@@ -1,5 +1,5 @@
 sleep 2
-# pkgbuild --scripts src/scripts/ --component out/Fixate-mas-universal/Fixate.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/Fixate-mas-1.9.20.pkg
+# pkgbuild --scripts src/scripts/ --component out/Fixate-mas-universal/Fixate.app/ --install-location /Applications/ --sign "Developer ID Installer: Clearpoint Management LLC (6KK9M46VM2)" out/Fixate-mas-1.11.2.pkg
 cp -r ./src/python/ ./out/Fixate-mas-universal/Fixate.app/Contents/Resources/app/src/python
 find ./out/Fixate-mas-universal/ -name "*.so" -execdir codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements "/Users/shoryamalani/Documents/coding/electron_apps/new_app/power_time_tracking_electron/entitlements_mas.plist" --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime  {} \;
 find ./out/Fixate-mas-universal/ -name "*.dylib" -execdir codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements "/Users/shoryamalani/Documents/coding/electron_apps/new_app/power_time_tracking_electron/entitlements_mas.plist" --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime  {} \;
@@ -18,14 +18,14 @@ codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate
 codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements entitlements_mas.plist --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime --deep  ./out/Fixate-mas-universal/Fixate.app/Contents/Frameworks/Electron\ Framework.framework/Versions/A/Electron\ Framework
 codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements entitlements_mas.plist --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime --deep  ./out/Fixate-mas-universal/Fixate.app/Contents/Frameworks/Squirrel.framework/Versions/A/Squirrel
 codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements entitlements_mas.plist --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime --deep  ./out/Fixate-mas-universal/Fixate.app/Contents/MacOS/Fixate
-pkgbuild --timestamp --scripts ./src/scripts --sign "3rd Party Mac Developer Installer: Clearpoint Management LLC (6KK9M46VM2)" --root ./out/Fixate-mas-universal/Fixate.app/ --install-location /Applications/Fixate.app ./out/Fixate-mas-1.9.20.pkg --identifier com.fixate.macos
+pkgbuild --timestamp --scripts ./src/scripts --sign "3rd Party Mac Developer Installer: Clearpoint Management LLC (6KK9M46VM2)" --root ./out/Fixate-mas-universal/Fixate.app/ --install-location /Applications/Fixate.app ./out/Fixate-mas-1.11.2.pkg --identifier com.fixate.macos
 # spctl -a -vv out/Fixate-mas-mas/Fixate.app/
 # xcrun stapler validate out/Fixate-mas-mas/Fixate.app/
 sleep 2
-xcrun notarytool submit out/Fixate-mas-1.9.20.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
+xcrun notarytool submit out/Fixate-mas-1.11.2.pkg --wait --keychain-profile "appleid.apple.com (shoryamalani@icloud.com)"
 sleep 2
-xcrun stapler staple out/Fixate-mas-1.9.20.pkg
-# zip -r out/make/Fixate-mas-universal-1.9.20.zip out/Fixate-mas-universal/Fixate.app
+xcrun stapler staple out/Fixate-mas-1.11.2.pkg
+# zip -r out/make/Fixate-mas-universal-1.11.2.zip out/Fixate-mas-universal/Fixate.app
 # npx electron-forge make --platform=darwin --skip-package --arch=mas
-# codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements entitlements_mas.plist --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime --deep   out/make/zip/darwin/mas/Fixate-mas-universal-1.9.20.zip
-# codesign -vvv --deep --strict out/make/zip/darwin/mas/Fixate-mas-universal-1.9.20.zip
+# codesign --verify --force --timestamp --all-architectures -i ./macappstorefixate2.provisionprofile --entitlements entitlements_mas.plist --sign "3rd Party Mac Developer Application: Clearpoint Management LLC (6KK9M46VM2)" --options runtime --deep   out/make/zip/darwin/mas/Fixate-mas-universal-1.11.2.zip
+# codesign -vvv --deep --strict out/make/zip/darwin/mas/Fixate-mas-universal-1.11.2.zip

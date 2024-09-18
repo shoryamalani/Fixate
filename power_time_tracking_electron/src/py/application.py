@@ -197,8 +197,8 @@ def check_if_closed_on_scheduling(app,tabname,time):
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\py")]
     last_app = ""
     current_app_time = 0
     apps = database_worker.get_all_applications()
@@ -327,7 +327,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.9.20
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.11.2
     return parsed_apps
 
 # def get_all_distracting_apps():
