@@ -1,11 +1,11 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
-VERSION = "1.9.20"
+VERSION = "1.11.3"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\py")]
 
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -40,7 +40,7 @@ closing_apps = False
 whitelist = False
 
 current_notifications = []
-logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {file} | {function} | {line} | {level} | {message}",rotation="5MB", retention=5)
 
 def create_app():
     return app
