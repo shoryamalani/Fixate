@@ -49,6 +49,17 @@
                ReferencedContainer = "container:fixate.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FBF5CED82AA51D9800733BE4"
+               BuildableName = "fixateUIScreenshots.xctest"
+               BlueprintName = "fixateUIScreenshots"
+               ReferencedContainer = "container:fixate.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

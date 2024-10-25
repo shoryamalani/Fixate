@@ -21,6 +21,8 @@
 		FB30614D2A81DEE7006E4E06 /* PointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB30614C2A81DEE7006E4E06 /* PointsView.swift */; };
 		FB4988732A75807100DD9E24 /* ObjectPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */; };
 		FB4988742A75807100DD9E24 /* ObjectPersistanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */; };
+		FB548B6A2AA53D82003603B9 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB548B692AA53D81003603B9 /* SnapshotHelper.swift */; };
+		FB548B6B2AA54496003603B9 /* SnapshotHelper.swift in Resources */ = {isa = PBXBuildFile; fileRef = FB548B692AA53D81003603B9 /* SnapshotHelper.swift */; };
 		FB6C89212A87EC86007D87EF /* LiveFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6C89202A87EC86007D87EF /* LiveFocus.swift */; };
 		FB6C89282A87ECFB007D87EF /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB6C89272A87ECFB007D87EF /* WidgetKit.framework */; };
 		FB6C892A2A87ECFB007D87EF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB6C89292A87ECFB007D87EF /* SwiftUI.framework */; };
@@ -33,6 +35,7 @@
 		FB6C89412A87F82B007D87EF /* LiveFocus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6C89202A87EC86007D87EF /* LiveFocus.swift */; };
 		FB6C89432A87F88E007D87EF /* WidgetDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6C89422A87F88D007D87EF /* WidgetDemo.swift */; };
 		FB6C89452A892C27007D87EF /* SchedulingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB6C89442A892C27007D87EF /* SchedulingView.swift */; };
+		FB8915272C5F3EF80045CAC7 /* PeerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB8915262C5F3EF80045CAC7 /* PeerInterface.swift */; };
 		FBB81E972A82B70B007E89EC /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBB81E962A82B70B007E89EC /* ManagedSettings.framework */; };
 		FBB81E992A82B70B007E89EC /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBB81E982A82B70B007E89EC /* ManagedSettingsUI.framework */; };
 		FBB81E9C2A82B70B007E89EC /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB81E9B2A82B70B007E89EC /* ShieldConfigurationExtension.swift */; };
@@ -55,6 +58,8 @@
 		FBF5CEC62AA3DCC900733BE4 /* SliderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CEC52AA3DCC900733BE4 /* SliderData.swift */; };
 		FBF5CED22AA3E0A300733BE4 /* FixateAPIHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB0D09F52A7B0415001D1CA7 /* FixateAPIHelper.swift */; };
 		FBF5CED42AA50EE000733BE4 /* Badges.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CED32AA50EE000733BE4 /* Badges.swift */; };
+		FBF5CEDC2AA51D9900733BE4 /* fixateUIScreenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CEDB2AA51D9900733BE4 /* fixateUIScreenshots.swift */; };
+		FBF5CEDE2AA51D9900733BE4 /* fixateUIScreenshotsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF5CEDD2AA51D9900733BE4 /* fixateUIScreenshotsLaunchTests.swift */; };
 		FBF9C4F92A6C6C9A008F8943 /* fixateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */; };
 		FBF9C4FB2A6C6C9A008F8943 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBF9C4FA2A6C6C9A008F8943 /* ContentView.swift */; };
 		FBF9C4FD2A6C6C9C008F8943 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBF9C4FC2A6C6C9C008F8943 /* Assets.xcassets */; };
@@ -94,6 +99,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = FBD068EF2A7106D200B8195D;
 			remoteInfo = TestMonitor;
+		};
+		FBF5CEDF2AA51D9900733BE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FBF9C4ED2A6C6C9A008F8943 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FBF9C4F42A6C6C9A008F8943;
+			remoteInfo = fixate;
 		};
 		FBF9C50B2A6C6C9C008F8943 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -165,6 +177,8 @@
 		FB30614C2A81DEE7006E4E06 /* PointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsView.swift; sourceTree = "<group>"; };
 		FB30614E2A81EC31006E4E06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FB4988722A75807100DD9E24 /* ObjectPersistanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectPersistanceManager.swift; sourceTree = "<group>"; };
+		FB548B682AA53BBE003603B9 /* screenshots.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = screenshots.xctestplan; sourceTree = "<group>"; };
+		FB548B692AA53D81003603B9 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		FB5689122A70B05800D3D516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB56891D2A70B72700D3D516 /* fixateRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = fixateRelease.entitlements; sourceTree = "<group>"; };
 		FB6C89202A87EC86007D87EF /* LiveFocus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveFocus.swift; sourceTree = "<group>"; };
@@ -176,6 +190,7 @@
 		FB6C89352A87ECFC007D87EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FB6C89422A87F88D007D87EF /* WidgetDemo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetDemo.swift; sourceTree = "<group>"; };
 		FB6C89442A892C27007D87EF /* SchedulingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchedulingView.swift; sourceTree = "<group>"; };
+		FB8915262C5F3EF80045CAC7 /* PeerInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerInterface.swift; sourceTree = "<group>"; };
 		FBB81E952A82B70B007E89EC /* shieldBranding.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = shieldBranding.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBB81E962A82B70B007E89EC /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
 		FBB81E982A82B70B007E89EC /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
@@ -192,6 +207,9 @@
 		FBF5CEC32AA3DCC100733BE4 /* WaveView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
 		FBF5CEC52AA3DCC900733BE4 /* SliderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SliderData.swift; sourceTree = "<group>"; };
 		FBF5CED32AA50EE000733BE4 /* Badges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Badges.swift; sourceTree = "<group>"; };
+		FBF5CED92AA51D9800733BE4 /* fixateUIScreenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = fixateUIScreenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBF5CEDB2AA51D9900733BE4 /* fixateUIScreenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fixateUIScreenshots.swift; sourceTree = "<group>"; };
+		FBF5CEDD2AA51D9900733BE4 /* fixateUIScreenshotsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fixateUIScreenshotsLaunchTests.swift; sourceTree = "<group>"; };
 		FBF9C4F52A6C6C9A008F8943 /* fixate.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = fixate.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBF9C4F82A6C6C9A008F8943 /* fixateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fixateApp.swift; sourceTree = "<group>"; };
 		FBF9C4FA2A6C6C9A008F8943 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -239,6 +257,13 @@
 			files = (
 				FBD068F12A7106D200B8195D /* DeviceActivity.framework in Frameworks */,
 				FBD068FE2A710A1000B8195D /* BRYXBanner in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBF5CED62AA51D9800733BE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,9 +359,20 @@
 			path = TestMonitor;
 			sourceTree = "<group>";
 		};
+		FBF5CEDA2AA51D9900733BE4 /* fixateUIScreenshots */ = {
+			isa = PBXGroup;
+			children = (
+				FBF5CEDB2AA51D9900733BE4 /* fixateUIScreenshots.swift */,
+				FBF5CEDD2AA51D9900733BE4 /* fixateUIScreenshotsLaunchTests.swift */,
+				FB548B692AA53D81003603B9 /* SnapshotHelper.swift */,
+			);
+			path = fixateUIScreenshots;
+			sourceTree = "<group>";
+		};
 		FBF9C4EC2A6C6C9A008F8943 = {
 			isa = PBXGroup;
 			children = (
+				FB548B682AA53BBE003603B9 /* screenshots.xctestplan */,
 				FBF9C4F72A6C6C9A008F8943 /* fixate */,
 				FB56890F2A70B05800D3D516 /* FixateMonitor */,
 				FBF9C50D2A6C6C9C008F8943 /* fixateTests */,
@@ -345,6 +381,7 @@
 				FBD068F22A7106D200B8195D /* TestMonitor */,
 				FBB81E9A2A82B70B007E89EC /* shieldBranding */,
 				FB6C892B2A87ECFB007D87EF /* LiveFocusWidgets */,
+				FBF5CEDA2AA51D9900733BE4 /* fixateUIScreenshots */,
 				FB05EFD62A6CEA8A00C20955 /* Frameworks */,
 				FBF9C4F62A6C6C9A008F8943 /* Products */,
 			);
@@ -360,6 +397,7 @@
 				FBD068F02A7106D200B8195D /* TestMonitor.appex */,
 				FBB81E952A82B70B007E89EC /* shieldBranding.appex */,
 				FB6C89262A87ECFB007D87EF /* LiveFocusWidgetsExtension.appex */,
+				FBF5CED92AA51D9800733BE4 /* fixateUIScreenshots.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -388,6 +426,7 @@
 				FB56891D2A70B72700D3D516 /* fixateRelease.entitlements */,
 				FBF9C5272A6C7155008F8943 /* fixate.entitlements */,
 				FBF5CED32AA50EE000733BE4 /* Badges.swift */,
+				FB8915262C5F3EF80045CAC7 /* PeerInterface.swift */,
 			);
 			path = fixate;
 			sourceTree = "<group>";
@@ -491,6 +530,24 @@
 			productReference = FBD068F02A7106D200B8195D /* TestMonitor.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		FBF5CED82AA51D9800733BE4 /* fixateUIScreenshots */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBF5CEE12AA51D9900733BE4 /* Build configuration list for PBXNativeTarget "fixateUIScreenshots" */;
+			buildPhases = (
+				FBF5CED52AA51D9800733BE4 /* Sources */,
+				FBF5CED62AA51D9800733BE4 /* Frameworks */,
+				FBF5CED72AA51D9800733BE4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FBF5CEE02AA51D9900733BE4 /* PBXTargetDependency */,
+			);
+			name = fixateUIScreenshots;
+			productName = fixateUIScreenshots;
+			productReference = FBF5CED92AA51D9800733BE4 /* fixateUIScreenshots.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		FBF9C4F42A6C6C9A008F8943 /* fixate */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FBF9C51E2A6C6C9C008F8943 /* Build configuration list for PBXNativeTarget "fixate" */;
@@ -580,6 +637,10 @@
 					FBD068EF2A7106D200B8195D = {
 						CreatedOnToolsVersion = 14.3.1;
 					};
+					FBF5CED82AA51D9800733BE4 = {
+						CreatedOnToolsVersion = 14.3.1;
+						TestTargetID = FBF9C4F42A6C6C9A008F8943;
+					};
 					FBF9C4F42A6C6C9A008F8943 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -617,6 +678,7 @@
 				FBD068EF2A7106D200B8195D /* TestMonitor */,
 				FBB81E942A82B70B007E89EC /* shieldBranding */,
 				FB6C89252A87ECFA007D87EF /* LiveFocusWidgetsExtension */,
+				FBF5CED82AA51D9800733BE4 /* fixateUIScreenshots */,
 			);
 		};
 /* End PBXProject section */
@@ -649,6 +711,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBF5CED72AA51D9800733BE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FB548B6B2AA54496003603B9 /* SnapshotHelper.swift in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +795,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FBF5CED52AA51D9800733BE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBF5CEDC2AA51D9900733BE4 /* fixateUIScreenshots.swift in Sources */,
+				FBF5CEDE2AA51D9900733BE4 /* fixateUIScreenshotsLaunchTests.swift in Sources */,
+				FB548B6A2AA53D82003603B9 /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBF9C4F12A6C6C9A008F8943 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -734,6 +814,7 @@
 				FB4988732A75807100DD9E24 /* ObjectPersistanceManager.swift in Sources */,
 				FB2D8ABD2A6C8BB600F99851 /* managedStores.swift in Sources */,
 				FBF9C5022A6C6C9C008F8943 /* Persistence.swift in Sources */,
+				FB8915272C5F3EF80045CAC7 /* PeerInterface.swift in Sources */,
 				FB6C89372A87ECFC007D87EF /* LiveFocusWidgets.intentdefinition in Sources */,
 				FB6C89212A87EC86007D87EF /* LiveFocus.swift in Sources */,
 				FBF5CEC42AA3DCC100733BE4 /* WaveView.swift in Sources */,
@@ -789,6 +870,11 @@
 			isa = PBXTargetDependency;
 			target = FBD068EF2A7106D200B8195D /* TestMonitor */;
 			targetProxy = FBD068F72A7106D200B8195D /* PBXContainerItemProxy */;
+		};
+		FBF5CEE02AA51D9900733BE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FBF9C4F42A6C6C9A008F8943 /* fixate */;
+			targetProxy = FBF5CEDF2AA51D9900733BE4 /* PBXContainerItemProxy */;
 		};
 		FBF9C50C2A6C6C9C008F8943 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -873,7 +959,7 @@
 				INFOPLIST_FILE = LiveFocusWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveFocusWidgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -885,7 +971,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -903,7 +989,7 @@
 				INFOPLIST_FILE = LiveFocusWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LiveFocusWidgets;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -915,7 +1001,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1033,6 +1119,52 @@
 			};
 			name = Release;
 		};
+		FBF5CEE22AA51D9900733BE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6KK9M46VM2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateUIScreenshots;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = fixate;
+			};
+			name = Debug;
+		};
+		FBF5CEE32AA51D9900733BE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6KK9M46VM2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateUIScreenshots;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = fixate;
+			};
+			name = Release;
+		};
 		FBF9C51C2A6C6C9C008F8943 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1083,7 +1215,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1137,7 +1269,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -1157,7 +1289,7 @@
 				CODE_SIGN_ENTITLEMENTS = fixate/fixate.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"fixate/Preview Content\"";
 				DEVELOPMENT_TEAM = 6KK9M46VM2;
 				ENABLE_PREVIEWS = YES;
@@ -1170,18 +1302,19 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1198,7 +1331,7 @@
 				CODE_SIGN_ENTITLEMENTS = fixate/fixateRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_ASSET_PATHS = "\"fixate/Preview Content\"";
 				DEVELOPMENT_TEAM = 6KK9M46VM2;
 				ENABLE_PREVIEWS = YES;
@@ -1211,18 +1344,19 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2;
+				MARKETING_VERSION = 3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixate;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -1238,13 +1372,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6KK9M46VM2;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/fixate.app/fixate";
 			};
 			name = Debug;
@@ -1258,13 +1395,16 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 6KK9M46VM2;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.5;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/fixate.app/fixate";
 			};
 			name = Release;
@@ -1280,9 +1420,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = fixate;
 			};
 			name = Debug;
@@ -1298,9 +1441,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.shoryamalani.fixateUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = fixate;
 			};
 			name = Release;
@@ -1340,6 +1486,15 @@
 			buildConfigurations = (
 				FBD068FB2A7106D200B8195D /* Debug */,
 				FBD068FC2A7106D200B8195D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBF5CEE12AA51D9900733BE4 /* Build configuration list for PBXNativeTarget "fixateUIScreenshots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBF5CEE22AA51D9900733BE4 /* Debug */,
+				FBF5CEE32AA51D9900733BE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

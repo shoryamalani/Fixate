@@ -37,7 +37,13 @@ function UserProfileCard() {
                     // document.getElementById('privacyChecked')
                 }
                     
-
+                if (data['user_data']['server_data']['friends_data'] == null){
+                    getFriendDataNow();
+                    return;
+                }
+                if(data['user_data']['server_data']['user_data'] == null){
+                    data['user_data']['server_data']['user_data'] = data['user_data']['server_data']['data'] 
+                }
                 dispatch(setUserData(data));
                 getFriendDataNow();
             }
@@ -164,7 +170,9 @@ function UserProfileCard() {
       {userData != null ?
       <>
         <p style={{fontSize:30}}><strong >Current Display Name:</strong> {userData['user_data']['name']}</p>
-        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['data']['share_code']}</p>
+        { userData['user_data']['server_data'] != null &&
+        <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['user_data']['share_code']}</p>
+    }
         
         </>
         :
@@ -254,9 +262,9 @@ function UserProfileCard() {
     </Container>
     </ContentDiv>
     </Stack>
-  
-    </Stack>
+  {/* } */}
     {/* } */}
+    </Stack>
       
       </>
     )
