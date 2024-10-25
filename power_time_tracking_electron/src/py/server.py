@@ -16,13 +16,26 @@ import signal
 import json
 from loguru import logger
 from datetime import datetime
+from werkzeug.middleware.profiler import ProfilerMiddleware
 import ppt_api_worker
 import constants
 
 
 app = Flask(__name__)
+# add logging with cProfile
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+debug = False
+if debug:
+    from werkzeug.middleware.profiler import ProfilerMiddleware
+
+
+    app.wsgi_app = ProfilerMiddleware(
+        app.wsgi_app,
+        restrictions=[30],
+        profile_dir="profiling/input",
+        filename_format="{method}-{path}-{time:.0f}-{elapsed:.0f}ms.prof",
+    )
 closing_apps = False
 whitelist = False
 
@@ -352,7 +365,7 @@ def start_server():
         logger.error(e)
 
 @app.route('/get_scheduling_buckets', methods=['GET'])
-def get_scheduling_buckets():
+def get_scheduling_buckets(): 
     return jsonify({"buckets":logger_application.get_scheduling_buckets()})
 
 @app.route("/add_scheduling_bucket",methods=["POST"])

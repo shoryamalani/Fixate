@@ -9,7 +9,7 @@ import sys
 import database_worker
 import datetime
 import subprocess
-from pebble import concurrent
+# from pebble import concurrent
 from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
@@ -55,8 +55,6 @@ def get_distracting_apps():
     return data
 def check_if_must_be_closed(app,tabname,closing_app):
     try:
-        # closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
-
         will_close = closing_app["closing_apps"]
         whitelist = closing_app["whitelist"]
         if whitelist:
