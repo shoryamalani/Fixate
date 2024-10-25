@@ -10,6 +10,7 @@ import ManagedSettings
 import Foundation
 import FamilyControls
 import Combine
+import GameKit
 
 
  
@@ -85,6 +86,22 @@ class DeviceActivityMonitorExtension: DeviceActivityMonitor {
     override func eventDidReachThreshold(_ event: DeviceActivityEvent.Name, activity: DeviceActivityName) {
         super.eventDidReachThreshold(event, activity: activity)
         // Handle the event reaching its threshold.
+        if(activity == .weeklyCompetition){
+            let manager = ObjectPersistanceManager()
+            manager.addThreshold(event.rawValue);
+            let curScore = manager.getCurrentWeeklyScore();
+            
+            
+            GKLeaderboard.submitScore(50-curScore, context: 0, player: GKLocalPlayer.local, leaderboardIDs: ["WeeklyScores"]) { error in
+                if let error = error {
+                    // Handle the error
+                    print("Error submitting score: \(error.localizedDescription)")
+                } else {
+                    // Score was successfully submitted
+                    print("Score successfully submitted")
+                }
+            }
+        }
         
         if(activity == .daily && event == .timeSpent){
             let center = ObjectPersistanceManager().getUserData()?.alwaysDistractingApps

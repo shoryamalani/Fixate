@@ -62,6 +62,7 @@ class AppDelegate: NSObject, UIApplicationDelegate,UNUserNotificationCenterDeleg
 }
 
 class CurrentUserData : ObservableObject {
+    
     @Published var userData = ObjectPersistanceManager().getUserData()!
     func updateData(){
         DispatchQueue.main.async {
@@ -77,6 +78,9 @@ class CurrentUserData : ObservableObject {
         return streakDifficulty
         
     }
+    
+    
+    
     func calculatePoints(startTime:Date, endTime:Date) -> Int{
         var points:Int = 0
         var focusModePoints = 0
@@ -112,7 +116,7 @@ struct fixateApp: App {
         var curUserDat = ObjectPersistanceManager().getUserData()
         if (curUserDat==nil) {
             let curFocusModes:[FocusMode] = []
-            curUserDat = SavedUserData(userGoals: UserGoals(version: 1, numberOfFocusModesPerDay: 3, focusTimePerDay: 60, daysPerWeek: 5), focusModes:curFocusModes , currentFocusSettings: FocusModeSettings(lastFocusModeToIgnore: -10), distractingApps: FamilyActivitySelection(), alwaysDistractingApps: FamilyActivitySelection())
+            curUserDat = SavedUserData(userGoals: UserGoals(version: 1, numberOfFocusModesPerDay: 3, focusTimePerDay: 60, daysPerWeek: 5), focusModes:curFocusModes , currentFocusSettings: FocusModeSettings(lastFocusModeToIgnore: -10), distractingApps: FamilyActivitySelection(), alwaysDistractingApps: FamilyActivitySelection(), competitionCategories: FamilyActivitySelection(), competitionData: [:])
             ObjectPersistanceManager().saveUserData(curUserDat!)
         }
         if (curUserDat?.currentFocusSettings.weekdays == nil){
@@ -120,6 +124,13 @@ struct fixateApp: App {
         }
         if(curUserDat?.currentFocusSettings.threshold == nil){
             curUserDat?.currentFocusSettings.threshold = 0
+        }
+        if(curUserDat?.competitionCategories == nil){
+            curUserDat?.competitionCategories = FamilyActivitySelection()
+        }
+        if(curUserDat?.competitionData == nil){
+            curUserDat?.competitionData = [:]
+            
         }
         ObjectPersistanceManager().saveUserData(curUserDat!)
         
@@ -221,33 +232,39 @@ struct fixateApp: App {
         }
     var body: some Scene {
         WindowGroup {
-            TabView {
-                
-            
-                ContentView(userData: userData).environmentObject(modelPublic).environmentObject(store).environmentObject(userData)
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .tabItem {
-                                    Label("Home", systemImage: "house")
-                                }
-                ComputerIntegration().environmentObject(modelPublic).environmentObject(store).environmentObject(userData)
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .tabItem {
-                                        Label("Computer", systemImage: "laptopcomputer")
+            HStack{
+                TabView {
+                    
+                    
+                    ContentView(userData: userData).environmentObject(modelPublic).environmentObject(store).environmentObject(userData)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                        .tabItem {
+                            Label("Home", systemImage: "house")
+                        }
+                    ComputerIntegration().environmentObject(modelPublic).environmentObject(store).environmentObject(userData)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                        .tabItem {
+                            Label("Computer", systemImage: "laptopcomputer")
+                        }
+                    PointsView(userData: userData)
+                        .tabItem {
+                            Label("Progress", systemImage: "cellularbars")
+                        }
+                    SchedulingView(userData: userData).environmentObject(modelPublic)
+                        .tabItem {
+                            Label("Schedule", systemImage: "calendar")
+                        }
+                    PeerInterface(userData: userData).environmentObject(modelPublic).tabItem {
+                        Label("Peers",systemImage: "person.2.fill")
                     }
-                PointsView(userData: userData)
-                    .tabItem {
-                                        Label("Progress", systemImage: "cellularbars")
-                    }
-                SchedulingView(userData: userData).environmentObject(modelPublic)
-                    .tabItem {
-                                        Label("Schedule", systemImage: "calendar")
-                    }
-            }
-            .onReceive(timer) {
-                _ in
-            
+                }
+                .onReceive(timer) {
+                    _ in
+                    
                     onStartup()
                     userData.updateData()
+                }
+
             }
         }
     }
