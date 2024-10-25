@@ -1,6 +1,6 @@
 {
   "name": "react_front_end_app",
-  "version": "1.11.2",
+  "version": "1.11.3",
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -57,8 +57,7 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {
