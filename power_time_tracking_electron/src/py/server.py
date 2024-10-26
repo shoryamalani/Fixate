@@ -1,12 +1,11 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
-VERSION = "1.11.3"
+VERSION = "1.11.4"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python\install") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\py")]
-
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python\install") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\py")]
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
 import application as logger_application
