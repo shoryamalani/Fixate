@@ -194,8 +194,8 @@ def check_if_closed_on_scheduling(app,tabname,time):
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python\install") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resource\py")]
     last_app = ""
     current_app_time = 0
     apps = database_worker.get_all_applications()
