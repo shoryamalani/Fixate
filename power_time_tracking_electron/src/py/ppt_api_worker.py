@@ -6,6 +6,7 @@ import database_worker
 import get_time_spent as time_spent
 import datetime
 from requests.packages.urllib3 import Retry
+from loguru import logger
 from analyze_improvement import analyze_improvements
 API_URL = constants.API_URL
 
@@ -57,8 +58,7 @@ def create_user(name,privacy_level,device_id):
         current_user['name'] = name
         current_user['privacy_level'] = privacy_level
         database_worker.set_current_user_data(current_user)
-        current_user['server_data'] = get_user_data_from_server()
-        database_worker.set_current_user_data(current_user)
+        get_user_data_from_server()
         return user_id
     except Exception as a:
         print(a)
@@ -92,7 +92,7 @@ def get_user_data_from_server():
         print(create_headers())
         data = s.get(f"{API_URL}/api/getUser",headers=create_headers()).json()
         current_user = database_worker.get_current_user_data()
-        current_user['server_data'] = data
+        current_user['server_data'] = data['user_data']
         database_worker.set_current_user_data(current_user)
         return data
     except Exception as e:
@@ -133,9 +133,7 @@ def get_friends():
 def get_friend_data_from_server_and_save():
     try:
         data = requests.get(f"{API_URL}/api/getFriendData",headers=create_headers()).json()['friend_data']
-        current_user = database_worker.get_current_user_data()
-        current_user['server_data']['friends_data'] = data
-        database_worker.set_current_user_data(current_user)
+        get_user_data_from_server()
         return data
     except Exception as e:
         print(e)
