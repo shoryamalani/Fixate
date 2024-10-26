@@ -99,7 +99,7 @@ struct SchedulingView: View {
                     let calendar = Calendar.current
                     let components = calendar.dateComponents([.weekday], from: Date())
                     let allWeekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-                    print(weekdays![allWeekdays[components.weekday!-1]])
+                    print(weekdays![allWeekdays[components.weekday!-1]] ?? false)
                     if(weekdays![allWeekdays[components.weekday!-1]] == true){
                         print("CORRECT WEEKDAY")
                     }

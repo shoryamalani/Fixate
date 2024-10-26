@@ -1,0 +1,23 @@
+{
+  "pins" : [
+    {
+      "identity" : "bryxbanner",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bryx-inc/BRYXBanner.git",
+      "state" : {
+        "revision" : "1d00ffc19c379253712a5792a7f5121fa0d66243",
+        "version" : "0.8.5"
+      }
+    },
+    {
+      "identity" : "swiftyjson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyJSON/SwiftyJSON.git",
+      "state" : {
+        "revision" : "b3dcd7dbd0d488e1a7077cb33b00f2083e382f07",
+        "version" : "5.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}

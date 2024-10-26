@@ -6,6 +6,7 @@ import database_worker
 import get_time_spent as time_spent
 import datetime
 from requests.packages.urllib3 import Retry
+from loguru import logger
 from analyze_improvement import analyze_improvements
 API_URL = constants.API_URL
 
@@ -57,8 +58,7 @@ def create_user(name,privacy_level,device_id):
         current_user['name'] = name
         current_user['privacy_level'] = privacy_level
         database_worker.set_current_user_data(current_user)
-        current_user['server_data'] = get_user_data_from_server()
-        database_worker.set_current_user_data(current_user)
+        get_user_data_from_server()
         return user_id
     except Exception as a:
         print(a)
@@ -92,7 +92,7 @@ def get_user_data_from_server():
         print(create_headers())
         data = s.get(f"{API_URL}/api/getUser",headers=create_headers()).json()
         current_user = database_worker.get_current_user_data()
-        current_user['server_data'] = data
+        current_user['server_data'] = data['user_data']
         database_worker.set_current_user_data(current_user)
         return data
     except Exception as e:
@@ -133,9 +133,7 @@ def get_friends():
 def get_friend_data_from_server_and_save():
     try:
         data = requests.get(f"{API_URL}/api/getFriendData",headers=create_headers()).json()['friend_data']
-        current_user = database_worker.get_current_user_data()
-        current_user['server_data']['friends_data'] = data
-        database_worker.set_current_user_data(current_user)
+        get_user_data_from_server()
         return data
     except Exception as e:
         print(e)
@@ -166,49 +164,64 @@ def update_server_data(to_update,focused):
         try:
             if update[1] == "every_5_minute_regular":
                 time = time_spent.get_time("last_30_minutes")[1]
-                response = s.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
-                if response.status_code == 200:
-                    database_worker.reset_database(update[0],update[3])
-                    current_user = database_worker.get_current_user_data()
-                    current_user['server_data'] = response.json()['user_data']
-                else:
-                    database_worker.reset_database(update[0],60) 
+                try:
+                    response = s.post(f"{API_URL}/api/saveLiveSharableData",json={"live_data":time},headers=create_headers())
+                    if response.status_code == 200:
+                        database_worker.reset_database(update[0],update[3])
+                        current_user = database_worker.get_current_user_data()
+                        current_user['server_data'] = response.json()['user_data']
+                    else:
+                        database_worker.reset_database(update[0],600) 
+                except:
+                   database_worker.reset_database(update[0],600)  
             if update[1] == "daily":
                 time = time_spent.get_time("today")[1]
-                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily', 'expiry':24 * 3600},headers=create_headers())
-                if response.status_code == 200:
-                    database_worker.reset_database(update[0],update[3])
-                else:
-                    database_worker.reset_database(update[0],600) 
+                try:
+                    response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'daily', 'expiry':24 * 3600},headers=create_headers())
+                    if response.status_code == 200:
+                        database_worker.reset_database(update[0],update[3])
+                    else:
+                        database_worker.reset_database(update[0],600) 
+                except:
+                   database_worker.reset_database(update[0],600)  
             if update[1] == "weekly":
                 time = time_spent.get_time("week")[1]
-                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly', "expiry":7*84600},headers=create_headers())
-                if response.status_code == 200:
-                    database_worker.reset_database(update[0],update[3])
-                else:
-                    database_worker.reset_database(update[0],600) 
+                try:
+                    response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'weekly', "expiry":7*84600},headers=create_headers())
+                    if response.status_code == 200:
+                        database_worker.reset_database(update[0],update[3])
+                    else:
+                        database_worker.reset_database(update[0],600) 
+                except:
+                   database_worker.reset_database(update[0],600)  
             if update[1] == "monthly":
                 time = time_spent.get_time("this_month")[1]
-                response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'monthly', 'expiry':7*84600*4 },headers=create_headers())
-                if response.status_code == 200:
-                    database_worker.reset_database(update[0],update[3])
-                else:
-                    database_worker.reset_database(update[0],600) 
+                try:
+                    response = s.post(f"{API_URL}/api/saveLeaderboardData",json={"leaderboard_data":time,'timing':'monthly', 'expiry':7*84600*4 },headers=create_headers())
+                    if response.status_code == 200:
+                        database_worker.reset_database(update[0],update[3])
+                    else:
+                        database_worker.reset_database(update[0],600) 
+                except:
+                   database_worker.reset_database(update[0],600)  
             if update[1] == "live_focus_mode":
-                response = s.post(f"{API_URL}/api/updateLiveFocusMode",json={"data":{
-                    'focused':focused['focused'],
-                    'seconds':focused['seconds'],
-                }},headers=create_headers())
-                if response.status_code == 200:
-                    val = response.json()
-                    if 'error' in val:
-                        if val['error'] == "not active":
-                            database_worker.reset_database(update[0],84600)
+                try:
+                    response = s.post(f"{API_URL}/api/updateLiveFocusMode",json={"data":{
+                        'focused':focused['focused'],
+                        'seconds':focused['seconds'],
+                    }},headers=create_headers())
+                    if response.status_code == 200:
+                        val = response.json()
+                        if 'error' in val:
+                            if val['error'] == "not active":
+                                database_worker.reset_database(update[0],84600)
+                        else:
+                            database_worker.reset_database(update[0],update[3])
+                            database_worker.set_live_focus_mode_data(val)
                     else:
                         database_worker.reset_database(update[0],update[3])
-                        database_worker.set_live_focus_mode_data(val)
-                else:
-                    database_worker.reset_database(update[0],update[3])
+                except:
+                   database_worker.reset_database(update[0],update[3]) 
             if update[1] == "improvements_daily":
                 try:
                     data_1 = time_spent.get_time("today")

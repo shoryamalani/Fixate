@@ -9,7 +9,7 @@ import sys
 import database_worker
 import datetime
 import subprocess
-from pebble import concurrent
+# from pebble import concurrent
 from concurrent.futures import TimeoutError
 from loguru import logger
 import requests
@@ -55,8 +55,6 @@ def get_distracting_apps():
     return data
 def check_if_must_be_closed(app,tabname,closing_app):
     try:
-        # closing_app = requests.get("http://localhost:5005/check_closing_apps").json()
-
         will_close = closing_app["closing_apps"]
         whitelist = closing_app["whitelist"]
         if whitelist:
@@ -105,7 +103,7 @@ def update_scheduling_data():
     SCHEDULING_DATA['websites'] = {}
     for bucket in data:
         if bucket[3] == 1:
-            print(bucket)
+            # print(bucket)
             bucket = list(bucket)
             bucket[2] = json.loads(bucket[2])
             
@@ -119,12 +117,11 @@ def update_scheduling_data():
                 if url not in SCHEDULING_DATA['websites']:
                     SCHEDULING_DATA['websites'][make_url_to_base(url)] = []
                 SCHEDULING_DATA['websites'][make_url_to_base(url)].append(bucket[0])
-            logger.error(SCHEDULING_DATA['websites'])
 
 def update_scheduling_time(app,tabname,last_time):
     global SCHEDULING_DATA
     seconds_between_last_time = (datetime.datetime.now()-last_time).total_seconds()
-    logger.debug(seconds_between_last_time) 
+    # logger.debug(seconds_between_last_time) 
     if tabname:
         tabname = make_url_to_base(tabname)
         if tabname in SCHEDULING_DATA['websites']:
@@ -137,7 +134,7 @@ def update_scheduling_time(app,tabname,last_time):
                     # end of day
                     end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
                     database_worker.set_schedule_bucket_timings(bucket,start_time,end_time)
-                    print("updated scheduling data")
+                    # print("updated scheduling data")
                     update_scheduling_data()
                 else:
                     SCHEDULING_DATA['buckets'][bucket][6] = old_bucket_time + seconds_between_last_time
@@ -153,7 +150,7 @@ def update_scheduling_time(app,tabname,last_time):
                     # end of day
                     end_time = database_worker.get_time_in_format_from_datetime(datetime.datetime.now().replace(hour=23,minute=59, second=59))
                     database_worker.set_schedule_bucket_timings(bucket,start_time,end_time)
-                    print("updated scheduling data")
+                    # print("updated scheduling data")
                     update_scheduling_data()
                 else:
                     SCHEDULING_DATA['buckets'][bucket][6] = old_bucket_time + seconds_between_last_time
@@ -172,8 +169,8 @@ def check_if_closed_on_scheduling(app,tabname,time):
         relevant_name = app['app_name']
         if app['app_name'] in SCHEDULING_DATA['apps']:
             relevant_buckets = SCHEDULING_DATA['apps'][app['app_name']]
-    logger.debug('relevant buckets' + str(relevant_buckets))
-    logger.debug(time)
+    # logger.debug('relevant buckets' + str(relevant_buckets))
+    # logger.debug(time)
     if 'block_stamps' in SCHEDULING_DATA:
         if relevant_name in SCHEDULING_DATA['block_stamps']:
             if datetime.datetime.now() < datetime.datetime.strptime(SCHEDULING_DATA['block_stamps'][relevant_name],"%Y-%m-%d %H:%M:%S"):
@@ -197,8 +194,8 @@ def check_if_closed_on_scheduling(app,tabname,time):
 def search_close_and_log_apps():
     if sys.platform == "win32":
         def pythonFolder(folder: str) -> str:
-            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\python") + "\\" + folder
-        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.2\resources\py")]
+            return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python") + "\\" + folder
+        sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.3\resources\py")]
     last_app = ""
     current_app_time = 0
     apps = database_worker.get_all_applications()
@@ -291,14 +288,14 @@ def search_close_and_log_apps():
             # print(LAST_FEW_SECONDS)
             check_if_server_must_be_updated() 
             # logger.debug(current_app_name)
-            logger.debug(current_app_time)
+            # logger.debug(current_app_time)
             
             if sys.platform != "win32":
                 sleep(1)
         # logger.debug(database_worker.get_time_of_last_mouse_movement())
         except Exception as err:
             logger.error(err)
-
+            sleep(.3)
 def check_if_server_must_be_updated():
     to_update = database_worker.server_update_required()
     global LAST_FEW_SECONDS
@@ -327,7 +324,7 @@ def get_all_apps_statuses():
     parsed_apps = {}
     all_apps = database_worker.get_all_apps_statuses()
     for app in all_apps:
-        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.11.2
+        parsed_apps[app[0]] = {"name":app[1],"type":app[2],"distracting":False,"focused":False} # while technically there is data in the distracting and focused fields, it will no longer be used as of 1.11.3
     return parsed_apps
 
 # def get_all_distracting_apps():
@@ -462,7 +459,7 @@ def get_workflows():
 def get_all_apps_in_workflow(workflow_id):
     if not workflow_id:
         workflow_id = database_worker.get_current_workflow_data()['id']
-    print(workflow_id)
+    # print(workflow_id)
     workflow_data = database_worker.get_workflow_by_id(workflow_id)[2]
     workflow_apps = json.loads(workflow_data)['applications']
     workflow_mods = json.loads(workflow_data)['modifications']
@@ -556,6 +553,7 @@ def get_all_progress_orbits():
 
 
 def get_active_phones():
+    ppt_api_worker.get_user_data_from_server()
     data = database_worker.get_current_user_data()
     return data['server_data']['mobile_devices']
 
@@ -592,7 +590,7 @@ def add_scheduling_bucket(name):
     return data
 
 def update_scheduling_bucket(id,data):
-    print(data)
+    # print(data)
     data = database_worker.update_scheduling_bucket(id,data[1],data[2],data[3],data[7])
     return data
 
@@ -600,7 +598,7 @@ def boot_up_checker():
     # check if still using PowerTimeTracking folder
     if os.path.exists(constants.OLD_DATABASE_LOCATION) and not os.path.exists(constants.DATABASE_LOCATION+"/time_database.db"):
         # try:
-        print("moving database")
+        # print("moving database")
         # shutil.move(constants.OLD_DATABASE_LOCATION, constants.DATABASE_LOCATION)
         # shutil.copytree(constants.OLD_DATABASE_LOCATION, constants.DATABASE_LOCATION)
         shutil.copyfile(constants.OLD_DATABASE_LOCATION+"/time_database.db", constants.DATABASE_LOCATION+"/time_database.db")
@@ -628,7 +626,7 @@ def boot_up_checker():
     except Exception as e:
         logger.debug(e)
         return e
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {file} | {function} | {line} | {level} | {message}",rotation="5MB", retention=5)
     try:
         if not os.path.exists(constants.DATABASE_LOCATION):
             os.mkdir(constants.DATABASE_LOCATION)
@@ -704,12 +702,15 @@ def boot_up_checker():
         if database_created[1] == "1.18":
             database_worker.update_to_database_version_1_19()
             database_created[1] = "1.19"
+        if database_created[1] == "1.19":
+            database_worker.update_to_database_version_1_20()
+            database_created[1] = "1.20"
         
         if ppt_api_worker.has_active_user() == False:
             database_worker.reset_user_data()
-            print("no active user")
+            logger.debug("no active user")
         else:
-            print("has active user")
+            logger.debug("has active user")
 
 
 

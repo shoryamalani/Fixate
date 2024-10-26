@@ -64,6 +64,17 @@
                ReferencedContainer = "container:fixate.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "FBF5CED82AA51D9800733BE4"
+               BuildableName = "fixateUIScreenshots.xctest"
+               BlueprintName = "fixateUIScreenshots"
+               ReferencedContainer = "container:fixate.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -78,8 +89,12 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "2">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "1"
+         BundleIdentifier = "com.apple.MobileAddressBook"
+         RemotePath = "/Library/Developer/CoreSimulator/Volumes/iOS_21A5317a/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 17.0.simruntime/Contents/Resources/RuntimeRoot/Applications/Contacts.app">
+      </RemoteRunnable>
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FBF9C4F42A6C6C9A008F8943"
@@ -87,7 +102,7 @@
             BlueprintName = "fixate"
             ReferencedContainer = "container:fixate.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
