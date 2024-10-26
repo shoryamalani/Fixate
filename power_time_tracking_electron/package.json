@@ -1,7 +1,7 @@
 {
   "name": "Fixate",
   "productName": "Fixate",
-  "version": "1.11.3",
+  "version": "1.11.4",
   "description": "An app to improve productivity by blocking apps that waste time and showing where time goes.",
   "main": "src/index.js",
   "rep": "https://github.com/shoryamalani/Fixate",
@@ -42,16 +42,17 @@
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-pkg": "^6.0.0",
+    "@electron-forge/cli": "^7.5.0",
+    "@electron-forge/maker-deb": "^7.5.0",
+    "@electron-forge/maker-pkg": "^7.5.0",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "@electron-forge/publisher-github": "^6.0.0-beta.63",
-    "@electron/notarize": "^2.0.0",
-    "@electron/universal": "1.4.1",
-    "electron": "^20.1.0",
+    "@electron-forge/maker-squirrel": "^7.5.0",
+    "@electron-forge/maker-zip": "^7.5.0",
+    "@electron-forge/publisher-github": "^7.5.0",
+    "@electron/notarize": "^2.5.0",
+    "@electron/packager": "^18.3.5",
+    "@electron/universal": "^1.4.1",
+    "electron": "^33.0.2",
     "electron-winstaller": "^5.0.0"
   },
   "overrides": {}
