@@ -103,11 +103,10 @@ struct ContentView: View {
                     }
                 }
             if(userData.userData.currentFocusSettings.focusMode == nil){
-                slider(data: $leftData).accessibility(identifier: "leftPull")
+                slider(data: $leftData)
             
             }else{
-                slider(data:$rightData).accessibility(identifier: "rightPull")
-            
+                slider(data:$rightData)
             }
             
         }

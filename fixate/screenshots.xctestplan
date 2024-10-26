@@ -6,31 +6,13 @@
       "options" : {
 
       }
-    },
-    {
-      "id" : "14EB9AC9-2FBC-4189-89FB-14A08812512C",
-      "name" : "Configuration 2",
-      "options" : {
-
-      }
     }
   ],
   "defaultOptions" : {
-    "targetForVariableExpansion" : {
-      "containerPath" : "container:fixate.xcodeproj",
-      "identifier" : "FBF9C4F42A6C6C9A008F8943",
-      "name" : "fixate"
-    }
+
   },
   "testTargets" : [
-    {
-      "parallelizable" : true,
-      "target" : {
-        "containerPath" : "container:fixate.xcodeproj",
-        "identifier" : "FBF5CED82AA51D9800733BE4",
-        "name" : "fixateUIScreenshots"
-      }
-    }
+
   ],
   "version" : 1
 }

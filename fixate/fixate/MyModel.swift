@@ -13,12 +13,10 @@ public class MyModel: ObservableObject {
 
     
     @Published var selectionToDiscourage: FamilyActivitySelection
-    @Published var competitionToDiscourage: FamilyActivitySelection
     @Published var alwaysDistractingApps: FamilyActivitySelection
     init() {
         let savedValue = ObjectPersistanceManager().getUserData()?.distractingApps
         let alwaysDistracting = ObjectPersistanceManager().getUserData()?.alwaysDistractingApps
-        let competitionDistracting = ObjectPersistanceManager().getUserData()?.competitionCategories
         if(savedValue == nil){
             selectionToDiscourage = FamilyActivitySelection()
         }else{
@@ -29,12 +27,6 @@ public class MyModel: ObservableObject {
         } else{
             alwaysDistractingApps = alwaysDistracting!
         
-        }
-        if(competitionDistracting == nil){
-            competitionToDiscourage = FamilyActivitySelection()
-            
-        } else {
-            competitionToDiscourage = competitionDistracting!
         }
     }
     
@@ -61,10 +53,6 @@ public class MyModel: ObservableObject {
     }
     func saveSelectionToDiscourage(){
         ObjectPersistanceManager().saveDistractingAppsToPersistence(selectionToDiscourage)
-    }
-    func saveSelectionForCompetition(){
-        
-        ObjectPersistanceManager().saveSelectionForCompetitionToPersistance(competitionToDiscourage)
     }
     
     func stopFocusMode(){

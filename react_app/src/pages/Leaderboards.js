@@ -28,7 +28,6 @@ const Leaderboards = () => {
         if (leaderboardData == null) {
             fetch('http://localhost:5005/get_leaderboard_data').then(response => response.json()).then(data => {
                 console.log("setting leaderboard data")
-                console.log(data)
                 data = data['leaderboard']
                 // this is a dictionary of users
                 var final_data = {}

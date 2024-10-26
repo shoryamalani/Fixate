@@ -24,6 +24,7 @@ function UserProfileCard() {
 
     const getUserData = async () => {
         fetch('http://localhost:5005/get_current_user').then(response => response.json()).then(data => {
+            console.log(data)
             data = data['user']
             if (data['user_id'] != null) {
                 console.log(data)
@@ -36,13 +37,7 @@ function UserProfileCard() {
                     // document.getElementById('privacyChecked')
                 }
                     
-                // if (data['user_data']['server_data']['data']['friends_data'] == null){
-                //     getFriendDataNow();
-                //     return;
-                // }
-                // if(data['user_data']['server_data']['user_data'] == null){
-                //     data['user_data']['server_data']['user_data'] = data['user_data']['server_data']['data'] 
-                // } old compatability layer because of other bad code
+
                 dispatch(setUserData(data));
                 getFriendDataNow();
             }
@@ -109,7 +104,7 @@ function UserProfileCard() {
     const getFriendDataNow = async () => {
         const response = await fetch('http://localhost:5005/get_friend_data_now').then(response => response.json()).then(data => {
             console.log(data)
-            dispatch(setUserData(data['user']));
+            getUserData();
         }).catch(error => { console.log(error) });
     }
 
@@ -169,9 +164,7 @@ function UserProfileCard() {
       {userData != null ?
       <>
         <p style={{fontSize:30}}><strong >Current Display Name:</strong> {userData['user_data']['name']}</p>
-        { userData['user_data']['server_data'] != null &&
         <p style={{fontSize:30}}>Share Code: {userData['user_data']['server_data']['data']['share_code']}</p>
-    }
         
         </>
         :
@@ -235,8 +228,8 @@ function UserProfileCard() {
         </TableHead>
 
         <TableBody>
-        { userData != null && userData['user_data']['server_data']['data']['friends_data'] != null && 
-          userData['user_data']['server_data']['data']['friends_data']['data'].map((friend) => (
+        { userData != null && userData['user_data']['server_data']['friends_data'] != null && 
+          userData['user_data']['server_data']['friends_data'].map((friend) => (
             <TableRow
               key={friend['id']}
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
@@ -261,9 +254,9 @@ function UserProfileCard() {
     </Container>
     </ContentDiv>
     </Stack>
-  {/* } */}
-    {/* } */}
+  
     </Stack>
+    {/* } */}
       
       </>
     )

@@ -37,7 +37,7 @@ def analyze_improvements(time_period_1,time_period_2,distractions=[],focused_app
             if period_1_apps[app] == 0 or period_2_apps[app] == 0:
                 continue
             elif app not in distractions and app not in focused_apps:
-                # print(app)
+                print(app)
                 continue
             else:
                 usage_deltas[app] = {
@@ -70,11 +70,7 @@ def analyze_improvements(time_period_1,time_period_2,distractions=[],focused_app
     return {"all_deltas":all_deltas,"period_1_name":period_1_name,"period_2_name":period_2_name,"period_1_time":period_1_time,"period_2_time":period_2_time}
 
 if __name__ == "__main__":
-    import time
-    start = time.time()
     time_period_1 = get_time_spent.get_time("this_month")
     time_period_2 = get_time_spent.get_time("previous_month")
     print(analyze_improvements(time_period_1,time_period_2,["Discord", "Music", "Messages", "System Preferences", "Slack", "News", "www.youtube.com", "www.macrumors.com", "www.wsj.com", "drive.google.com", "Thunderbird", "WhatsApp", "Mail", "monkeytype.com", "www.politico.com"],["", "wikipedia.org", "Google Chrome", "Safari", "Firefox", "Brave Browser", "Microsoft Edge", "Opera Browser", "Reminders", "Notes", "google.com", "quizlet.com", "Brave Browser", "Terminal", "Code", "Adobe Lightroom", "github.com", "docs.google.com", "Electron", "Xcode", "zoom.us", "DBeaver"]))
-    end = time.time()
-    print(end-start)
     

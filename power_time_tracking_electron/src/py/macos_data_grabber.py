@@ -18,7 +18,7 @@ from io import BytesIO
 import io
 import base64
 
-logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {file} | {function} | {line} | {level} | {message}",rotation="5MB", retention=5)
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 
 last_mouse_move_set = datetime.datetime.now()
 
@@ -31,7 +31,7 @@ class AppDelegate(NSObject):
         # NSEvent.addGlobalMonitorForEventsMatchingMask_handler_(NSKeyUp, AppDelegate.handler)
         # NSEvent.addLocalMonitorForEventsMatchingMask_handler_(NSKeyDown, AppDelegate.handler)
 
-        logger.debug("Started the app delegate")
+        logger.debug("HERE")
     def cancel(self):
         AppHelper.stopEventLoop()
     

@@ -16,23 +16,13 @@ extension DeviceActivityName {
     // Set the name of the activity to "daily"
     static let daily = Self("daily")
     static let focusedTime = Self("focusedTime")
-    static let weeklyCompetition = Self("weeklyCompetition")
 }
 extension DeviceActivityEvent.Name{
     static let timeSpent = Self("timeSpent")
-    static let weeklyCompetitionHour1 = Self("weeklyCompetitionHour1")
-    static let weeklyCompetitionHour2 = Self("weeklyCompetitionHour2")
-    static let weeklyCompetitionHour3 = Self("weeklyCompetitionHour3")
-    static let weeklyCompetitionHour4 = Self("weeklyCompetitionHour4")
-    static let weeklyCompetitionHour5 = Self("weeklyCompetitionHour5")
-    static let weeklyCompetitionHour6 = Self("weeklyCompetitionHour6")
-    static let weeklyCompetitionHour7 = Self("weeklyCompetitionHour7")
-    
 }
 extension ManagedSettingsStore.Name {
     static let focused = Self("focused")
     static let daily = Self("daily")
-    static let weeklyCompetition = Self("weeklyCompetition")
 }
 
 
@@ -85,21 +75,12 @@ enum FocusModeType: String, Codable {
 }
 
 
-struct competitionLossData: Codable {
-    var infraction:String
-    var time:Date
-    var selection:FamilyActivitySelection
-    
-}
-
 struct SavedUserData : Codable {
     var userGoals: UserGoals
     var focusModes:[FocusMode]
     var currentFocusSettings: FocusModeSettings
     var distractingApps: FamilyActivitySelection
     var alwaysDistractingApps: FamilyActivitySelection
-    var competitionCategories:FamilyActivitySelection
-    var competitionData: [String:[competitionLossData]]
 }
 
 struct Badge : Codable {
@@ -121,10 +102,6 @@ struct BadgeDisplayData {
 
 
 class ObjectPersistanceManager {
-    struct HoursPerDay {
-        var hours: Int
-        var day:String
-    }
     var sharedContainerIdentifier:String;
     var updateUserData: (Result<SavedUserData,Error>) -> Void;
     init(updateFunc: @escaping (Result<SavedUserData,Error>) -> Void = {_ in }) {
@@ -135,11 +112,15 @@ class ObjectPersistanceManager {
         var userData = getUserData()
         userData?.distractingApps = object
         saveUserData(userData!)
-    }
-    func saveSelectionForCompetitionToPersistance( _ object:FamilyActivitySelection){
-        var userData = getUserData()
-        userData?.competitionCategories = object
-        saveUserData(userData!)
+//        do {
+//            let encoder = JSONEncoder()
+//            let data = try encoder.encode(object)
+//            let sharedContainerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier)
+//            let url = sharedContainerURL?.appendingPathComponent("distracingApps.json")
+//            try data.write(to: url!)
+//        } catch {
+//            print("Error saving object: \(error)")
+//        }
     }
     
 
@@ -188,171 +169,6 @@ class ObjectPersistanceManager {
         }
     
     }
-    
-
-    func getDistractionsPerDay() -> [HoursPerDay]{
-        // take the last 7 days and get their date values with the format dd-mm-yyyy
-        // Get the current date
-        var userData = getUserData();
-        let currentDate = Date()
-
-        // Create a DateFormatter
-        let dateFormatter = DateFormatter()
-
-        // Set the date format to include only the year, month, and day
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-    
-        var dateString = dateFormatter.string(from: currentDate)
-        // for loop getting the date one day back each time
-        var finalData:[HoursPerDay] = []
-        for i in 0..<7{
-                // subtract one day
-//            check if the date is in currtCompetitionDate
-            print(userData!.competitionData)
-            if(userData!.competitionData.keys.contains(dateString)){
-                // check how many unique events there are
-                var events = 0
-                var previousInfractions:[String] = []
-                userData!.competitionData[dateString]?.forEach{
-                    if(previousInfractions.contains($0.infraction)) != true{
-                        events += 1
-                        previousInfractions.append($0.infraction)
-                        
-                    }
-                }
-                let curDate = dateFormatter.date(from: dateString)
-                // get day of week
-                let dayOfWeek = Calendar.current.component(.weekday, from: curDate!)
-                let weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
-                
-                
-                finalData.append(HoursPerDay(hours:events , day: weekdays[dayOfWeek-1]))
-            }
-            let newDate = Calendar.current.date(byAdding: .day, value: -1, to: dateFormatter.date(from: dateString)!)
-            dateString = dateFormatter.string(from: newDate!)
-            
-            
-            
-        }
-        print(finalData)
-    
-        
-        return finalData;
-        
-        
-        
-        
-    }
-    
-    func clearTodaysCompetitionData() {
-        var userData = getUserData()
-        let currentDate = Date()
-        
-        let dateFormatter = DateFormatter()
-        
-        
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-    
-        let dateString = dateFormatter.string(from: currentDate)
-        userData?.competitionData.removeValue(forKey: dateString)
-        saveUserData(userData!)
-    }
-    func getCurrentWeeklyScore() -> Int{
-        // take the last 7 days and get their date values with the format dd-mm-yyyy
-        // Get the current date
-        let userData = getUserData();
-        let currentDate = Date()
-
-        // Create a DateFormatter
-        let dateFormatter = DateFormatter()
-
-        // Set the date format to include only the year, month, and day
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-    
-        var dateString = dateFormatter.string(from: currentDate)
-        // for loop getting the date one day back each time
-        var finalData:[HoursPerDay] = []
-        var totalEvents = 0
-        for _ in 0..<7{
-                // subtract one day
-//            check if the date is in currtCompetitionDate
-            print(userData!.competitionData)
-            if(userData!.competitionData.keys.contains(dateString)){
-                // check how many unique events there are
-                var events = 0
-                var previousInfractions:[String] = []
-                userData!.competitionData[dateString]?.forEach{
-                    if(previousInfractions.contains($0.infraction)) != true{
-                        events += 1
-                        previousInfractions.append($0.infraction)
-                        
-                    }
-                }
-                
-                
-                
-                totalEvents += events;
-            }
-            let newDate = Calendar.current.date(byAdding: .day, value: -1, to: dateFormatter.date(from: dateString)!)
-            dateString = dateFormatter.string(from: newDate!)
-            
-            
-            
-        }
-        print(finalData)
-    
-        
-        return totalEvents;
-        
-        
-        
-        
-    }
-    func addThreshold(_ threshold:String ) {
-        // Get the current date
-        let currentDate = Date()
-
-        // Create a DateFormatter
-        let dateFormatter = DateFormatter()
-
-        // Set the date format to include only the year, month, and day
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-
-        // Convert the current date to a string
-        let dateString = dateFormatter.string(from: currentDate)
-
-        // Convert the string back to a date, which now has only the year, month, and day
-//        let dateWithoutTime = dateFormatter.date(from: dateString)
-        
-        var userData:SavedUserData = getUserData()!;
-        
-        
-        let compLossVal = competitionLossData(infraction: threshold, time: Date(), selection: userData.competitionCategories ?? FamilyActivitySelection())
-        if(userData.competitionData.keys.contains(dateString) ) {
-            userData.competitionData[dateString]?.append(compLossVal)
-        }
-           else{
-               userData.competitionData[dateString] = [compLossVal]
-            
-        }
-        
-        
-        saveUserData(userData)
-        
-        
-        
-    
-        
-        
-    
-        
-        
-        
-        
-        
-        
-    }
-    
     func saveUserData(_ userData: SavedUserData){
 //        save user data to a file
         do {
@@ -451,10 +267,6 @@ class ObjectPersistanceManager {
         
     }
 }
-
-
-
-
 struct FixateAccount: Codable {
     var hasLoggedIn: Bool
     var acountId:Int?

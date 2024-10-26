@@ -366,40 +366,6 @@ def update_to_database_version_1_19():
     c.execute("UPDATE database_and_application_version SET database_version = '1.19' WHERE id=1")
     conn.commit()
 
-def update_to_database_version_1_20():
-    # add a primary key to the log database so it stops chugging
-    conn = connect_to_db()
-    c = conn.cursor()
-    dUpdate = ["""
-    CREATE TABLE newLog (
-    time DATETIME,
-    app text,
-    tabname text,
-    active bool,
-    window_title text,
-    id INTEGER PRIMARY KEY AUTOINCREMENT
-    );
-    """,
-    """
-    INSERT INTO newLog (time, app, tabname, active, window_title)
-    SELECT time, app, tabname, active, window_title
-    FROM log;
-    """,
-    """
-    -- Step 3: Drop the old table
-    DROP TABLE log;
-    """
-    ,
-    """
-    -- Step 4: Rename the new table to the old table's name
-    ALTER TABLE newLog RENAME TO log;
-    """
-    ]
-    for u in dUpdate:
-        c.execute(u)
-    c.execute("UPDATE database_and_application_version SET database_version = '1.20' WHERE id=1")
-    conn.commit()
-
 
 
 
@@ -445,7 +411,7 @@ def get_time_format():
     return "%Y-%m-%d %H:%M:%S"
 
 def get_all_time_logs():
-    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {file} | {function} | {line} | {level} | {message}",rotation="5MB", retention=5)
+    logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB",retention=5)
     conn = connect_to_db()
     c = conn.cursor()
     c.execute("SELECT * FROM log")

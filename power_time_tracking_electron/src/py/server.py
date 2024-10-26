@@ -1,11 +1,11 @@
 #!/Applications/Fixate.app/Contents/Resources/python/bin/FixateLogger
-VERSION = "1.11.4"
+VERSION = "1.9.20"
 import sys
 import os
 if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
-        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python") + "\\" + folder
-    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\py")]
+        return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python") + "\\" + folder
+    sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.9.20\resources\py")]
 
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
@@ -16,31 +16,18 @@ import signal
 import json
 from loguru import logger
 from datetime import datetime
-from werkzeug.middleware.profiler import ProfilerMiddleware
 import ppt_api_worker
 import constants
 
 
 app = Flask(__name__)
-# add logging with cProfile
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-debug = False
-if debug:
-    from werkzeug.middleware.profiler import ProfilerMiddleware
-
-
-    app.wsgi_app = ProfilerMiddleware(
-        app.wsgi_app,
-        restrictions=[30],
-        profile_dir="profiling/input",
-        filename_format="{method}-{path}-{time:.0f}-{elapsed:.0f}ms.prof",
-    )
 closing_apps = False
 whitelist = False
 
 current_notifications = []
-logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {file} | {function} | {line} | {level} | {message}",rotation="5MB", retention=5)
+logger.add(constants.LOGGER_LOCATION,backtrace=True,diagnose=True, format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",rotation="5MB", retention=5)
 
 def create_app():
     return app
@@ -365,7 +352,7 @@ def start_server():
         logger.error(e)
 
 @app.route('/get_scheduling_buckets', methods=['GET'])
-def get_scheduling_buckets(): 
+def get_scheduling_buckets():
     return jsonify({"buckets":logger_application.get_scheduling_buckets()})
 
 @app.route("/add_scheduling_bucket",methods=["POST"])

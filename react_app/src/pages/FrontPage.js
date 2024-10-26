@@ -169,9 +169,6 @@ function FrontPage() {
 
           }
           if(Store.getCounter() === 0){
-            if(!final_improvements_data.length === 0){
-
-            
           Store.addNotification({
             title: "Great Job!",
             message: final_improvements_data[picked][0],
@@ -185,7 +182,6 @@ function FrontPage() {
               onScreen: true
             }
           });
-        }
           }
         })
         

@@ -1,5 +1,5 @@
 #!/bin/sh
-# echo $USER > /tmp/env.txt
+echo $USER > /tmp/env.txt
 
 cd /Applications/Fixate.app/Contents/Resources/app/launch_processes
 # cd /Users/shoryamalani/Documents/coding/electron_apps/new_app/power_time_tracking_electron/launch_processes
