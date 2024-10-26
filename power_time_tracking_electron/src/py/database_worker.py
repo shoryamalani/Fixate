@@ -8,6 +8,7 @@ import constants
 from loguru import logger
 import os
 import json
+import time
 DATABASE_PATH = constants.DATABASE_LOCATION + "/" + constants.DATABASE_NAME
 DATABASE_VERSION = "1.0"
 def connect_to_db():
