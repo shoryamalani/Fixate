@@ -346,7 +346,7 @@ function LiveFocusMode(){
     }
         {userData != null && liveFocusModeData != null ?
          liveFocusModeData['data'] != null && liveFocusModeData['data']['owner_id'] == String(userData['user_id']) ? 
-            userData['user_data']['server_data']['friends_data'] === undefined ? <h2>No Friends added</h2>:
+            userData['user_data']['server_data']['data']['friends_data'] === undefined ? <h2>No Friends added</h2>:
             <>
     <ContentDiv style={{flex:1}}>
             
@@ -362,7 +362,7 @@ function LiveFocusMode(){
         </TableHead>
 
         <TableBody>
-          {userData['user_data']['server_data']['friends_data'].map((friend) => (
+          {userData['user_data']['server_data']['data']['friends_data']['data'].map((friend) => (
             <TableRow
               key={friend['user_id']}
             //   style={{visibility: checkFilter(currentTasks[task].id) ? 'visible':'collapse'}}
