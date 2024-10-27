@@ -6,6 +6,10 @@ if sys.platform == "win32":
     def pythonFolder(folder: str) -> str:
         return os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python\install") + "\\" + folder
     sys.path = ['', os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\python"), pythonFolder(r"Lib\site-packages"), pythonFolder(r"python39.zip"), pythonFolder(r"DLLs"), pythonFolder(r"Lib"), pythonFolder(r"Lib\site-packages\win32"), pythonFolder(r"Lib\site-packages\win32\lib"), pythonFolder(r"Lib\site-packages\Pythonwin"), os.path.expandvars(r"%LocalAppData%\Fixate\app-1.11.4\resources\py")]
+<<<<<<< HEAD
+=======
+
+>>>>>>> 323c5786c2f257a8168873e4489cb03adae69eff
 from flask import Flask,jsonify,request, send_from_directory
 from flask_cors import CORS, cross_origin
 import application as logger_application
