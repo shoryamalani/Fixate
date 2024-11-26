@@ -156,7 +156,7 @@ pillow
 pyparsing==3.0.8
 python-engineio==4.3.1
 regex==2022.6.2
-requests==2.28.0
+requests==2.31.0
 simplecalculator
 sip==5.0.1
 six==1.16.0
